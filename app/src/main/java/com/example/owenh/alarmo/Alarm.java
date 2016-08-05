@@ -1,15 +1,19 @@
 package com.example.owenh.alarmo;
 
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import android.os.Handler;
 
 public class Alarm extends AppCompatActivity {
 
     private TextView mDate;
     private TextView mTime;
+    private TextView mVTime;
     private int mYear;
     private int mMonth;
     private int mDay;
@@ -18,12 +22,14 @@ public class Alarm extends AppCompatActivity {
     private int mSecond;
     private int mWeekOfYear;
     Calendar  mCalendar;
+    private static final int msgKey1 = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.alarm);
+        setContentView(R.layout.alarm_main);
         findview();
         init();
+        new TimeThread().start();
     }
     public void init(){
         getDateTimeNow();
@@ -35,6 +41,7 @@ public class Alarm extends AppCompatActivity {
     public void findview(){
         mDate = (TextView)findViewById(R.id.alarm_date);
         mTime = (TextView)findViewById(R.id.alarm_time);
+        mVTime = (TextView)findViewById(R.id.alarm_vtime);
     }
 
     public void getDateTimeNow() {
@@ -50,5 +57,41 @@ public class Alarm extends AppCompatActivity {
 
 
     }
+    /**
+     * 建立一个线程，没秒钟刷新一次
+     *
+     * */
+    public class TimeThread extends Thread {
+        @Override
+        public void run () {
+            do {
+                try {
+                    Thread.sleep(1000);
+                    Message msg = new Message();
+                    msg.what = msgKey1;
+                    mHandler.sendMessage(msg);
+                }
+                catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } while(true);
+        }
+    }
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage (Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case msgKey1:
+                    long sysTime = System.currentTimeMillis();
+                    CharSequence sysTimeStr = DateFormat.format("hh:mm:ss", sysTime);
+                    mVTime.setText(sysTimeStr+"");
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    };
 
 }
