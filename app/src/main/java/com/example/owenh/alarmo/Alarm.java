@@ -1,97 +1,113 @@
 package com.example.owenh.alarmo;
 
-import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
+import android.content.Intent;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.widget.TextView;
+import android.os.Environment;
+import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 
-import java.util.Calendar;
-import android.os.Handler;
+import java.io.File;
+import java.io.IOException;
 
-public class Alarm extends AppCompatActivity {
+public class Alarm extends Activity {
 
-    private TextView mDate;
-    private TextView mTime;
-    private TextView mVTime;
-    private int mYear;
-    private int mMonth;
-    private int mDay;
-    private int mMinute;
-    private int mHour;
-    private int mSecond;
-    private int mWeekOfYear;
-    Calendar  mCalendar;
-    private static final int msgKey1 = 1;
+    private Button mToWatch;
+    private Button mToOther;
+    private Button mGoRing;
+    private MediaPlayer mMediaPlayer = new MediaPlayer();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.alarm_main);
+        //隐藏标题栏
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //隐藏状态栏
+        //定义全屏参数
+        int flag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        //获得当前窗体对象
+        Window window = Alarm.this.getWindow();
+        //设置当前窗体为全屏显示
+        window.setFlags(flag, flag);
+        setContentView(R.layout.alram_main0);
         findview();
         init();
-        new TimeThread().start();
-    }
-    public void init(){
-        getDateTimeNow();
-        mDate.setText(""+mCalendar.getTime());
-        mTime.setText(mYear +"年"+ mMonth +"月"+ mDay + "日"+
-        mHour+"时"+mMinute+"分"+mSecond+"秒"+mWeekOfYear+"周");
-
-    }
-    public void findview(){
-        mDate = (TextView)findViewById(R.id.alarm_date);
-        mTime = (TextView)findViewById(R.id.alarm_time);
-        mVTime = (TextView)findViewById(R.id.alarm_vtime);
     }
 
-    public void getDateTimeNow() {
-
-        mCalendar = Calendar.getInstance();
-        mYear = mCalendar.get(Calendar.YEAR);//获取年份
-        mMonth= mCalendar.get(Calendar.MONTH);//获取月份
-        mDay= mCalendar.get(Calendar.DATE);//获取日
-        mMinute= mCalendar.get(Calendar.MINUTE);//分
-        mHour= mCalendar.get(Calendar.HOUR);//小时
-        mSecond= mCalendar.get(Calendar.SECOND);//秒
-        mWeekOfYear = mCalendar.get(Calendar.DAY_OF_WEEK);
-
-
-    }
-    /**
-     * 建立一个线程，没秒钟刷新一次
-     *
-     * */
-    public class TimeThread extends Thread {
-        @Override
-        public void run () {
-            do {
-                try {
-                    Thread.sleep(1000);
-                    Message msg = new Message();
-                    msg.what = msgKey1;
-                    mHandler.sendMessage(msg);
-                }
-                catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            } while(true);
-        }
-    }
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage (Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case msgKey1:
-                    long sysTime = System.currentTimeMillis();
-                    CharSequence sysTimeStr = DateFormat.format("hh:mm:ss", sysTime);
-                    mVTime.setText(sysTimeStr+"");
-                    break;
-
-                default:
-                    break;
+    public void init() {
+        mToWatch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Alarm.this, Watch.class);
+                startActivity(intent);
             }
+        });
+        mToOther.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1 = new Intent(Alarm.this, Other.class);
+                startActivity(intent1);
+            }
+        });
+        /*try{
+            File file = new File(Environment.getExternalStorageDirectory(),
+                    "ring0.mp3");
+            mediaPlayer.setDataSource(file.getPath());//指定音频文件
+            Log.v(file.getPath()+"","huangshaohua");
+            mediaPlayer.prepare();//让MediaPlayer进入到准备状态
+        }catch (Exception e){
+            e.printStackTrace();
+        }*/
+        mGoRing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+               /* if(!mediaPlayer.isPlaying()){
+                    mediaPlayer.start();
+                }
+                else {
+                    mediaPlayer.reset();
+                }*/
+                startAlarm();
+
+            }
+        });
+    }
+
+    public void findview() {
+        mToWatch = (Button) findViewById(R.id.to_watch);
+        mToOther = (Button) findViewById(R.id.to_other);
+        mGoRing = (Button) findViewById(R.id.ring);
+    }
+
+    private void startAlarm() {
+        mMediaPlayer = MediaPlayer.create(this, getSystemDefultRingtoneUri());
+        mMediaPlayer.setLooping(true);
+        try {
+            mMediaPlayer.prepare();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    };
+        mMediaPlayer.setLooping(false);
+        mMediaPlayer.start();
+    }
+
+    /**
+     * 获取系统铃声
+     */
+    private Uri getSystemDefultRingtoneUri() {
+        return RingtoneManager.getActualDefaultRingtoneUri(this,
+                RingtoneManager.TYPE_NOTIFICATION);
+    }
+
 
 }
