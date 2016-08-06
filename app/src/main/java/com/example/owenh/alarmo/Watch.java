@@ -3,6 +3,7 @@ package com.example.owenh.alarmo;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -39,6 +40,8 @@ public class Watch extends Activity {
     private int ringTimes = 0;
     PowerManager powerManager = null;
     PowerManager.WakeLock wakeLock = null;
+    //将字体文件保存在assets/fonts/目录下，创建Typeface对象
+    Typeface typeFace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,7 @@ public class Watch extends Activity {
     }
 
     public void init() {
-
+        typeFace = Typeface.createFromAsset(getAssets(), "fonts/DS-DIGI.ttf");
         mVTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +120,9 @@ public class Watch extends Activity {
                     mVTime.setText(sysTimeStr + "");
                     mSec.setText(" " + sysTimeStrsec);
                     mDay.setText(mDateDay.StringData() + "");
+                    mVTime.setTypeface(typeFace);
+                    mSec.setTypeface(typeFace);
+                    mDay.setTypeface(typeFace);
                     if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
                         if (ringTimes == 0) {
                             ++ringTimes;
