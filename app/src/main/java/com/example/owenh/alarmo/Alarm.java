@@ -31,27 +31,28 @@ public class Alarm extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //隐藏状态栏
         //定义全屏参数
-        int flag= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        int flag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
         //获得当前窗体对象
-        Window window=Alarm.this.getWindow();
+        Window window = Alarm.this.getWindow();
         //设置当前窗体为全屏显示
         window.setFlags(flag, flag);
         setContentView(R.layout.alram_main0);
         findview();
         init();
     }
-    public void init(){
+
+    public void init() {
         mToWatch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Alarm.this,Watch.class);
+                Intent intent = new Intent(Alarm.this, Watch.class);
                 startActivity(intent);
             }
         });
         mToOther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent1 = new Intent(Alarm.this,Other.class);
+                Intent intent1 = new Intent(Alarm.this, Other.class);
                 startActivity(intent1);
             }
         });
@@ -79,11 +80,13 @@ public class Alarm extends Activity {
             }
         });
     }
-    public void findview(){
-        mToWatch = (Button)findViewById(R.id.to_watch);
-        mToOther = (Button)findViewById(R.id.to_other);
-        mGoRing = (Button)findViewById(R.id.ring);
+
+    public void findview() {
+        mToWatch = (Button) findViewById(R.id.to_watch);
+        mToOther = (Button) findViewById(R.id.to_other);
+        mGoRing = (Button) findViewById(R.id.ring);
     }
+
     private void startAlarm() {
         mMediaPlayer = MediaPlayer.create(this, getSystemDefultRingtoneUri());
         mMediaPlayer.setLooping(true);
@@ -100,7 +103,7 @@ public class Alarm extends Activity {
 
     /**
      * 获取系统铃声
-     * */
+     */
     private Uri getSystemDefultRingtoneUri() {
         return RingtoneManager.getActualDefaultRingtoneUri(this,
                 RingtoneManager.TYPE_NOTIFICATION);
