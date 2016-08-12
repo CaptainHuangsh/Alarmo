@@ -68,7 +68,7 @@ public class Watch extends Activity {
     }
 
     public void init() {
-        typeFace = Typeface.createFromAsset(getAssets(), "fonts/DS-DIGI.ttf");
+        typeFace = Typeface.createFromAsset(getAssets(), "fonts/digifaw.ttf");
         mVTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,7 +167,7 @@ public class Watch extends Activity {
     }
 
     /**
-     * 获取系统铃声
+     * 获取系统当前铃声
      */
     private Uri getSystemDefultRingtoneUri() {
         return RingtoneManager.getActualDefaultRingtoneUri(this,
