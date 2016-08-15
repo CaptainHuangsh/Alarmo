@@ -159,6 +159,7 @@ public class Alarm extends Activity implements
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //弹出铃声选择框，内容为手机所有铃声
+                //打开系统铃声设置
                 Intent intentSystemRingtone = new Intent(
                         RingtoneManager.ACTION_RINGTONE_PICKER);
                 intentSystemRingtone
@@ -173,16 +174,16 @@ public class Alarm extends Activity implements
                         .putExtra(
                                 RingtoneManager.EXTRA_RINGTONE_TYPE,
                                 RingtoneManager.TYPE_NOTIFICATION);
+                //设置显示的题目
+                intentSystemRingtone.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "设置铃声");
                 //TYPE_ALL、TYPE_NOTIFICATION、TYPE_ALARM三个参数可选
 
-                Log.v("intent0",""+intentSystemRingtone);
-                pickedUri = intentSystemRingtone.getData();
-                Log.v("ring0",""+pickedUri);
+                Log.v("intent0", "" + intentSystemRingtone);
+                Log.v("ring0", "" + pickedUri);
                 startActivityForResult(
                         intentSystemRingtone, 0);
             }
-        });
-        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -190,6 +191,27 @@ public class Alarm extends Activity implements
         });
         dialog.show();
     }
+    //设置铃声之后的回调函数
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode!=RESULT_OK){
+            return;
+        }
 
+                try {
+                    //得到我们选择的铃声
+                    pickedUri=data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+                    Log.v("ring0", "" + pickedUri);
+                    //将我们选择的铃声选择成默认
+                    if(pickedUri!=null){
+                        RingtoneManager.setActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION, (Uri) pickedUri);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
 }
