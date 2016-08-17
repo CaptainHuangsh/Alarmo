@@ -1,4 +1,4 @@
-package com.example.owenh.alarmo;
+package com.example.owenh.alarmo.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,13 +17,11 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.example.owenh.alarmo.R;
+
 import java.io.IOException;
-import java.util.Calendar;
 
 import util.DateDay;
-
-import static android.Manifest.permission.WAKE_LOCK;
-import static com.example.owenh.alarmo.R.id.ring;
 
 /**
  * Created by owenh on 2016/8/5.

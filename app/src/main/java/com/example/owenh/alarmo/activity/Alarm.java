@@ -1,4 +1,4 @@
-package com.example.owenh.alarmo;
+package com.example.owenh.alarmo.activity;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -7,7 +7,6 @@ import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -15,10 +14,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
-import java.io.File;
-import java.io.IOException;
+import com.example.owenh.alarmo.R;
 
-import static android.R.attr.data;
+import java.io.IOException;
 
 public class Alarm extends Activity implements
         Button.OnClickListener {
@@ -50,43 +48,7 @@ public class Alarm extends Activity implements
     }
 
     public void init() {
-        /*mToWatch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Alarm.this, Watch.class);
-                startActivity(intent);
-            }
-        });
-        mToOther.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(Alarm.this, Other.class);
-                startActivity(intent1);
-            }
-        });
-        *//*try{
-            File file = new File(Environment.getExternalStorageDirectory(),
-                    "ring0.mp3");
-            mediaPlayer.setDataSource(file.getPath());//指定音频文件
-            Log.v(file.getPath()+"","huangshaohua");
-            mediaPlayer.prepare();//让MediaPlayer进入到准备状态
-        }catch (Exception e){
-            e.printStackTrace();
-        }*//*
-        mGoRing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-               *//* if(!mediaPlayer.isPlaying()){
-                    mediaPlayer.start();
-                }
-                else {
-                    mediaPlayer.reset();
-                }*//*
-                startAlarm();
-
-            }
-        });*/
     }
 
     public void findview() {

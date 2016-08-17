@@ -1,10 +1,12 @@
-package com.example.owenh.alarmo;
+package com.example.owenh.alarmo.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+
+import com.example.owenh.alarmo.R;
 
 import java.util.Calendar;
 
