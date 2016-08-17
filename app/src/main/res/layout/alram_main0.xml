@@ -21,5 +21,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/ring"
         android:text="@string/go_ring"/>
+    <Button
+        android:text="@string/select_Ring"
+        android:id="@+id/select_ring"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

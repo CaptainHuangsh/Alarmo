@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/activity_media__ring_tone"
+    android:orientation="vertical"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    tools:context="com.example.mediatest.Media_RingToneActivity">
+
+    <Button
+        android:id="@+id/myRingtongButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/myAlarmButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/myNotificationButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Hello World!"
+        app:layout_constraintBottom_toBottomOf="@+id/activity_media__ring_tone"
+        app:layout_constraintLeft_toLeftOf="@+id/activity_media__ring_tone"
+        app:layout_constraintRight_toRightOf="@+id/activity_media__ring_tone"
+        app:layout_constraintTop_toTopOf="@+id/activity_media__ring_tone" />
+
+</LinearLayout>
