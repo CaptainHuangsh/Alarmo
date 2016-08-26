@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.example.owenh.alarmo.R;
+import com.example.owenh.alarmo.provider.AlarmoDatabaseHelper;
 
 import java.io.IOException;
 
@@ -27,6 +28,7 @@ public class Alarm extends Activity implements
     private Button mSelectRing;
     private MediaPlayer mMediaPlayer = new MediaPlayer();
     private Uri pickedUri = null;
+    private AlarmoDatabaseHelper dpHelper;
 
 
     @Override
@@ -41,6 +43,7 @@ public class Alarm extends Activity implements
         Window window = Alarm.this.getWindow();
         //设置当前窗体为全屏显示
         window.setFlags(flag, flag);
+
         setContentView(R.layout.alram_main0);
         findview();
         setListener();
@@ -48,7 +51,8 @@ public class Alarm extends Activity implements
     }
 
     public void init() {
-
+        dpHelper = new AlarmoDatabaseHelper(this,"Alarmoyri.db",null,1);
+        dpHelper.getWritableDatabase();
     }
 
     public void findview() {
@@ -87,6 +91,7 @@ public class Alarm extends Activity implements
 
     //触发响铃
     private void startAlarm() {
+
         Log.v("ring1",""+pickedUri);
         mMediaPlayer = MediaPlayer.create(this, pickedUri);
 //        mMediaPlayer = MediaPlayer.create(this, getSystemDefultRingtoneUri());
@@ -115,7 +120,7 @@ public class Alarm extends Activity implements
     public void showSelectRingDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Select Ringtong Please");
-        dialog.setMessage("sss");
+        dialog.setMessage("选择铃声");
         dialog.setCancelable(false);
         dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
