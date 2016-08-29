@@ -1,8 +1,10 @@
 package com.example.owenh.alarmo.activity;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -91,20 +93,32 @@ public class Alarm extends Activity implements
 
     //触发响铃
     private void startAlarm() {
-
-        Log.v("ring1",""+pickedUri);
-        mMediaPlayer = MediaPlayer.create(this, pickedUri);
-//        mMediaPlayer = MediaPlayer.create(this, getSystemDefultRingtoneUri());
-        mMediaPlayer.setLooping(true);
-        try {
-            mMediaPlayer.prepare();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        String ringuri = "";
+       /* SQLiteDatabase db = dpHelper.getWritableDatabase();
+        Cursor cursor = db.query("Alarmoyri",null,null,null,null,null,null);
+        if(cursor.moveToFirst()){
+            do {
+                ringuri = cursor.getString(cursor.getColumnIndex("ringuri"));
+                Log.d("Watch",ringuri);
+            }while (cursor.moveToNext());
         }
-        mMediaPlayer.setLooping(false);
-        mMediaPlayer.start();
+        cursor.close();*/
+//        Log.v("ring1",""+pickedUri);
+        if(pickedUri != null) {
+            mMediaPlayer = MediaPlayer.create(this, pickedUri);
+//        mMediaPlayer = MediaPlayer.create(this, Uri.parse(ringuri));
+//        mMediaPlayer = MediaPlayer.create(this, getSystemDefultRingtoneUri());
+            mMediaPlayer.setLooping(true);
+            try {
+                mMediaPlayer.prepare();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mMediaPlayer.setLooping(false);
+            mMediaPlayer.start();
+        }
     }
 
     /**
@@ -179,6 +193,11 @@ public class Alarm extends Activity implements
 
 
         super.onActivityResult(requestCode, resultCode, data);
+        SQLiteDatabase db = dpHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("ringuri",pickedUri.toString());
+        db.insert("Alarmoyri",null,values);
+        values.clear();
     }
 
 }

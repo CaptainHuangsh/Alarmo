@@ -3,6 +3,8 @@ package com.example.owenh.alarmo.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
@@ -12,12 +14,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.example.owenh.alarmo.R;
+import com.example.owenh.alarmo.provider.AlarmoDatabaseHelper;
 
 import java.io.IOException;
 
@@ -40,6 +44,8 @@ public class Watch extends Activity {
     PowerManager.WakeLock wakeLock = null;
     //将字体文件保存在assets/fonts/目录下，创建Typeface对象
     Typeface typeFace;
+    private AlarmoDatabaseHelper dbHelper;
+    private String ringuri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +83,21 @@ public class Watch extends Activity {
                 }
             }
         });
+        getRing();
+    }
 
+    public void getRing(){
+        dbHelper = new AlarmoDatabaseHelper(this,"Alarmoyri.db",null,1);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        //查询数据
+        Cursor cursor = db.query("Alarmoyri",null,null,null,null,null,null);
+        if(cursor.moveToFirst()){
+            do {
+                ringuri = cursor.getString(cursor.getColumnIndex("ringuri"));
+                Log.d("Watch",ringuri);
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
     }
 
     public void findview() {
@@ -121,7 +141,7 @@ public class Watch extends Activity {
                     mVTime.setTypeface(typeFace);
                     mSec.setTypeface(typeFace);
                     mDay.setTypeface(typeFace);
-                    if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
+                    if (DateFormat.format("mm:ss", sysTime).equals("09:10") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
                         if (ringTimes == 0) {
                             ++ringTimes;
                             startAlarm();
@@ -151,7 +171,8 @@ public class Watch extends Activity {
     }
 
     private void startAlarm() {
-        mMediaPlayer = MediaPlayer.create(this, getSystemDefultRingtoneUri());
+        Uri uri = Uri.parse(ringuri);
+        mMediaPlayer = MediaPlayer.create(this, uri);
         mMediaPlayer.setLooping(true);
         try {
             mMediaPlayer.prepare();
