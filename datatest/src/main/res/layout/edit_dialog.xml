@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="280dip"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical">
+
+    <EditText
+        android:id="@+id/dialog_data_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/name" />
+
+    <EditText
+        android:id="@+id/dialog_data_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/price"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/dialog_data_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/date" />
+
+    <EditText
+        android:id="@+id/dialog_data_page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/page"
+        android:inputType="number" />
+
+</LinearLayout>

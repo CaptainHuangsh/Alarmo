@@ -6,17 +6,23 @@ package com.example.datatest.activity.provider;
 
 public class TestI {
 
+    private int id;
     private String name;
     private int price;
     private String date;
     private int page;
-    public TestI(String name,int price, String date, int page){
+    public TestI(int id,String name,int price, String date, int page){
 
+        this.id = id;
         this.name = name;
         this.date = date;
         this.page = page;
         this.price = price;
 
+    }
+
+    public int getId(){
+        return id;
     }
 
     public String getName(){

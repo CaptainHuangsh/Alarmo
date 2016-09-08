@@ -88,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
                 TextUtils.isEmpty(mPage.getText()))) {
             SQLiteDatabase db = dbHelper.getWritableDatabase();
             ContentValues values = new ContentValues();
-
             //组装数据
             values.put("name", mName.getText() + "");
             values.put("price", Integer.parseInt(mPrice.getText() + ""));
@@ -102,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
     }
 
     public void viewD() {
+        //判断所输入内容是否有空
         if (!(TextUtils.isEmpty(mName.getText()) ||
                 TextUtils.isEmpty(mPrice.getText()) ||
                 TextUtils.isEmpty(mDate.getText()) ||
