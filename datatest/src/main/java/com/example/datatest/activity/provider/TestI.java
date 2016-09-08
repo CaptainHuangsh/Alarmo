@@ -37,6 +37,7 @@ public class TestI {
         return date;
     }
 
+
     public int getPage(){
         return page;
     }
