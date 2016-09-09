@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/datatest" />
             <option value="$PROJECT_DIR$/mediatest" />
             <option value="$PROJECT_DIR$/settingtest" />
+            <option value="$PROJECT_DIR$/testtest" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

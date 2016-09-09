@@ -1,1 +1,1 @@
-include ':app', ':mediatest', ':datatest', ':settingtest'
+include ':app', ':mediatest', ':datatest', ':settingtest', ':testtest'
