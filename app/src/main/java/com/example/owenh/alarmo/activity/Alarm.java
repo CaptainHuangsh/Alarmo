@@ -1,40 +1,45 @@
-package com.example.owenh.alarmo;
+package com.example.owenh.alarmo.activity;
 
-import android.app.Activity;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 
-import java.io.File;
+import com.example.owenh.alarmo.R;
+import com.example.owenh.alarmo.provider.AlarmoDatabaseHelper;
+
 import java.io.IOException;
 
-import static android.R.attr.data;
-
-public class Alarm extends Activity implements
+public class Alarm extends AppCompatActivity implements
         Button.OnClickListener {
 
-    private Button mToWatch;
-    private Button mToOther;
-    private Button mGoRing;
-    private Button mSelectRing;
+    private ImageButton mToWatch;
+    private ImageButton mToOther;
+    private ImageButton mGoRing;
+    private ImageButton mSelectRing;
     private MediaPlayer mMediaPlayer = new MediaPlayer();
     private Uri pickedUri = null;
+    private AlarmoDatabaseHelper dpHelper;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //隐藏标题栏
+        setContentView(R.layout.alram_main0);
+        /*//隐藏标题栏
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //隐藏状态栏
         //定义全屏参数
@@ -42,58 +47,48 @@ public class Alarm extends Activity implements
         //获得当前窗体对象
         Window window = Alarm.this.getWindow();
         //设置当前窗体为全屏显示
-        window.setFlags(flag, flag);
-        setContentView(R.layout.alram_main0);
+        window.setFlags(flag, flag);*/
+        setTitle("Alarmo");
+        android.app.ActionBar actionBar = getActionBar();
         findview();
         setListener();
         init();
     }
 
+    //重写Activity的onCreateOptionsMenu()方法
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //响应Action按钮的点击事件
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.user_p:
+                return true;
+            case R.id.edit_p:
+//                Toast.makeText(this, "edit clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.star:
+//                Toast.makeText(this, "star clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     public void init() {
-        /*mToWatch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Alarm.this, Watch.class);
-                startActivity(intent);
-            }
-        });
-        mToOther.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent1 = new Intent(Alarm.this, Other.class);
-                startActivity(intent1);
-            }
-        });
-        *//*try{
-            File file = new File(Environment.getExternalStorageDirectory(),
-                    "ring0.mp3");
-            mediaPlayer.setDataSource(file.getPath());//指定音频文件
-            Log.v(file.getPath()+"","huangshaohua");
-            mediaPlayer.prepare();//让MediaPlayer进入到准备状态
-        }catch (Exception e){
-            e.printStackTrace();
-        }*//*
-        mGoRing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-               *//* if(!mediaPlayer.isPlaying()){
-                    mediaPlayer.start();
-                }
-                else {
-                    mediaPlayer.reset();
-                }*//*
-                startAlarm();
-
-            }
-        });*/
+        dpHelper = new AlarmoDatabaseHelper(this,"Alarmoyri.db",null,1);
+        dpHelper.getWritableDatabase();
     }
 
     public void findview() {
-        mToWatch = (Button) findViewById(R.id.to_watch);
-        mToOther = (Button) findViewById(R.id.to_other);
-        mGoRing = (Button) findViewById(R.id.ring);
-        mSelectRing = (Button) findViewById(R.id.select_ring);
+        mToWatch = (ImageButton) findViewById(R.id.to_watch);
+        mToOther = (ImageButton) findViewById(R.id.to_other);
+        mGoRing = (ImageButton) findViewById(R.id.ring);
+        mSelectRing = (ImageButton) findViewById(R.id.select_ring);
     }
 
     public void setListener() {
@@ -125,19 +120,32 @@ public class Alarm extends Activity implements
 
     //触发响铃
     private void startAlarm() {
-        Log.v("ring1",""+pickedUri);
-        mMediaPlayer = MediaPlayer.create(this, pickedUri);
-//        mMediaPlayer = MediaPlayer.create(this, getSystemDefultRingtoneUri());
-        mMediaPlayer.setLooping(true);
-        try {
-            mMediaPlayer.prepare();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        String ringuri = "";
+       /* SQLiteDatabase db = dpHelper.getWritableDatabase();
+        Cursor cursor = db.query("Alarmoyri",null,null,null,null,null,null);
+        if(cursor.moveToFirst()){
+            do {
+                ringuri = cursor.getString(cursor.getColumnIndex("ringuri"));
+                Log.d("Watch",ringuri);
+            }while (cursor.moveToNext());
         }
-        mMediaPlayer.setLooping(false);
-        mMediaPlayer.start();
+        cursor.close();*/
+//        Log.v("ring1",""+pickedUri);
+        if(pickedUri != null) {
+            mMediaPlayer = MediaPlayer.create(this, pickedUri);
+//        mMediaPlayer = MediaPlayer.create(this, Uri.parse(ringuri));
+//        mMediaPlayer = MediaPlayer.create(this, getSystemDefultRingtoneUri());
+            mMediaPlayer.setLooping(true);
+            try {
+                mMediaPlayer.prepare();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            mMediaPlayer.setLooping(false);
+            mMediaPlayer.start();
+        }
     }
 
     /**
@@ -153,7 +161,7 @@ public class Alarm extends Activity implements
     public void showSelectRingDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("Select Ringtong Please");
-        dialog.setMessage("sss");
+        dialog.setMessage("选择铃声");
         dialog.setCancelable(false);
         dialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
@@ -212,6 +220,11 @@ public class Alarm extends Activity implements
 
 
         super.onActivityResult(requestCode, resultCode, data);
+        SQLiteDatabase db = dpHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("ringuri",pickedUri.toString());
+        db.insert("Alarmoyri",null,values);
+        values.clear();
     }
 
 }

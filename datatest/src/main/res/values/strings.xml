@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">datatest</string>
+    <string name="create_database">creData</string>
+    <string name="add">Add</string>
+    <string name="view_data">viewDA</string>
+    <string name="name">name</string>
+    <string name="price">price</string>
+    <string name="page">page</string>
+    <string name="date">date</string>
+    <string name="view_page">ViewPa</string>
+</resources>

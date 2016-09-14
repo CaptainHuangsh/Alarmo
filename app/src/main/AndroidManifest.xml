@@ -8,15 +8,15 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Alarm">
+        <activity android:name=".activity.Alarm">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Watch"></activity>
-        <activity android:name=".Other"></activity>
+        <activity android:name=".activity.Watch"></activity>
+        <activity android:name=".activity.Other"></activity>
 
     </application>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
