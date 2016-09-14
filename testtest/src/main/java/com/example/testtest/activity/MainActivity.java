@@ -1,5 +1,6 @@
 package com.example.testtest.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -13,6 +14,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.testtest.R;
 import com.example.testtest.provider.ViewPagerAdapter;
@@ -36,6 +38,12 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
     private TextView mTPage1;
     private TextView mTPage2;
     private TextView mTPage3;
+
+    private View viewPage1;
+    private View viewPage2;
+    private View viewPage3;
+
+    private Button mP1ToActionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,14 +138,31 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         mTPage1 = (TextView) findViewById(R.id.top_page1);
         mTPage2 = (TextView) findViewById(R.id.top_page2);
         mTPage3 = (TextView) findViewById(R.id.top_page3);
+        viewPage1 = getLayoutInflater().inflate(R.layout.page1,null);
+        viewPage2 = getLayoutInflater().inflate(R.layout.page2,null);
+        viewPage3 = getLayoutInflater().inflate(R.layout.page3,null);
+//        mP1ToActionBar = (Button) getActivity()
+        //绑定viewPager页面元素
+        mP1ToActionBar = (Button) findViewById(R.id.toActionBar);
 
-
+/**
+ * findViewById the button of viewpager always wrong
+ *
+ * */
     }
 
     public void setListener(){
         mTPage1.setOnClickListener(this);
         mTPage2.setOnClickListener(this);
         mTPage3.setOnClickListener(this);
+       /* mP1ToActionBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               *//* Intent intent1 = new Intent(MainActivity.this,ActionBarTest.class);
+                startActivity(intent1);*//*
+                Toast.makeText(MainActivity.this,"jfdsiofja",Toast.LENGTH_LONG).show();
+            }
+        });*/
     }
 
     @Override
@@ -151,6 +176,11 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
                 break;
             case R.id.top_page3:
                 mViewPager.setCurrentItem(2);
+                break;
+            case R.id.toActionBar:
+                Intent intent1 = new Intent(this,ActionBarTest.class);
+                startActivity(intent1);
+                Toast.makeText(this,"jfdsiofja",Toast.LENGTH_LONG).show();
                 break;
         }
 

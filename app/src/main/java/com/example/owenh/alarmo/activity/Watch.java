@@ -83,7 +83,7 @@ public class Watch extends Activity {
                 }
             }
         });
-        getRing();
+//        getRing();
     }
 
     public void getRing(){
@@ -141,7 +141,7 @@ public class Watch extends Activity {
                     mVTime.setTypeface(typeFace);
                     mSec.setTypeface(typeFace);
                     mDay.setTypeface(typeFace);
-                    if (DateFormat.format("mm:ss", sysTime).equals("09:10") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
+                    if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
                         if (ringTimes == 0) {
                             ++ringTimes;
                             startAlarm();
@@ -171,8 +171,8 @@ public class Watch extends Activity {
     }
 
     private void startAlarm() {
-        Uri uri = Uri.parse(ringuri);
-        mMediaPlayer = MediaPlayer.create(this, uri);
+//        Uri uri = Uri.parse(ringuri);
+        mMediaPlayer = MediaPlayer.create(this, getSystemDefultRingtoneUri());
         mMediaPlayer.setLooping(true);
         try {
             mMediaPlayer.prepare();

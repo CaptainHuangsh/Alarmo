@@ -1,6 +1,5 @@
 package com.example.owenh.alarmo.activity;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,24 +9,27 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.provider.AlarmoDatabaseHelper;
 
 import java.io.IOException;
 
-public class Alarm extends Activity implements
+public class Alarm extends AppCompatActivity implements
         Button.OnClickListener {
 
-    private Button mToWatch;
-    private Button mToOther;
-    private Button mGoRing;
-    private Button mSelectRing;
+    private ImageButton mToWatch;
+    private ImageButton mToOther;
+    private ImageButton mGoRing;
+    private ImageButton mSelectRing;
     private MediaPlayer mMediaPlayer = new MediaPlayer();
     private Uri pickedUri = null;
     private AlarmoDatabaseHelper dpHelper;
@@ -36,7 +38,8 @@ public class Alarm extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //隐藏标题栏
+        setContentView(R.layout.alram_main0);
+        /*//隐藏标题栏
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //隐藏状态栏
         //定义全屏参数
@@ -44,24 +47,48 @@ public class Alarm extends Activity implements
         //获得当前窗体对象
         Window window = Alarm.this.getWindow();
         //设置当前窗体为全屏显示
-        window.setFlags(flag, flag);
-
-        setContentView(R.layout.alram_main0);
+        window.setFlags(flag, flag);*/
+        setTitle("Alarmo");
+        android.app.ActionBar actionBar = getActionBar();
         findview();
         setListener();
         init();
     }
 
+    //重写Activity的onCreateOptionsMenu()方法
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //响应Action按钮的点击事件
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.user_p:
+                return true;
+            case R.id.edit_p:
+//                Toast.makeText(this, "edit clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.star:
+//                Toast.makeText(this, "star clicked", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
     public void init() {
         dpHelper = new AlarmoDatabaseHelper(this,"Alarmoyri.db",null,1);
         dpHelper.getWritableDatabase();
     }
 
     public void findview() {
-        mToWatch = (Button) findViewById(R.id.to_watch);
-        mToOther = (Button) findViewById(R.id.to_other);
-        mGoRing = (Button) findViewById(R.id.ring);
-        mSelectRing = (Button) findViewById(R.id.select_ring);
+        mToWatch = (ImageButton) findViewById(R.id.to_watch);
+        mToOther = (ImageButton) findViewById(R.id.to_other);
+        mGoRing = (ImageButton) findViewById(R.id.ring);
+        mSelectRing = (ImageButton) findViewById(R.id.select_ring);
     }
 
     public void setListener() {
