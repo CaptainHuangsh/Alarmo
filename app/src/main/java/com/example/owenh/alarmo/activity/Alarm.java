@@ -27,9 +27,9 @@ public class Alarm extends AppCompatActivity implements
         Button.OnClickListener {
 
     private ImageButton mToWatch;
-    private ImageButton mToOther;
-    private ImageButton mGoRing;
-    private ImageButton mSelectRing;
+//    private ImageButton mToOther;
+//    private ImageButton mGoRing;
+//    private ImageButton mSelectRing;
     private MediaPlayer mMediaPlayer = new MediaPlayer();
     private Uri pickedUri = null;
     private AlarmoDatabaseHelper dpHelper;
@@ -38,7 +38,7 @@ public class Alarm extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.alram_main0);
+        setContentView(R.layout.alram_main01);
         /*//隐藏标题栏
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //隐藏状态栏
@@ -69,12 +69,12 @@ public class Alarm extends AppCompatActivity implements
         switch (item.getItemId()) {
             case R.id.user_p:
                 return true;
-            case R.id.edit_p:
+            /*case R.id.edit_p:
 //                Toast.makeText(this, "edit clicked", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.star:
 //                Toast.makeText(this, "star clicked", Toast.LENGTH_SHORT).show();
-                return true;
+                return true;*/
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -86,15 +86,15 @@ public class Alarm extends AppCompatActivity implements
 
     public void findview() {
         mToWatch = (ImageButton) findViewById(R.id.to_watch);
-        mToOther = (ImageButton) findViewById(R.id.to_other);
-        mGoRing = (ImageButton) findViewById(R.id.ring);
-        mSelectRing = (ImageButton) findViewById(R.id.select_ring);
+//        mToOther = (ImageButton) findViewById(R.id.to_other);
+//        mGoRing = (ImageButton) findViewById(R.id.ring);
+//        mSelectRing = (ImageButton) findViewById(R.id.select_ring);
     }
 
     public void setListener() {
-        mSelectRing.setOnClickListener(this);
-        mGoRing.setOnClickListener(this);
-        mToOther.setOnClickListener(this);
+//        mSelectRing.setOnClickListener(this);
+//        mGoRing.setOnClickListener(this);
+//        mToOther.setOnClickListener(this);
         mToWatch.setOnClickListener(this);
     }
 
@@ -105,7 +105,7 @@ public class Alarm extends AppCompatActivity implements
                 Intent intent = new Intent(Alarm.this, Watch.class);
                 startActivity(intent);
                 break;
-            case R.id.to_other:
+         /*   case R.id.to_other:
                 Intent intent1 = new Intent(Alarm.this, Other.class);
                 startActivity(intent1);
                 break;
@@ -114,7 +114,7 @@ public class Alarm extends AppCompatActivity implements
                 break;
             case R.id.select_ring:
                 showSelectRingDialog();
-                break;
+                break;*/
         }
     }
 
