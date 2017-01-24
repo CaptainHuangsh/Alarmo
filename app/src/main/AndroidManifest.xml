@@ -17,7 +17,7 @@
         </activity>
         <activity android:name=".activity.Watch"></activity>
         <activity android:name=".activity.Other"></activity>
-
+        <activity android:name=".activity.preference"/>
     </application>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 

@@ -68,6 +68,7 @@ public class Alarm extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.user_p:
+                startActivity(preference.class);
                 return true;
             /*case R.id.edit_p:
 //                Toast.makeText(this, "edit clicked", Toast.LENGTH_SHORT).show();
@@ -79,6 +80,19 @@ public class Alarm extends AppCompatActivity implements
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    /**
+     * 跳转到另一个Activity
+     *
+     * @param cls
+     */
+    private void startActivity(Class<?> cls) {
+
+            Intent intent = new Intent(this, cls);
+            startActivity(intent);
+    }
+
+
     public void init() {
         dpHelper = new AlarmoDatabaseHelper(this,"Alarmoyri.db",null,1);
         dpHelper.getWritableDatabase();
