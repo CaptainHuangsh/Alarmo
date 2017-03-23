@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.provider.AlarmoDatabaseHelper;
+import com.zhy.autolayout.AutoLayoutActivity;
 
 import java.io.IOException;
 
@@ -31,7 +32,7 @@ import util.DateDay;
  * Created by owenh on 2016/8/5.
  */
 
-public class Watch extends Activity {
+public class Watch extends AutoLayoutActivity {
 
     private TextView mVTime;
     private TextView mSec;
