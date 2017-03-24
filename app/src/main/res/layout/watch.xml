@@ -15,12 +15,12 @@
         android:layout_gravity="center_horizontal|center_vertical"
         android:text=""
         android:textColor="@android:color/holo_blue_bright"
-        android:textSize="225sp"
+        android:textSize="720px"
         android:typeface="monospace"
         android:textStyle="normal|bold" />
     <TextView
         android:id="@+id/alarm_day"
-        android:layout_width="wrap_content"
+        android:layout_width="450px"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/alarm_vtime"
         android:layout_alignParentBottom="true"
@@ -28,19 +28,19 @@
         android:clickable="true"
         android:text=""
         android:textColor="@android:color/holo_blue_bright"
-        android:textSize="48sp"
+        android:textSize="120px"
         android:visibility="gone"
         android:textStyle="normal|bold" />
 
     <TextView
         android:id="@+id/alarm_vsec"
-        android:layout_width="wrap_content"
+        android:layout_width="150px"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:text=""
         android:textColor="@android:color/holo_blue_bright"
-        android:textSize="96sp"
+        android:textSize="200px"
         android:textStyle="normal|bold" />
 
 </RelativeLayout>

@@ -3,9 +3,17 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">#3c3f41</item>
+        <item name="colorPrimaryDark">#3c3f41</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    <style name="AppTheme2" >
 
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <!-- 避免重复设置标题 -->
+        <item name="android:windowActionBar">false</item>
+        <!-- 设置标题栏宽度 -->
+        <item name="android:windowTitleSize">60dp</item>   //titlebar的高度
+        <!-- <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item> -->
+    </style>
 </resources>

@@ -4,4 +4,24 @@
     <string name="to_other">Other</string>
     <string name="go_ring">Ring</string>
     <string name="select_Ring">SelRing</string>
+    <string-array name="list_entries_value">
+        <item>shandong</item>
+        <item>fujian</item>
+        <item>beijing</item>
+        <item>hebei</item>
+    </string-array>
+
+    <string-array name="list_entries">
+        <item>山东</item>
+        <item>福建</item>
+        <item>北京</item>
+        <item>河北</item>
+    </string-array>
+
+    <string name="deflault_list_entries_value">beijing</string>
+        <string-array name="list_preference">
+            <item>Red</item>
+            <item>Blue</item>
+            <item>Green</item>
+        </string-array>
 </resources>
