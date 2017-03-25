@@ -7,7 +7,7 @@
         android:icon="@mipmap/alarmo"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.NoActionBar">
+        android:theme="@style/AppTheme">
         <activity android:name=".activity.Alarm">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -15,7 +15,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.Watch"></activity>
+        <activity android:name=".activity.Watch"
+            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
         <activity android:name=".activity.Other"></activity>
         <activity android:name=".activity.preference"/>
         <meta-data android:name="design_width" android:value="768">
