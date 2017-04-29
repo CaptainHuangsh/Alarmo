@@ -34,6 +34,7 @@ import util.DateDay;
 
 public class Watch extends AutoLayoutActivity {
 
+    private int isRing = 0;
     private TextView mVTime;
     private TextView mSec;
     private TextView mDay;
@@ -142,10 +143,11 @@ public class Watch extends AutoLayoutActivity {
                     mVTime.setTypeface(typeFace);
                     mSec.setTypeface(typeFace);
                     mDay.setTypeface(typeFace);
-                    if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
-                        if (ringTimes == 0) {
+                    if (DateFormat.format("mm:ss", sysTime).equals("01:30") || DateFormat.format("mm:ss", sysTime).equals("01:50")) {
+                        if (ringTimes == 0 && isRing == 0) {
                             ++ringTimes;
                             startAlarm();
+//                            isRing = 0;
                             break;
 
                         }
@@ -172,6 +174,7 @@ public class Watch extends AutoLayoutActivity {
     }
 
     private void startAlarm() {
+        isRing = 1;
 //        Uri uri = Uri.parse(ringuri);
         mMediaPlayer = MediaPlayer.create(this, getSystemDefultRingtoneUri());
         mMediaPlayer.setLooping(true);
@@ -184,6 +187,12 @@ public class Watch extends AutoLayoutActivity {
         }
         mMediaPlayer.setLooping(false);
         mMediaPlayer.start();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
