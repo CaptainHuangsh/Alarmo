@@ -10,14 +10,19 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.text.format.DateFormat;
+import android.util.Log;
 
 import java.io.IOException;
 
 public class RingService extends Service {
+    private static final int TYPE_RUN = 1;
+    private static final int TYPE_STOP = 0;
     private static final int MSG_KEY_1 = 1;
     private MediaPlayer mMediaPlayer;
     SharedPreferences preferences;
+    TimeThread timeThread = new TimeThread();
     String ringUri = "";
+    private int mRun = 1;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -25,9 +30,9 @@ public class RingService extends Service {
             switch (msg.what) {
                 case MSG_KEY_1:
                     long sysTime = System.currentTimeMillis();
-                    if (DateFormat.format("ss", sysTime).equals("00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
-                            startAlarm();
-                            break;
+                    if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
+                        startAlarm();
+                        break;
 
                     }
                     break;
@@ -62,12 +67,23 @@ public class RingService extends Service {
         }
 //        preferences = getApplicationContext().getSharedPreferences("Alarmo", MODE_PRIVATE);
         ringUri = preferences.getString("ringUri", "");
+        Log.d("huangshaohuaRingService", "onCreate");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        new TimeThread().start();
+        Log.i("huangshaohuaRingService", "start");
+        timeThread.start();
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //java强制结束线程的三种方法http://blog.csdn.net/anhuidelinger/article/details/11746365
+//        timeThread.interrupt(); 没有用这句
+        mRun = TYPE_STOP;
+        Log.i("huangshaohuaRingService", "onDestroy");
     }
 
     /**
@@ -85,7 +101,7 @@ public class RingService extends Service {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            } while (true);
+            } while (mRun == TYPE_RUN);
         }
     }
 
@@ -108,6 +124,7 @@ public class RingService extends Service {
         }
 
     }
+
     /**
      * 获取系统当前铃声
      */
