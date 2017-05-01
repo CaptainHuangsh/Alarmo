@@ -7,22 +7,26 @@
 
 
     <LinearLayout
-        android:layout_marginTop="100dp"
-        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <ImageButton
             android:id="@+id/to_watch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/alarmo_watch_gray"
             android:background="#00FFFFFF"
+            android:src="@drawable/alarmo_watch_gray"
             android:text="@string/to_watch" />
 
-        </LinearLayout>
+        <ToggleButton
+            android:id="@+id/on_off_service"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
 
 </LinearLayout>

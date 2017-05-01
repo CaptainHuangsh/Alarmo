@@ -16,10 +16,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ToggleButton;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.provider.AlarmoDatabaseHelper;
+import com.example.owenh.alarmo.services.RingService;
 
 import java.io.IOException;
 
@@ -27,30 +30,19 @@ public class AlarmMain extends AppCompatActivity implements
         Button.OnClickListener {
 
     private ImageButton mToWatch;
-//    private ImageButton mToOther;
-//    private ImageButton mGoRing;
-//    private ImageButton mSelectRing;
     private MediaPlayer mMediaPlayer = new MediaPlayer();
     private Uri pickedUri = null;
     private AlarmoDatabaseHelper dpHelper;
+    private ToggleButton mTBtn;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alram_main);
-        /*//隐藏标题栏
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //隐藏状态栏
-        //定义全屏参数
-        int flag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        //获得当前窗体对象
-        Window window = AlarmMain.this.getWindow();
-        //设置当前窗体为全屏显示
-        window.setFlags(flag, flag);*/
         setTitle("Alarmo");
         android.app.ActionBar actionBar = getActionBar();
-        findview();
+        findView();
         setListener();
         init();
     }
@@ -59,7 +51,7 @@ public class AlarmMain extends AppCompatActivity implements
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main,menu);
+        inflater.inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -88,27 +80,33 @@ public class AlarmMain extends AppCompatActivity implements
      */
     private void startActivity(Class<?> cls) {
 
-            Intent intent = new Intent(this, cls);
-            startActivity(intent);
+        Intent intent = new Intent(this, cls);
+        startActivity(intent);
     }
 
 
     public void init() {
-        dpHelper = new AlarmoDatabaseHelper(this,"Alarmoyri.db",null,1);
+        dpHelper = new AlarmoDatabaseHelper(this, "Alarmoyri.db", null, 1);
         dpHelper.getWritableDatabase();
     }
 
-    public void findview() {
+    public void findView() {
         mToWatch = (ImageButton) findViewById(R.id.to_watch);
-//        mToOther = (ImageButton) findViewById(R.id.to_other);
-//        mGoRing = (ImageButton) findViewById(R.id.ring);
-//        mSelectRing = (ImageButton) findViewById(R.id.select_ring);
+        mTBtn = (ToggleButton) findViewById(R.id.on_off_service);
     }
 
     public void setListener() {
-//        mSelectRing.setOnClickListener(this);
-//        mGoRing.setOnClickListener(this);
-//        mToOther.setOnClickListener(this);
+        mTBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                mTBtn.setChecked(b);
+                Intent intent = new Intent(AlarmMain.this, RingService.class);
+                if (b)
+                    startService(intent);
+                else
+                    stopService(intent);
+            }
+        });
         mToWatch.setOnClickListener(this);
     }
 
@@ -119,16 +117,8 @@ public class AlarmMain extends AppCompatActivity implements
                 Intent intent = new Intent(AlarmMain.this, WatchActivity.class);
                 startActivity(intent);
                 break;
-         /*   case R.id.to_other:
-                Intent intent1 = new Intent(AlarmMain.this, Other.class);
-                startActivity(intent1);
+            default:
                 break;
-            case R.id.ring:
-                startAlarm();
-                break;
-            case R.id.select_ring:
-                showSelectRingDialog();
-                break;*/
         }
     }
 
@@ -145,7 +135,7 @@ public class AlarmMain extends AppCompatActivity implements
         }
         cursor.close();*/
 //        Log.v("ring1",""+pickedUri);
-        if(pickedUri != null) {
+        if (pickedUri != null) {
             mMediaPlayer = MediaPlayer.create(this, pickedUri);
 //        mMediaPlayer = MediaPlayer.create(this, Uri.parse(ringuri));
 //        mMediaPlayer = MediaPlayer.create(this, getSystemDefultRingtoneUri());
@@ -213,31 +203,32 @@ public class AlarmMain extends AppCompatActivity implements
         });
         dialog.show();
     }
+
     //设置铃声之后的回调函数
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(resultCode!=RESULT_OK){
+        if (resultCode != RESULT_OK) {
             return;
         }
 
-                try {
-                    //得到我们选择的铃声
-                    pickedUri=data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-                    Log.v("ring0", "" + pickedUri);
-                    //将我们选择的铃声选择成默认
-                    if(pickedUri!=null){
-                        RingtoneManager.setActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION, (Uri) pickedUri);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        try {
+            //得到我们选择的铃声
+            pickedUri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+            Log.v("ring0", "" + pickedUri);
+            //将我们选择的铃声选择成默认
+            if (pickedUri != null) {
+                RingtoneManager.setActualDefaultRingtoneUri(this, RingtoneManager.TYPE_NOTIFICATION, (Uri) pickedUri);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
         super.onActivityResult(requestCode, resultCode, data);
         SQLiteDatabase db = dpHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("ringuri",pickedUri.toString());
-        db.insert("Alarmoyri",null,values);
+        values.put("ringuri", pickedUri.toString());
+        db.insert("Alarmoyri", null, values);
         values.clear();
     }
 

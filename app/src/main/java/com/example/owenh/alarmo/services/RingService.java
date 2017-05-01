@@ -25,7 +25,7 @@ public class RingService extends Service {
             switch (msg.what) {
                 case MSG_KEY_1:
                     long sysTime = System.currentTimeMillis();
-                    if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
+                    if (DateFormat.format("ss", sysTime).equals("00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
                             startAlarm();
                             break;
 
@@ -52,6 +52,15 @@ public class RingService extends Service {
     public void onCreate() {
         super.onCreate();
         preferences = getApplicationContext().getSharedPreferences("Alarmo", MODE_PRIVATE);
+        ringUri = preferences.getString("ringUri", "");
+        if (ringUri.equals("")) {
+            SharedPreferences.Editor editor = preferences.edit();
+            ringUri = getSystemDefultRingtoneUri().toString();
+            editor.putString("ringUri", ringUri);
+            editor.commit();
+
+        }
+//        preferences = getApplicationContext().getSharedPreferences("Alarmo", MODE_PRIVATE);
         ringUri = preferences.getString("ringUri", "");
     }
 
