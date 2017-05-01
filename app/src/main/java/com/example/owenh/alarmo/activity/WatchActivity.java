@@ -31,11 +31,9 @@ import util.DateDay;
 
 public class WatchActivity extends AutoLayoutActivity {
 
-    private int isRing = 0;
     private TextView mVTime;
     private TextView mSec;
     private TextView mDay;
-    private MediaPlayer mMediaPlayer;
     DateDay mDateDay = new DateDay();
     private static final int MSG_KEY_1 = 1;
     private int ringTimes = 0;
