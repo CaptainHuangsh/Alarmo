@@ -20,7 +20,6 @@ public class RingService extends Service {
     private static final int MSG_KEY_1 = 1;
     private MediaPlayer mMediaPlayer;
     SharedPreferences preferences;
-    TimeThread timeThread = new TimeThread();
     String ringUri = "";
     private int mRun = 1;
     private Handler mHandler = new Handler() {
@@ -73,7 +72,7 @@ public class RingService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("huangshaohuaRingService", "start");
-        timeThread.start();
+        new TimeThread().start();
         return super.onStartCommand(intent, flags, startId);
     }
 
