@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.media.RingtoneManager;
@@ -15,7 +13,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,15 +23,13 @@ import com.example.owenh.alarmo.provider.AlarmoDatabaseHelper;
 import com.example.owenh.alarmo.services.RingService;
 import com.zhy.autolayout.AutoLayoutActivity;
 
-import java.io.IOException;
-
 import util.DateDay;
 
 /**
  * Created by owenh on 2016/8/5.
  */
 
-public class Watch extends AutoLayoutActivity {
+public class WatchActivity extends AutoLayoutActivity {
 
     private int isRing = 0;
     private TextView mVTime;
@@ -61,16 +56,16 @@ public class Watch extends AutoLayoutActivity {
         //定义全屏参数
         int flag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
         //获得当前窗体对象
-        Window window = Watch.this.getWindow();
+        Window window = WatchActivity.this.getWindow();
         //设置当前窗体为全屏显示
         window.setFlags(flag, flag);
         setRequestedOrientation(ActivityInfo
                 .SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         //强制横屏
-        setContentView(R.layout.watch);
+        setContentView(R.layout.activity_watch);
         findview();
         init();
-        new Watch.TimeThread().start();
+        new WatchActivity.TimeThread().start();
         //使屏幕常亮 在低版本中并不起作用（4.4）
         this.powerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
         this.wakeLock = this.powerManager.newWakeLock(PowerManager

@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.Alarm">
+        <activity android:name=".activity.AlarmMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.Watch"
+            android:name=".activity.WatchActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".activity.Other" />
         <activity android:name=".activity.preference" />

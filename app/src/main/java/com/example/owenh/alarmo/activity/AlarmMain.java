@@ -23,7 +23,7 @@ import com.example.owenh.alarmo.provider.AlarmoDatabaseHelper;
 
 import java.io.IOException;
 
-public class Alarm extends AppCompatActivity implements
+public class AlarmMain extends AppCompatActivity implements
         Button.OnClickListener {
 
     private ImageButton mToWatch;
@@ -38,14 +38,14 @@ public class Alarm extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.alram_main01);
+        setContentView(R.layout.activity_alram_main);
         /*//隐藏标题栏
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         //隐藏状态栏
         //定义全屏参数
         int flag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
         //获得当前窗体对象
-        Window window = Alarm.this.getWindow();
+        Window window = AlarmMain.this.getWindow();
         //设置当前窗体为全屏显示
         window.setFlags(flag, flag);*/
         setTitle("Alarmo");
@@ -116,11 +116,11 @@ public class Alarm extends AppCompatActivity implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.to_watch:
-                Intent intent = new Intent(Alarm.this, Watch.class);
+                Intent intent = new Intent(AlarmMain.this, WatchActivity.class);
                 startActivity(intent);
                 break;
          /*   case R.id.to_other:
-                Intent intent1 = new Intent(Alarm.this, Other.class);
+                Intent intent1 = new Intent(AlarmMain.this, Other.class);
                 startActivity(intent1);
                 break;
             case R.id.ring:
@@ -140,7 +140,7 @@ public class Alarm extends AppCompatActivity implements
         if(cursor.moveToFirst()){
             do {
                 ringuri = cursor.getString(cursor.getColumnIndex("ringuri"));
-                Log.d("Watch",ringuri);
+                Log.d("WatchActivity",ringuri);
             }while (cursor.moveToNext());
         }
         cursor.close();*/

@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.support.annotation.IntDef;
 import android.text.format.DateFormat;
 
 import java.io.IOException;
@@ -18,7 +17,7 @@ public class RingService extends Service {
     private static final int MSG_KEY_1 = 1;
     private MediaPlayer mMediaPlayer;
     SharedPreferences preferences;
-    String ringuri = "";
+    String ringUri = "";
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -53,7 +52,7 @@ public class RingService extends Service {
     public void onCreate() {
         super.onCreate();
         preferences = getApplicationContext().getSharedPreferences("Alarmo", MODE_PRIVATE);
-        ringuri = preferences.getString("ringUri", "");
+        ringUri = preferences.getString("ringUri", "");
     }
 
     @Override
