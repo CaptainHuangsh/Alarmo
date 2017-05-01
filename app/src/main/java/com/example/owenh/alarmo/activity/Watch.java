@@ -67,10 +67,12 @@ public class Watch extends AutoLayoutActivity {
         findview();
         init();
         new Watch.TimeThread().start();
-        //使屏幕常亮
+        //使屏幕常亮 在低版本中并不起作用（4.4）
         this.powerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
         this.wakeLock = this.powerManager.newWakeLock(PowerManager
                 .FULL_WAKE_LOCK, "My Lock");
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);//另一种屏幕常亮的方法
+        //仍未解决4.4api19版本的屏幕不能常亮的问题
     }
 
     public void init() {
@@ -143,7 +145,7 @@ public class Watch extends AutoLayoutActivity {
                     mVTime.setTypeface(typeFace);
                     mSec.setTypeface(typeFace);
                     mDay.setTypeface(typeFace);
-                    if (DateFormat.format("mm:ss", sysTime).equals("01:30") || DateFormat.format("mm:ss", sysTime).equals("01:50")) {
+                    if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
                         if (ringTimes == 0 && isRing == 0) {
                             ++ringTimes;
                             startAlarm();
