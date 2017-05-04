@@ -9,8 +9,11 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 import android.util.Log;
+
+import com.example.owenh.alarmo.R;
 
 import java.io.IOException;
 
@@ -30,6 +33,8 @@ public class RingService extends Service {
                 case MSG_KEY_1:
                     long sysTime = System.currentTimeMillis();
                     if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
+                        //TODO 增加时间选择
+                        //TODO 增加震动提醒
                         startAlarm();
                         break;
 
@@ -71,6 +76,13 @@ public class RingService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
+        SharedPreferences preferences2 = PreferenceManager.getDefaultSharedPreferences(this);
+        String ringStr = preferences2.getString("pref_notification", ringUri);
+        Log.d("RingService", "ringStr  " + ringStr);
+        Log.d("RingService", "ringUri  " + ringUri);
+        if (!ringStr.equals(""))
+            ringUri = ringStr;
         Log.i("huangshaohuaRingService", "start");
         new TimeThread().start();
         return super.onStartCommand(intent, flags, startId);
@@ -105,7 +117,7 @@ public class RingService extends Service {
     }
 
     private void startAlarm() {
-        mMediaPlayer = MediaPlayer.create(this, getSystemDefultRingtoneUri());
+        mMediaPlayer = MediaPlayer.create(this, Uri.parse(ringUri));
         mMediaPlayer.setLooping(true);
         try {
             mMediaPlayer.prepare();

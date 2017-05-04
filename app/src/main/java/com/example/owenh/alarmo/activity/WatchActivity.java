@@ -4,26 +4,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.graphics.Typeface;
-import android.media.MediaPlayer;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.owenh.alarmo.R;
+import com.example.owenh.alarmo.common.DoubleClick;
 import com.example.owenh.alarmo.provider.AlarmoDatabaseHelper;
 import com.example.owenh.alarmo.services.RingService;
 import com.zhy.autolayout.AutoLayoutActivity;
 
-import util.DateDay;
+import com.example.owenh.alarmo.util.DateDay;
 
 /**
  * Created by owenh on 2016/8/5.
@@ -41,10 +42,8 @@ public class WatchActivity extends AutoLayoutActivity {
     PowerManager.WakeLock wakeLock = null;
     //将字体文件保存在assets/fonts/目录下，创建Typeface对象
     Typeface typeFace;
-    private AlarmoDatabaseHelper dbHelper;
-    private String ringuri;
     SharedPreferences preferences;
-
+    String textColor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,28 +72,23 @@ public class WatchActivity extends AutoLayoutActivity {
     }
 
     public void init() {
+        PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        textColor = preferences.getString("pref_text_color","#ff00ddff");
         typeFace = Typeface.createFromAsset(getAssets(), "fonts/digifaw.ttf");
         //字体
         mVTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mDay.getVisibility() == View.GONE) {
-                    mDay.setVisibility(View.VISIBLE);
-                } else {
-                    mDay.setVisibility(View.GONE);
-                }
+//                if (DoubleClick.check()) {
+                    if (mDay.getVisibility() == View.GONE) {
+                        mDay.setVisibility(View.VISIBLE);
+                    } else {
+                        mDay.setVisibility(View.GONE);
+                    }
+//                }
             }
         });
-//        getRing();
-        preferences = getApplicationContext().getSharedPreferences("Alarmo", MODE_PRIVATE);
-        ringuri = preferences.getString("ringUri", "");
-        if (ringuri.equals("")) {
-            SharedPreferences.Editor editor = preferences.edit();
-            ringuri = getSystemDefultRingtoneUri().toString();
-            editor.putString("ringUri", ringuri);
-            editor.commit();
-
-        }
         Intent intent = new Intent(this, RingService.class);
         startService(intent);
     }
@@ -141,6 +135,9 @@ public class WatchActivity extends AutoLayoutActivity {
                     mVTime.setTypeface(typeFace);
                     mSec.setTypeface(typeFace);
                     mDay.setTypeface(typeFace);
+                    mVTime.setTextColor(Color.parseColor(textColor));
+                    mSec.setTextColor(Color.parseColor(textColor));
+                    mDay.setTextColor(Color.parseColor(textColor));
                     break;
 
                 default:
@@ -161,13 +158,12 @@ public class WatchActivity extends AutoLayoutActivity {
         this.wakeLock.release();
     }
 
-
-
-    /**
-     * 获取系统当前铃声
-     */
-    private Uri getSystemDefultRingtoneUri() {
-        return RingtoneManager.getActualDefaultRingtoneUri(this,
-                RingtoneManager.TYPE_NOTIFICATION);
+    @Override
+    public void onBackPressed() {
+        if (!DoubleClick.check()) {
+            Toast.makeText(this,"再按一次退出",Toast.LENGTH_SHORT).show();
+        } else {
+            finish();
+        }
     }
 }

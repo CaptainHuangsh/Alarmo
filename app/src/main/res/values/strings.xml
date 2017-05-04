@@ -18,10 +18,18 @@
         <item>河北</item>
     </string-array>
 
-    <string name="deflault_list_entries_value">beijing</string>
-        <string-array name="list_preference">
-            <item>Red</item>
-            <item>Blue</item>
-            <item>Green</item>
-        </string-array>
+    <string name="deflault_list_entries_value">Yellow</string>
+    <string name="notification">提示音选择</string>
+    <string name="text_color">时钟颜色</string>
+    <string name="pref_vibrate">震动提示</string>
+    <string-array name="list_color">
+        <item>Red</item>
+        <item>Blue</item>
+        <item>Green</item>
+    </string-array>
+    <string-array name="list_color_value">
+        <item>#ffcc0000</item>
+        <item>#ff00ddff</item>
+        <item>#ff009900</item>
+    </string-array>
 </resources>

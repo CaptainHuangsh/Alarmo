@@ -21,19 +21,19 @@
             android:name=".activity.WatchActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".activity.Other" />
-        <activity android:name=".activity.preference" />
+        <activity android:name=".activity.SettingsActivity" />
 
         <meta-data
             android:name="design_width"
-            android:value="768"></meta-data>
+            android:value="768"/>
         <meta-data
             android:name="design_height"
-            android:value="1280"></meta-data>
+            android:value="1280"/>
 
         <service
             android:name=".services.RingService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"/>
     </application>
 
 </manifest>
