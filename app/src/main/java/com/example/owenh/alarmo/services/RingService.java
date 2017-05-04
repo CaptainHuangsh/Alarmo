@@ -34,6 +34,7 @@ public class RingService extends Service {
                     long sysTime = System.currentTimeMillis();
                     if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
                         //TODO 增加时间选择
+                        //TODO 增加震动提醒
                         startAlarm();
                         break;
 
