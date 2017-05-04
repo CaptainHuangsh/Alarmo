@@ -85,11 +85,9 @@ public class RingService extends Service {
         SharedPreferences preferences2 = PreferenceManager.getDefaultSharedPreferences(this);
         String ringStr = preferences2.getString("pref_notification", ringUri);
         isVibrate = preferences2.getBoolean("pref_vibrate", true);
-        Log.d("RingService", "ringStr  " + ringStr);
-        Log.d("RingService", "ringUri  " + ringUri);
+        Log.d("isVibrate",""+isVibrate);
         if (!ringStr.equals(""))
             ringUri = ringStr;
-        Log.i("huangshaohuaRingService", "start");
         new TimeThread().start();
         return super.onStartCommand(intent, flags, startId);
     }
