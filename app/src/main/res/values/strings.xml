@@ -30,6 +30,6 @@
     <string-array name="list_color_value">
         <item>#ffcc0000</item>
         <item>#ff00ddff</item>
-        <item>#ff0099cc</item>
+        <item>#ff009900</item>
     </string-array>
 </resources>

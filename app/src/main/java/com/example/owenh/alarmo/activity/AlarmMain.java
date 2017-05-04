@@ -25,7 +25,6 @@ public class AlarmMain extends AppCompatActivity implements
     private ImageButton mToWatch;
     private Switch mSwitch;
     private int isChecked = 0;
-    String textColor;
 
 
     @Override

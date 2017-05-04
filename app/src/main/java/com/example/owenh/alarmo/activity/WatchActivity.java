@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.view.Window;
@@ -40,10 +42,8 @@ public class WatchActivity extends AutoLayoutActivity {
     PowerManager.WakeLock wakeLock = null;
     //将字体文件保存在assets/fonts/目录下，创建Typeface对象
     Typeface typeFace;
-    private AlarmoDatabaseHelper dbHelper;
-    private String ringuri;
     SharedPreferences preferences;
-
+    String textColor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +72,9 @@ public class WatchActivity extends AutoLayoutActivity {
     }
 
     public void init() {
+        PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        textColor = preferences.getString("pref_text_color","#ff00ddff");
         typeFace = Typeface.createFromAsset(getAssets(), "fonts/digifaw.ttf");
         //字体
         mVTime.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +135,9 @@ public class WatchActivity extends AutoLayoutActivity {
                     mVTime.setTypeface(typeFace);
                     mSec.setTypeface(typeFace);
                     mDay.setTypeface(typeFace);
+                    mVTime.setTextColor(Color.parseColor(textColor));
+                    mSec.setTextColor(Color.parseColor(textColor));
+                    mDay.setTextColor(Color.parseColor(textColor));
                     break;
 
                 default:
