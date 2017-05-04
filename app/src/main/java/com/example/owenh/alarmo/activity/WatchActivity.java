@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Typeface;
-import android.media.MediaPlayer;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,13 +14,15 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.owenh.alarmo.R;
+import com.example.owenh.alarmo.common.DoubleClick;
 import com.example.owenh.alarmo.provider.AlarmoDatabaseHelper;
 import com.example.owenh.alarmo.services.RingService;
 import com.zhy.autolayout.AutoLayoutActivity;
 
-import util.DateDay;
+import com.example.owenh.alarmo.util.DateDay;
 
 /**
  * Created by owenh on 2016/8/5.
@@ -78,23 +77,15 @@ public class WatchActivity extends AutoLayoutActivity {
         mVTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mDay.getVisibility() == View.GONE) {
-                    mDay.setVisibility(View.VISIBLE);
-                } else {
-                    mDay.setVisibility(View.GONE);
-                }
+//                if (DoubleClick.check()) {
+                    if (mDay.getVisibility() == View.GONE) {
+                        mDay.setVisibility(View.VISIBLE);
+                    } else {
+                        mDay.setVisibility(View.GONE);
+                    }
+//                }
             }
         });
-//        getRing();
-        preferences = getApplicationContext().getSharedPreferences("Alarmo", MODE_PRIVATE);
-        ringuri = preferences.getString("ringUri", "");
-        if (ringuri.equals("")) {
-            SharedPreferences.Editor editor = preferences.edit();
-            ringuri = getSystemDefultRingtoneUri().toString();
-            editor.putString("ringUri", ringuri);
-            editor.commit();
-
-        }
         Intent intent = new Intent(this, RingService.class);
         startService(intent);
     }
@@ -161,13 +152,12 @@ public class WatchActivity extends AutoLayoutActivity {
         this.wakeLock.release();
     }
 
-
-
-    /**
-     * 获取系统当前铃声
-     */
-    private Uri getSystemDefultRingtoneUri() {
-        return RingtoneManager.getActualDefaultRingtoneUri(this,
-                RingtoneManager.TYPE_NOTIFICATION);
+    @Override
+    public void onBackPressed() {
+        if (!DoubleClick.check()) {
+            Toast.makeText(this,"再按一次退出",Toast.LENGTH_SHORT).show();
+        } else {
+            finish();
+        }
     }
 }

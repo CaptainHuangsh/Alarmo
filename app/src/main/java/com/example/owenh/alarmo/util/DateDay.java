@@ -1,4 +1,4 @@
-package util;
+package com.example.owenh.alarmo.util;
 
 import java.util.Calendar;
 import java.util.TimeZone;

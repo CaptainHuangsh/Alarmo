@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/user_p"
+        android:id="@+id/setting"
         android:title="user"
         android:icon="@drawable/setting_gray"
         app:showAsAction="always"

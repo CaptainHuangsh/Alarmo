@@ -1,4 +1,4 @@
-package provider;
+package com.example.owenh.alarmo.provider;
 
 import java.util.Calendar;
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification">提示音选择</string>
+    <string name="text_color">时钟颜色</string>
+    <string name="pref_vibrate">震动提示</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory android:title="设置"/>
+    <!--http://blog.csdn.net/zwq1457/article/details/8489997-->
+        <ListPreference
+            android:key="pref_text_color"
+            android:defaultValue="Blue"
+            android:title="@string/text_color"
+            android:summary="选择要显示的颜色"
+            android:entries="@array/list_color"
+            android:entryValues="@array/list_color_value"
+            android:dialogTitle="颜色选择" />
+    <RingtonePreference
+        android:key="pref_notification"
+        android:ringtoneType="notification"
+        android:title="@string/notification" />
+<PreferenceCategory
+    android:title="其他设置"/>
+    <CheckBoxPreference
+        android:title="@string/pref_vibrate"
+        android:key="@string/pref_vibrate"
+        android:defaultValue="false"/>
+    </PreferenceScreen>

@@ -1,14 +1,11 @@
 package com.example.owenh.alarmo.activity;
 
-import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
-import android.media.MediaPlayer;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -16,16 +13,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
-import android.widget.ToggleButton;
 
 import com.example.owenh.alarmo.R;
-import com.example.owenh.alarmo.provider.AlarmoDatabaseHelper;
 import com.example.owenh.alarmo.services.RingService;
-
-import java.io.IOException;
 
 public class AlarmMain extends AppCompatActivity implements
         Button.OnClickListener {
@@ -33,6 +25,7 @@ public class AlarmMain extends AppCompatActivity implements
     private ImageButton mToWatch;
     private Switch mSwitch;
     private int isChecked = 0;
+    String textColor;
 
 
     @Override
@@ -41,9 +34,10 @@ public class AlarmMain extends AppCompatActivity implements
         setContentView(R.layout.activity_alram_main);
         setTitle("Alarmo");
         android.app.ActionBar actionBar = getActionBar();
+        init();
         findView();
         setListener();
-        init();
+
     }
 
     //重写Activity的onCreateOptionsMenu()方法
@@ -58,8 +52,8 @@ public class AlarmMain extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.user_p:
-                startActivity(preference.class);
+            case R.id.setting:
+                startActivity(SettingsActivity.class);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
