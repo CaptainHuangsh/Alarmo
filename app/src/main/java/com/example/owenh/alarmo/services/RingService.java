@@ -17,6 +17,8 @@ import com.example.owenh.alarmo.R;
 
 import java.io.IOException;
 
+//TODO 防止后台被清理
+//TODO 字体选择
 public class RingService extends Service {
     private static final int TYPE_RUN = 1;
     private static final int TYPE_STOP = 0;
