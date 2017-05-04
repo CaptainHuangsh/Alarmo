@@ -7,7 +7,7 @@ import java.util.TimeZone;
  * Created by owenh on 2016/8/6.
  */
 
-public class DateDay {
+public class DateDayUtil {
     private static String mYear;
     private static String mMonth;
     private static String mDay;

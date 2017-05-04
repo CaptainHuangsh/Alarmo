@@ -18,6 +18,7 @@ import android.widget.Switch;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.services.RingService;
+import com.example.owenh.alarmo.util.VibrateUtil;
 
 public class AlarmMain extends AppCompatActivity implements
         Button.OnClickListener {
@@ -33,6 +34,7 @@ public class AlarmMain extends AppCompatActivity implements
         setContentView(R.layout.activity_alram_main);
         setTitle("Alarmo");
         android.app.ActionBar actionBar = getActionBar();
+//        VibrateUtil.vibrate(AlarmMain.this,100);
         init();
         findView();
         setListener();

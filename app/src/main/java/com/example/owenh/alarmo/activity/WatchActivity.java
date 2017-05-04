@@ -20,11 +20,10 @@ import android.widget.Toast;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.common.DoubleClick;
-import com.example.owenh.alarmo.provider.AlarmoDatabaseHelper;
 import com.example.owenh.alarmo.services.RingService;
 import com.zhy.autolayout.AutoLayoutActivity;
 
-import com.example.owenh.alarmo.util.DateDay;
+import com.example.owenh.alarmo.util.DateDayUtil;
 
 /**
  * Created by owenh on 2016/8/5.
@@ -35,7 +34,7 @@ public class WatchActivity extends AutoLayoutActivity {
     private TextView mVTime;
     private TextView mSec;
     private TextView mDay;
-    DateDay mDateDay = new DateDay();
+    DateDayUtil mDateDay = new DateDayUtil();
     private static final int MSG_KEY_1 = 1;
     private int ringTimes = 0;
     PowerManager powerManager = null;

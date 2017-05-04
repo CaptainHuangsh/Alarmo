@@ -3,6 +3,9 @@
     package="com.example.owenh.alarmo">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!--屏幕保持唤醒 不锁屏-->
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <!--震动-->
 
     <application
         android:allowBackup="true"

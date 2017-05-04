@@ -11,7 +11,7 @@ import static android.R.attr.start;
  * Created by owenh on 2016/8/5.
  */
 
-public class Ring {
+public class RingUtil {
 
     private MediaPlayer mediaPlayer = new MediaPlayer();
 
