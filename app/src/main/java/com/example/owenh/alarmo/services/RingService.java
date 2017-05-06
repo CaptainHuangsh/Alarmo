@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Handler;
@@ -16,8 +17,6 @@ import android.util.Log;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.util.VibrateUtil;
-
-import java.io.IOException;
 
 //TODO 防止后台被清理
 //TODO 字体选择
@@ -40,7 +39,6 @@ public class RingService extends Service {
                     long sysTime = System.currentTimeMillis();
                     if (DateFormat.format("ss", sysTime).equals("00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
                         //TODO 增加时间选择
-                        //TODO 增加震动提醒
                         startAlarm();
                         break;
                     }
@@ -121,7 +119,8 @@ public class RingService extends Service {
     }
 
     private void startAlarm() {
-        mMediaPlayer = MediaPlayer.create(this, Uri.parse(ringUri));
+        Ringtone rt = RingtoneManager.getRingtone(this,Uri.parse(ringUri));
+        /*mMediaPlayer = MediaPlayer.create(this, Uri.parse(ringUri));
         mMediaPlayer.setLooping(true);
         try {
             mMediaPlayer.prepare();
@@ -131,7 +130,8 @@ public class RingService extends Service {
             e.printStackTrace();
         }
         mMediaPlayer.setLooping(false);
-        mMediaPlayer.start();
+        mMediaPlayer.start();*/
+        rt.play();
         if (isVibrate)
             VibrateUtil.vibrate(getApplicationContext(), 300);
         try {
