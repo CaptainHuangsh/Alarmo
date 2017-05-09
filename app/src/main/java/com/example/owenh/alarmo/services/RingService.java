@@ -1,9 +1,11 @@
 package com.example.owenh.alarmo.services;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Handler;
@@ -14,17 +16,20 @@ import android.text.format.DateFormat;
 import android.util.Log;
 
 import com.example.owenh.alarmo.R;
+import com.example.owenh.alarmo.util.VibrateUtil;
 
-import java.io.IOException;
-
+//TODO 防止后台被清理
+//TODO 字体选择
 public class RingService extends Service {
     private static final int TYPE_RUN = 1;
     private static final int TYPE_STOP = 0;
     private static final int MSG_KEY_1 = 1;
     private MediaPlayer mMediaPlayer;
     SharedPreferences preferences;
+    Context mContext;
     String ringUri = "";
     private int mRun = 1;
+    private boolean isVibrate;
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -34,10 +39,8 @@ public class RingService extends Service {
                     long sysTime = System.currentTimeMillis();
                     if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
                         //TODO 增加时间选择
-                        //TODO 增加震动提醒
                         startAlarm();
                         break;
-
                     }
                     break;
 
@@ -67,7 +70,7 @@ public class RingService extends Service {
             ringUri = getSystemDefultRingtoneUri().toString();
             editor.putString("ringUri", ringUri);
             editor.commit();
-
+            mContext = getApplicationContext();
         }
 //        preferences = getApplicationContext().getSharedPreferences("Alarmo", MODE_PRIVATE);
         ringUri = preferences.getString("ringUri", "");
@@ -79,11 +82,10 @@ public class RingService extends Service {
         PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
         SharedPreferences preferences2 = PreferenceManager.getDefaultSharedPreferences(this);
         String ringStr = preferences2.getString("pref_notification", ringUri);
-        Log.d("RingService", "ringStr  " + ringStr);
-        Log.d("RingService", "ringUri  " + ringUri);
+        isVibrate = preferences2.getBoolean("pref_vibrate", true);
+        Log.d("isVibrate",""+isVibrate);
         if (!ringStr.equals(""))
             ringUri = ringStr;
-        Log.i("huangshaohuaRingService", "start");
         new TimeThread().start();
         return super.onStartCommand(intent, flags, startId);
     }
@@ -117,7 +119,8 @@ public class RingService extends Service {
     }
 
     private void startAlarm() {
-        mMediaPlayer = MediaPlayer.create(this, Uri.parse(ringUri));
+        Ringtone rt = RingtoneManager.getRingtone(this,Uri.parse(ringUri));
+        /*mMediaPlayer = MediaPlayer.create(this, Uri.parse(ringUri));
         mMediaPlayer.setLooping(true);
         try {
             mMediaPlayer.prepare();
@@ -127,7 +130,10 @@ public class RingService extends Service {
             e.printStackTrace();
         }
         mMediaPlayer.setLooping(false);
-        mMediaPlayer.start();
+        mMediaPlayer.start();*/
+        rt.play();
+        if (isVibrate)
+            VibrateUtil.vibrate(getApplicationContext(), 300);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

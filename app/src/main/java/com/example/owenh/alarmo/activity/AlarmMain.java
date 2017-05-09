@@ -18,6 +18,11 @@ import android.widget.Switch;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.services.RingService;
+import com.example.owenh.alarmo.util.VibrateUtil;
+
+//TODO 铃声响铃
+//TODO 时间自选
+//TODO 颜色自选
 
 public class AlarmMain extends AppCompatActivity implements
         Button.OnClickListener {
@@ -32,7 +37,7 @@ public class AlarmMain extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alram_main);
         setTitle("Alarmo");
-        android.app.ActionBar actionBar = getActionBar();
+//        VibrateUtil.vibrate(AlarmMain.this,100);
         init();
         findView();
         setListener();
@@ -84,7 +89,7 @@ public class AlarmMain extends AppCompatActivity implements
         mToWatch.setOnClickListener(this);
     }
 
-    //stopservice 不能停止服务原因 Service里面新建了线程，而没有在Service的onDestroy()里面结束这个线程你只需要在onDestroy里面加上结束这个线程的语句就行了
+    //stopService 不能停止服务原因 Service里面新建了线程，而没有在Service的onDestroy()里面结束这个线程你只需要在onDestroy里面加上结束这个线程的语句就行了
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

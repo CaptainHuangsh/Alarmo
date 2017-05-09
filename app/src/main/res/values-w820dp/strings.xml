@@ -3,4 +3,5 @@
     <string name="notification">提示音选择</string>
     <string name="text_color">时钟颜色</string>
     <string name="pref_vibrate">震动提示</string>
+    <string name="notification_service">提示服务</string>
 </resources>
