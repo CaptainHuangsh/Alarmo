@@ -41,7 +41,6 @@ public class AlarmMain extends AppCompatActivity implements
         init();
         findView();
         setListener();
-
     }
 
     //重写Activity的onCreateOptionsMenu()方法
@@ -57,7 +56,7 @@ public class AlarmMain extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.setting:
-                startActivity(SettingsActivity.class);
+                startActivity(SettingActivity.class);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

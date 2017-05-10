@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <PreferenceCategory android:title="设置" />
     <!--http://blog.csdn.net/zwq1457/article/details/8489997-->
     <ListPreference
@@ -19,4 +20,8 @@
         android:defaultValue="false"
         android:key="pref_vibrate"
         android:title="@string/pref_vibrate" />
+    <Preference
+        android:key="take_color"
+        android:summary="color"
+        android:title="color" />
 </PreferenceScreen>
