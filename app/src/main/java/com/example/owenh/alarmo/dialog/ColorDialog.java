@@ -6,13 +6,18 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.adapter.ColorAdapter;
+import com.example.owenh.alarmo.common.C;
 import com.example.owenh.alarmo.domain.AColor;
 
 import java.util.ArrayList;
@@ -34,12 +39,6 @@ public class ColorDialog extends Dialog {
         this.mContext = context;
     }
 
-    final String[] items = {
-            "NetWork", "ActivityLife", "Fragment", "Broadcast", "Notification"
-            , "Service", "Settings"
-    };
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +46,7 @@ public class ColorDialog extends Dialog {
         initColor();
         PreferenceManager.setDefaultValues(getContext(), R.xml.pref_settings, false);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-//        preferences = getContext().getSharedPreferences("com.example.owenh.alarmo", Context.MODE_PRIVATE);
-        ColorAdapter mAdapter = new ColorAdapter(getContext(),R.layout.items_take_color,colors);
+        ColorAdapter mAdapter = new ColorAdapter(getContext(), R.layout.items_take_color, colors);
         ListView listView = (ListView) findViewById(R.id.main_color_list);
         listView.setAdapter(mAdapter);
         final SharedPreferences finalPreferences = preferences;

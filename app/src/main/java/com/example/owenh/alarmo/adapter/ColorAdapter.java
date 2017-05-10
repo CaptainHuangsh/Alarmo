@@ -33,11 +33,25 @@ public class ColorAdapter extends ArrayAdapter<AColor> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         AColor color = getItem(position);
-        View view = LayoutInflater.from(getContext()).inflate(resourceId,null);
+        View view;
+        ViewHolder viewHolder;
+        if (convertView == null){
+            view = LayoutInflater.from(getContext()).inflate(resourceId,null);
+            viewHolder = new ViewHolder();
+            viewHolder.colorImg = (ImageView)view.findViewById(R.id.items_take_color_value);;
+            viewHolder.colorText = (TextView)view.findViewById(R.id.item_take_color_string);;
+            view.setTag(viewHolder);//将viewHolder存储在view中
+        }else{
+            view = convertView;
+            viewHolder = (ViewHolder) view.getTag();//重新获取viewHolder
+        }
+        viewHolder.colorImg.setBackgroundColor(Color.parseColor(color.getColorValue()));
+        viewHolder.colorText.setText(color.getColorString());
+        /*View view = LayoutInflater.from(getContext()).inflate(resourceId,null);
         TextView colorString = (TextView)view.findViewById(R.id.item_take_color_string);
         ImageView colorValue = (ImageView)view.findViewById(R.id.items_take_color_value);
         colorString.setText(color.getColorString());
-        colorValue.setBackgroundColor(Color.parseColor(color.getColorValue()));
+        colorValue.setBackgroundColor(Color.parseColor(color.getColorValue()));*/
         return view;
     }
 
