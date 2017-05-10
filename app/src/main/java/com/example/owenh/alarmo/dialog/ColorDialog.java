@@ -6,18 +6,13 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.adapter.ColorAdapter;
-import com.example.owenh.alarmo.common.C;
 import com.example.owenh.alarmo.domain.AColor;
 
 import java.util.ArrayList;
@@ -66,6 +61,7 @@ public class ColorDialog extends Dialog {
         });
     }
 
+    //设置中的内置颜色选项
     private void initColor() {
         AColor aColor = new AColor("蓝色", "#0000FF");
         colors.add(aColor);

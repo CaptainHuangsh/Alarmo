@@ -2,10 +2,12 @@ package com.example.owenh.alarmo.fragment;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.owenh.alarmo.R;
+import com.example.owenh.alarmo.common.C;
 import com.example.owenh.alarmo.dialog.ColorDialog;
 
 /**
@@ -34,6 +37,15 @@ public class SettingFragment extends PreferenceFragment
         addPreferencesFromResource(R.xml.pref_settings);
         mColor = findPreference("take_color");
         mColor.setOnPreferenceClickListener(this);
+//        initPref();
+    }
+
+
+
+    private void initPref() {
+        PreferenceManager.setDefaultValues(getActivity(), R.xml.pref_settings, false);
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        mColor.setSummary(preferences.getString("pref_text_color",""));
     }
 
     @Override
@@ -72,5 +84,6 @@ public class SettingFragment extends PreferenceFragment
         dialog.show();*/
         ColorDialog dialog = new ColorDialog(getContext());
         dialog.show();
+//        initPref();
     }
 }
