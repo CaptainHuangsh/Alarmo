@@ -17,6 +17,9 @@ import com.example.owenh.alarmo.dialog.ColorDialog;
  * Created by owen on 2017/5/9.
  */
 
+
+//TODO 再preference的summary中显示当前pref中存储的值
+// TODO 美化界面，完成设置和时间选择就推一个版本到应用宝
 public class SettingFragment extends PreferenceFragment implements
         Preference.OnPreferenceClickListener
         , Preference.OnPreferenceChangeListener {
