@@ -8,6 +8,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.dialog.ColorDialog;
@@ -27,9 +28,22 @@ public class SettingFragment extends PreferenceFragment implements
         addPreferencesFromResource(R.xml.pref_settings);
         mColor = findPreference("take_color");
         mColor.setOnPreferenceClickListener(this);
-//        initPref();
+        initPref();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("settingsFragment","onStart");
+        initPref();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("settingsFragment","onResume");
+
+    }
 
     private void initPref() {
         PreferenceManager.setDefaultValues(getActivity(), R.xml.pref_settings, false);
@@ -53,27 +67,8 @@ public class SettingFragment extends PreferenceFragment implements
 
     @TargetApi(Build.VERSION_CODES.M)
     public void ShowColorDialog() {
-        /*final String[] items = {
-                "NetWork", "ActivityLife", "Fragment", "Broadcast", "Notification"
-                , "Service", "Settings"
-        };*/
-        /*ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity()
-                , android.R.layout.simple_list_item_1, items);
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        ListView listView = (ListView) getActivity().findViewById(R.id.main_color_list);
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(),"heheda"+items[position],Toast.LENGTH_SHORT).show();
-            }
-        });*/
-//        View dialogLayout = inflater.inflate(R.layout.dialog_take_color, (ViewGroup) getActivity().findViewById(R.id.dialog_root));
-        /*AlertDialog.Builder builder = new AlertDialog.Builder(getActivity()).setItems(items,null);
-        AlertDialog dialog = builder.create();
-        dialog.show();*/
+
         ColorDialog dialog = new ColorDialog(getContext());
         dialog.show();
-//        initPref();
     }
 }

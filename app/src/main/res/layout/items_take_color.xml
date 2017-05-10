@@ -19,5 +19,5 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="蓝色"
-        android:textSize="32dp" />
+        android:textSize="36dp" />
 </LinearLayout>
