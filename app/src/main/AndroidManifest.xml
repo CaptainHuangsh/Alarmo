@@ -30,8 +30,7 @@
         <activity
             android:name=".activity.WatchActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".activity.Other" />
-        <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.SettingActivity"/>
 
         <service
             android:name=".services.RingService"

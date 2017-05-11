@@ -36,12 +36,10 @@ public class WatchActivity extends AutoLayoutActivity {
     private TextView mDay;
     DateDayUtil mDateDay = new DateDayUtil();
     private static final int MSG_KEY_1 = 1;
-    private int ringTimes = 0;
     PowerManager powerManager = null;
     PowerManager.WakeLock wakeLock = null;
     //将字体文件保存在assets/fonts/目录下，创建Typeface对象
     Typeface typeFace;
-    SharedPreferences preferences;
     String textColor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +122,6 @@ public class WatchActivity extends AutoLayoutActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case MSG_KEY_1:
-                    ringTimes = 0;
                     long sysTime = System.currentTimeMillis();
                     CharSequence sysTimeStr = DateFormat.format("hh:mm", sysTime);
                     CharSequence sysTimeStrsec = DateFormat.format("ss", sysTime);
