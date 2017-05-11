@@ -68,10 +68,15 @@ public class SettingFragment extends PreferenceFragment implements
         return false;
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
+
     public void ShowColorDialog() {
 
-        ColorDialog dialog = new ColorDialog(getContext());
+        ColorDialog dialog = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            dialog = new ColorDialog(getContext());
+        }else {
+            dialog = new ColorDialog(getActivity());
+        }
         dialog.show();
     }
 }

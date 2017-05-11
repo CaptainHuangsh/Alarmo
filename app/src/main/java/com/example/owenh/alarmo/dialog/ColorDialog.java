@@ -61,6 +61,7 @@ public class ColorDialog extends Dialog {
 
     //设置中的内置颜色选项
     private void initColor() {
+        //http://blog.csdn.net/u013058160/article/details/49158779
         AColor aColor = new AColor("蓝色", "#0000FF");
         colors.add(aColor);
         aColor = new AColor("绿色", "#008000");
