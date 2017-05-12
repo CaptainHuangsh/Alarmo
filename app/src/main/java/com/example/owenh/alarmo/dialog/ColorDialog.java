@@ -6,18 +6,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.owenh.alarmo.R;
-import com.example.owenh.alarmo.adapter.ColorAdapter;
-import com.example.owenh.alarmo.common.C;
+import com.example.owenh.alarmo.adapter.ColorListAdapter;
 import com.example.owenh.alarmo.domain.AColor;
 
 import java.util.ArrayList;
@@ -30,9 +26,11 @@ import java.util.List;
 public class ColorDialog extends Dialog {
 
     private Context mContext;
-
+    public ListView listView;
     private Button yes, no;
     private List<AColor> colors = new ArrayList<AColor>();
+    private onNoOnclickListener noOnclickListener;//取消按钮被点击了的监听器
+    private onYesOnclickListener yesOnclickListener;//确定按钮被点击了的监听器
 
     public ColorDialog(@NonNull Context context) {
         super(context);
@@ -44,20 +42,52 @@ public class ColorDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_take_color);
         initColor();
+        initView();
+        initEvent();
         PreferenceManager.setDefaultValues(getContext(), R.xml.pref_settings, false);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        ColorAdapter mAdapter = new ColorAdapter(getContext(), R.layout.items_take_color, colors);
-        ListView listView = (ListView) findViewById(R.id.main_color_list);
+        ColorListAdapter mAdapter = new ColorListAdapter(getContext(), R.layout.items_take_color, colors);
+        listView = (ListView) findViewById(R.id.main_color_list);
         listView.setAdapter(mAdapter);
         final SharedPreferences finalPreferences = preferences;
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 finalPreferences.edit().putString("pref_text_color", colors.get(position).getColorValue()).apply();
                 dismiss();
             }
+        });*/
+    }
+
+    /**
+     * 初始化界面的确定和取消监听器
+     */
+    private void initEvent() {
+        //设置确定按钮被点击后，向外界提供监听
+        yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (yesOnclickListener != null) {
+                    yesOnclickListener.onYesClick();
+                }
+            }
+        });
+        //设置取消按钮被点击后，向外界提供监听
+        no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (noOnclickListener != null) {
+                    noOnclickListener.onNoClick();
+                }
+            }
         });
     }
+
+    private void initView() {
+        yes = (Button) findViewById(R.id.yes);
+        no = (Button) findViewById(R.id.no);
+    }
+
 
     //设置中的内置颜色选项
     private void initColor() {
@@ -90,5 +120,22 @@ public class ColorDialog extends Dialog {
         colors.add(aColor);
 
 
+    }
+
+    public void setYesOnclickListener(onYesOnclickListener onYesOnclickListener) {
+        this.yesOnclickListener = onYesOnclickListener;
+    }
+
+    public void setNoOnclickListener(onNoOnclickListener onNoOnclickListener) {
+        this.noOnclickListener = onNoOnclickListener;
+    }
+
+
+    public interface onYesOnclickListener {
+        public void onYesClick();
+    }
+
+    public interface onNoOnclickListener {
+        public void onNoClick();
     }
 }

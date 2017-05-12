@@ -2,22 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="3dp"
     android:orientation="horizontal">
 
 
     <ImageView
-        android:layout_marginLeft="24dp"
         android:id="@+id/items_take_color_value"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginLeft="24dp"
         android:background="#6666ff" />
 
     <TextView
-        android:layout_marginLeft="60dp"
         android:id="@+id/item_take_color_string"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
         android:layout_weight="1"
         android:text="蓝色"
-        android:textSize="36dp" />
+        android:textSize="24dp" />
+
+    <RadioButton
+        android:id="@+id/color_radio"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginRight="24dp" />
 </LinearLayout>
