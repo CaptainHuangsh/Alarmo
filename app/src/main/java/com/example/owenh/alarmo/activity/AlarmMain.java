@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.services.RingService;
@@ -29,13 +30,11 @@ public class AlarmMain extends AppCompatActivity implements
     private Switch mSwitch;
     private int isChecked = 0;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alram_main);
         setTitle("Alarmo");
-//        VibrateUtil.vibrate(AlarmMain.this,100);
         init();
         findView();
         setListener();
@@ -97,12 +96,12 @@ public class AlarmMain extends AppCompatActivity implements
             case R.id.on_off_service2:
                 Intent serviceIntent = new Intent(AlarmMain.this, RingService.class);
                 if (isChecked == 0) {
-                    Log.i("huangshaohuaSwitch", "on");
                     startService(serviceIntent);
+                    Toast.makeText(AlarmMain.this,"打开整点报时",Toast.LENGTH_SHORT).show();
                     isChecked++;
                 } else {
-                    Log.i("huangshaohuaSwitch", "off");
                     stopService(serviceIntent);
+                    Toast.makeText(AlarmMain.this,"关闭整点报时",Toast.LENGTH_SHORT).show();
                     isChecked = 0;
                 }
                 break;
@@ -110,16 +109,4 @@ public class AlarmMain extends AppCompatActivity implements
                 break;
         }
     }
-
-
-    /**
-     * 获取系统铃声
-     */
-    private Uri getSystemDefultRingtoneUri() {
-
-        return RingtoneManager.getActualDefaultRingtoneUri(this,
-                RingtoneManager.TYPE_NOTIFICATION);
-    }
-
-
 }
