@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.common.C;
@@ -51,28 +50,24 @@ public class SettingFragment extends PreferenceFragment implements
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_settings);
         mColor = findPreference("take_color");
-        Toast.makeText(getActivity(), "onCreate", Toast.LENGTH_SHORT).show();
         mColor.setOnPreferenceClickListener(this);
         initPref();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Toast.makeText(getActivity(), "onCreateView", Toast.LENGTH_SHORT).show();
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Toast.makeText(getActivity(), "onStart", Toast.LENGTH_SHORT).show();
         initPref();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Toast.makeText(getActivity(), "onResume", Toast.LENGTH_SHORT).show();
         initPref();
     }
 
@@ -121,6 +116,7 @@ public class SettingFragment extends PreferenceFragment implements
         dialog.setNoOnclickListener(new ColorDialog.onNoOnclickListener() {
             @Override
             public void onNoClick() {
+                initPref();
                 finalDialog.dismiss();
             }
         });
