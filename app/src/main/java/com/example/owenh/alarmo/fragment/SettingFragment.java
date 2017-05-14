@@ -1,16 +1,19 @@
 package com.example.owenh.alarmo.fragment;
 
-import android.annotation.TargetApi;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.owenh.alarmo.R;
+import com.example.owenh.alarmo.common.C;
 import com.example.owenh.alarmo.dialog.ColorDialog;
 
 /**
@@ -23,7 +26,24 @@ import com.example.owenh.alarmo.dialog.ColorDialog;
 public class SettingFragment extends PreferenceFragment implements
         Preference.OnPreferenceClickListener
         , Preference.OnPreferenceChangeListener {
+
+    private static final int UPDATE_SUM = 0;
+
     private Preference mColor;
+    private String colorSum;
+    SharedPreferences preferences;
+
+    private Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case UPDATE_SUM:
+                    mColor.setSummary(C.colorMap.get(preferences.getString("pref_text_color", "")));
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,25 +55,33 @@ public class SettingFragment extends PreferenceFragment implements
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
-        Log.d("settingsFragment","onStart");
         initPref();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("settingsFragment","onResume");
-
+        initPref();
     }
 
     private void initPref() {
         PreferenceManager.setDefaultValues(getActivity(), R.xml.pref_settings, false);
-        SharedPreferences preferences = PreferenceManager
+        preferences = PreferenceManager
                 .getDefaultSharedPreferences(getActivity());
-        mColor.setSummary(preferences.getString("pref_text_color", ""));
+        colorSum = preferences.getString("pref_text_color", "");
+        Message msg = new Message();
+        msg.obj = colorSum;
+        msg.what = UPDATE_SUM;
+        handler.sendMessage(msg);
     }
+
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
@@ -74,9 +102,24 @@ public class SettingFragment extends PreferenceFragment implements
         ColorDialog dialog = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             dialog = new ColorDialog(getContext());
-        }else {
+        } else {
             dialog = new ColorDialog(getActivity());
         }
+        final ColorDialog finalDialog = dialog;
+        dialog.setYesOnclickListener(new ColorDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                initPref();
+                finalDialog.dismiss();
+            }
+        });
+        dialog.setNoOnclickListener(new ColorDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                initPref();
+                finalDialog.dismiss();
+            }
+        });
         dialog.show();
     }
 }

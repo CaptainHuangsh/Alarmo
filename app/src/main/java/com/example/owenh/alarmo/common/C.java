@@ -7,9 +7,9 @@ import java.util.HashMap;
  */
 
 public class C {
-    public static HashMap<String, String> colorMap = new HashMap<String
-            , String>() {
-        {
+    public static HashMap<String, String> colorMap = new HashMap<>();
+
+            static {
             colorMap.put("#0000FF", "蓝色");
             colorMap.put("#008000", "绿色");
             colorMap.put("#008B8B","暗青色");
@@ -25,6 +25,6 @@ public class C {
             colorMap.put("#FFFF00", "黄色");
             colorMap.put("", "请选择要显示的颜色");
         }
-    };
+
 
 }

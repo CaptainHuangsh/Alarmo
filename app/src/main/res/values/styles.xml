@@ -5,7 +5,10 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#3c3f41</item>
         <item name="colorPrimaryDark">#3c3f41</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">#106c99</item>
+        <item name="colorControlNormal">@color/gray</item>
+        <item name="colorControlHighlight">@color/gray</item>
+        <item name="colorControlActivated">#106c99</item>
     </style>
 
     <style name="AppTheme2">
@@ -33,4 +36,16 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <style name="SCBSwitch" parent="Theme.AppCompat.Light">
+        <!-- active thumb & track color (30% transparency) -->
+        <item name="colorControlActivated">#46bdbf</item>
+
+        <!-- inactive thumb color -->
+        <item name="colorSwitchThumbNormal">#ffffff
+        </item>
+
+        <!-- inactive track color (30% transparency) -->
+        <item name="android:colorForeground">#42221f1f
+        </item>
+    </style>
 </resources>
