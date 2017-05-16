@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.common.C;
 import com.example.owenh.alarmo.dialog.ColorDialog;
+import com.example.owenh.alarmo.dialog.TimesDialog;
 
 /**
  * Created by owen on 2017/5/9.
@@ -99,8 +100,15 @@ public class SettingFragment extends PreferenceFragment implements
     }
 
     private void ShowTimesDialog() {
-        Toast.makeText(getActivity(),"heheda",Toast.LENGTH_SHORT)
-                .show();
+        TimesDialog dialog = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            dialog = new TimesDialog(getContext());
+        } else {
+            dialog = new TimesDialog(getActivity());
+        }
+        final TimesDialog finalDialog = dialog;
+        dialog.setYesOnclickListener(null);
+        dialog.show();
     }
 
     @Override
