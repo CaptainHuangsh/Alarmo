@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.Toast;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.adapter.ColorListAdapter;
@@ -25,6 +27,10 @@ import java.util.List;
 
 public class TimesDialog extends Dialog {
 
+    private final int STATUS_WORK = 0;
+    private final int STATUS_REST = 1;
+
+
     private Context mContext;
 
     private Button yes, no;
@@ -32,9 +38,11 @@ public class TimesDialog extends Dialog {
     private onNoOnclickListener noOnclickListener;//取消按钮被点击了的监听器
     private onYesOnclickListener yesOnclickListener;//确定按钮被点击了的监听器
     private LinearLayout mLRepeatTimes;
+    private LinearLayout mMRepeatTimes;
     private LinearLayout mRRepeatTimes;
-    private  CompoundButton[] mTimesButtons = new CompoundButton[24];;
-
+    private RadioButton mWorkRadio, mRestRadio;
+    private int mStatus = 0;
+    private CompoundButton[] mTimesButtons = new CompoundButton[48];
 
     public TimesDialog(@NonNull Context context) {
         super(context);
@@ -46,7 +54,8 @@ public class TimesDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.dialog_select_times);
         initView();
-        initEvent();
+
+        List<String> selectTimes = new ArrayList<>();
         PreferenceManager.setDefaultValues(getContext(), R.xml.pref_settings, false);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         ColorListAdapter mAdapter = new ColorListAdapter(getContext(), R.layout.items_take_color, colors);
@@ -60,25 +69,43 @@ public class TimesDialog extends Dialog {
                 dismiss();
             }
         });*/
-        addTimesButton();
+        addTimesButton(mStatus);
+        initEvent();
+        mWorkRadio.isChecked();
     }
 
-    private void addTimesButton() {
+    private void addTimesButton(int status) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         for (int i = 0; i < 24; i++) {
-            if (i%2!=0){
-            final CompoundButton timeButton = (CompoundButton) layoutInflater.inflate(
-                    R.layout.alarm_repeat_checkbox, mLRepeatTimes, false);
-            timeButton.setText(makeTextForTimesPerDay(i));
-            mLRepeatTimes.addView(timeButton);
-            mTimesButtons[i] = timeButton;
-            }else {
+            if (i % 3 == 0) {
+                final CompoundButton timeButton = (CompoundButton) layoutInflater.inflate(
+                        R.layout.alarm_repeat_checkbox, mLRepeatTimes, false);
+                timeButton.setText(makeTextForTimesPerDay(status == STATUS_WORK ? i : i + 24, status));
+                mLRepeatTimes.addView(timeButton);
+                mTimesButtons[status == STATUS_WORK ? i : i + 24] = timeButton;
+            } else if (i % 3 == 1) {
+                final CompoundButton timeButton = (CompoundButton) layoutInflater.inflate(
+                        R.layout.alarm_repeat_checkbox, mMRepeatTimes, false);
+                timeButton.setText(makeTextForTimesPerDay(status == STATUS_WORK ? i : i + 24, status));
+                mMRepeatTimes.addView(timeButton);
+                mTimesButtons[status == STATUS_WORK ? i : i + 24] = timeButton;
+            } else if (i % 3 == 2) {
                 final CompoundButton timeButton = (CompoundButton) layoutInflater.inflate(
                         R.layout.alarm_repeat_checkbox, mRRepeatTimes, false);
-                timeButton.setText(makeTextForTimesPerDay(i));
+                timeButton.setText(makeTextForTimesPerDay(status == STATUS_WORK ? i : i + 24, status));
                 mRRepeatTimes.addView(timeButton);
-                mTimesButtons[i] = timeButton;
+                mTimesButtons[status == STATUS_WORK ? i : i + 24] = timeButton;
             }
+        }
+        for (int i = 0; i < 24; i++) {
+            final int index = (status == STATUS_WORK ? i : i + 24);
+            mTimesButtons[index].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(mContext, index + "hehehe", Toast.LENGTH_SHORT)
+                            .show();
+                }
+            });
         }
     }
 
@@ -104,13 +131,41 @@ public class TimesDialog extends Dialog {
                 }
             }
         });
+        mRestRadio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    mStatus = STATUS_REST;
+                    mLRepeatTimes.removeAllViews();
+                    mMRepeatTimes.removeAllViews();
+                    mRRepeatTimes.removeAllViews();
+                    addTimesButton(mStatus);
+                }
+            }
+        });
+        mWorkRadio.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    mStatus = STATUS_WORK;
+                    mLRepeatTimes.removeAllViews();
+                    mMRepeatTimes.removeAllViews();
+                    mRRepeatTimes.removeAllViews();
+                    addTimesButton(mStatus);
+                }
+            }
+        });
+
     }
 
     private void initView() {
         yes = (Button) findViewById(R.id.yes);
         no = (Button) findViewById(R.id.no);
         mLRepeatTimes = (LinearLayout) findViewById(R.id.l_alarm_repeat_times);
+        mMRepeatTimes = (LinearLayout) findViewById(R.id.m_alarm_repeat_times);
         mRRepeatTimes = (LinearLayout) findViewById(R.id.r_alarm_repeat_times);
+        mWorkRadio = (RadioButton) findViewById(R.id.time_work);
+        mRestRadio = (RadioButton) findViewById(R.id.time_rest);
     }
 
     public void setYesOnclickListener(onYesOnclickListener onYesOnclickListener) {
@@ -130,8 +185,11 @@ public class TimesDialog extends Dialog {
         public void onNoClick();
     }
 
-    public String makeTextForTimesPerDay(int i){
-
-        return "hehada";
+    public String makeTextForTimesPerDay(int i, int status) {
+        if (i % 2 == 0) {
+            return String.format("%d:30", 8 + i / 2 < 24 ? 8 + i / 2 : (8 + i / 2) - 24);
+        } else {
+            return String.format("%d:00", 9 + i / 2 < 24 ? 9 + i / 2 : (9 + i / 2) - 24);
+        }
     }
 }
