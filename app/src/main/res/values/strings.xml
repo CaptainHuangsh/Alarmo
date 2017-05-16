@@ -23,6 +23,8 @@
     <string name="text_color">时钟颜色</string>
     <string name="pref_vibrate">震动提示</string>
     <string name="notification_service">提示服务</string>
+    <string name="pref_select_times">报时时段</string>
+    <string name="pref_advance_one">提前一分钟提醒</string>
     <string-array name="list_color">
         <item>Red</item>
         <item>Blue</item>

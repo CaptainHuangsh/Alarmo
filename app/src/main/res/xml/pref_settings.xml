@@ -16,5 +16,13 @@
         android:key="take_color"
         android:summary="选择要显示的颜色"
         android:title="颜色选择" />
+    <Preference
+        android:key="pref_select_times"
+        android:title="@string/pref_select_times"
+        android:summary=""/>
+    <CheckBoxPreference
+        android:key="pref_advance_one"
+        android:defaultValue="false"
+        android:title="@string/pref_advance_one"/>
 
 </PreferenceScreen>
