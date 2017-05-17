@@ -102,6 +102,7 @@ public class TimesDialog extends Dialog {
             mTimesButtons[index].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    final boolean isChecked = ((CompoundButton) view).isChecked();
                     Toast.makeText(mContext, index + "hehehe", Toast.LENGTH_SHORT)
                             .show();
                 }

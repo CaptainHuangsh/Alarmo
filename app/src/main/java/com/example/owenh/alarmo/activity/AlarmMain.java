@@ -35,9 +35,9 @@ public class AlarmMain extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alram_main);
         setTitle("Alarmo");
-        init();
         findView();
         setListener();
+        init();
     }
 
     //重写Activity的onCreateOptionsMenu()方法
@@ -73,6 +73,7 @@ public class AlarmMain extends AppCompatActivity implements
 
 
     public void init() {
+        mSwitch.setChecked(RingService.isRingServiceSurvive);
     }
 
     public void findView() {

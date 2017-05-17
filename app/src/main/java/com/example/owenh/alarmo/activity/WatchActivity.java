@@ -155,6 +155,13 @@ public class WatchActivity extends AutoLayoutActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Intent intent = new Intent(this, RingService.class);
+        stopService(intent);
+    }
+
+    @Override
     public void onBackPressed() {
         if (!DoubleClick.check()) {
             Toast.makeText(this,"再按一次退出",Toast.LENGTH_SHORT).show();
