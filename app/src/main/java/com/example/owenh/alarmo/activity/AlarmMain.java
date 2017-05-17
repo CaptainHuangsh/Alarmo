@@ -66,7 +66,6 @@ public class AlarmMain extends AppCompatActivity implements
      * @param cls
      */
     private void startActivity(Class<?> cls) {
-
         Intent intent = new Intent(this, cls);
         startActivity(intent);
     }
