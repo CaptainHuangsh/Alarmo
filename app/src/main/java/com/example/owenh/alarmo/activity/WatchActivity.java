@@ -161,8 +161,8 @@ public class WatchActivity extends AutoLayoutActivity {
     protected void onDestroy() {
         WATCH_STATUS = 0;
         super.onDestroy();
-        Intent intent = new Intent(this, RingService.class);
-        stopService(intent);
+//        Intent intent = new Intent(this, RingService.class);
+//        stopService(intent);
     }
 
     @Override
