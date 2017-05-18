@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.services.RingService;
+import com.example.owenh.alarmo.util.DBManager;
 import com.example.owenh.alarmo.util.VibrateUtil;
 
 //TODO 时间自选
@@ -61,6 +62,8 @@ public class AlarmMain extends AppCompatActivity implements
     }
 
     public void init() {
+        DBManager.getInstance().openDatabase();
+        DBManager.getInstance().closeDatabase();
         mSwitch.setChecked(RingService.isRingServiceSurvive);
     }
 

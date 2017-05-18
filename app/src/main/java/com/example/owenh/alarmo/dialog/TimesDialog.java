@@ -113,7 +113,7 @@ public class TimesDialog extends Dialog {
                 b = cursor.getInt(cursor.getColumnIndex("isRing"));
             if (b == 1) {
                 mTimesButtons[index].setChecked(true);
-                mTimesButtons[index].setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+                mTimesButtons[index].setTextColor(ContextCompat.getColor(mContext, R.color.blue));
             }
             mTimesButtons[index].setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -122,7 +122,7 @@ public class TimesDialog extends Dialog {
                     //存储选中的时刻
                     if (isChecked) {
                         //选中
-                        mTimesButtons[index].setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+                        mTimesButtons[index].setTextColor(ContextCompat.getColor(mContext, R.color.blue));
 //                        selectTimes.add(makeTextForTimesPerDay(index));
 
                     } else {

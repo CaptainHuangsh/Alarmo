@@ -56,7 +56,7 @@ public class DBManager {
             final ContentValues values = new ContentValues();
             for (int i = 0; i < 48; i++) {
                 values.put("time", "" + makeTextForTimesPerDay(i));
-                if (i < 24) values.put("isRing", true);
+                if (i < 8 || (i > 12 && i < 28)) values.put("isRing", true);
                 else values.put("isRing", false);
                 db.insert("SelectTimes", null, values);
             }

@@ -17,6 +17,7 @@ import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.common.C;
 import com.example.owenh.alarmo.dialog.ColorDialog;
 import com.example.owenh.alarmo.dialog.TimesDialog;
+import com.example.owenh.alarmo.util.DBManager;
 
 /**
  * Created by owen on 2017/5/9.
@@ -107,7 +108,20 @@ public class SettingFragment extends PreferenceFragment implements
             dialog = new TimesDialog(getActivity());
         }
         final TimesDialog finalDialog = dialog;
-        dialog.setYesOnclickListener(null);
+        dialog.setYesOnclickListener(new TimesDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                finalDialog.dismiss();
+                DBManager.getInstance().closeDatabase();
+            }
+        });
+        dialog.setNoOnclickListener(new TimesDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                finalDialog.dismiss();
+                DBManager.getInstance().closeDatabase();
+            }
+        });
         dialog.show();
     }
 
