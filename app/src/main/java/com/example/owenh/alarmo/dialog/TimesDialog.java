@@ -1,8 +1,11 @@
 package com.example.owenh.alarmo.dialog;
 
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -80,34 +83,59 @@ public class TimesDialog extends Dialog {
             if (i % 3 == 0) {
                 final CompoundButton timeButton = (CompoundButton) layoutInflater.inflate(
                         R.layout.alarm_repeat_checkbox, mLRepeatTimes, false);
-                timeButton.setText(makeTextForTimesPerDay(status == STATUS_WORK ? i : i + 24, status));
+                timeButton.setText(makeTextForTimesPerDay(status == STATUS_WORK ? i : i + 24));
                 mLRepeatTimes.addView(timeButton);
                 mTimesButtons[status == STATUS_WORK ? i : i + 24] = timeButton;
             } else if (i % 3 == 1) {
                 final CompoundButton timeButton = (CompoundButton) layoutInflater.inflate(
                         R.layout.alarm_repeat_checkbox, mMRepeatTimes, false);
-                timeButton.setText(makeTextForTimesPerDay(status == STATUS_WORK ? i : i + 24, status));
+                timeButton.setText(makeTextForTimesPerDay(status == STATUS_WORK ? i : i + 24));
                 mMRepeatTimes.addView(timeButton);
                 mTimesButtons[status == STATUS_WORK ? i : i + 24] = timeButton;
             } else if (i % 3 == 2) {
                 final CompoundButton timeButton = (CompoundButton) layoutInflater.inflate(
                         R.layout.alarm_repeat_checkbox, mRRepeatTimes, false);
-                timeButton.setText(makeTextForTimesPerDay(status == STATUS_WORK ? i : i + 24, status));
+                timeButton.setText(makeTextForTimesPerDay(status == STATUS_WORK ? i : i + 24));
                 mRRepeatTimes.addView(timeButton);
                 mTimesButtons[status == STATUS_WORK ? i : i + 24] = timeButton;
             }
         }
+        DBManager.getInstance().openDatabase();
+        final SQLiteDatabase db = DBManager.getInstance().getDatabase();
+        final ContentValues values = new ContentValues();
         for (int i = 0; i < 24; i++) {
             final int index = (status == STATUS_WORK ? i : i + 24);
+            mTimesButtons[index].setChecked(false);
+            Cursor cursor = db.rawQuery("select isRing from SelectTimes where id = " + (index+1), null);
+            //数据库中id从1开始不从0开始，所以index需要+1
+            int b = 0;
+            if (cursor.moveToFirst())
+                b = cursor.getInt(cursor.getColumnIndex("isRing"));
+            if (b == 1) {
+                mTimesButtons[index].setChecked(true);
+                mTimesButtons[index].setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+            }
             mTimesButtons[index].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    final boolean isChecked = ((CompoundButton) view).isChecked();
-                    /*Toast.makeText(mContext, index + "hehehe", Toast.LENGTH_SHORT)
-                            .show();*/
-                    selectTimes.add(makeTextForTimesPerDay(index, status));
+                    boolean isChecked = ((CompoundButton) view).isChecked();
                     //存储选中的时刻
-                    mTimesButtons[index].setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+                    if (isChecked) {
+                        //选中
+                        mTimesButtons[index].setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
+//                        selectTimes.add(makeTextForTimesPerDay(index));
+
+                    } else {
+//                        selectTimes.remove(makeTextForTimesPerDay(index));
+                        //取消
+                        mTimesButtons[index].setTextColor(ContextCompat.getColor(mContext, R.color.black));
+                    }
+//                    values.put("time", "" + makeTextForTimesPerDay(index));
+                    values.put("isRing", isChecked);
+//                    db.insert("SelectTimes", null, values);
+                    db.update("SelectTimes", values, "time = ?", new String[]{
+                            makeTextForTimesPerDay(index)
+                    });
                 }
             });
         }
@@ -117,7 +145,6 @@ public class TimesDialog extends Dialog {
      * 初始化界面的确定和取消监听器
      */
     private void initEvent() {
-        DBManager.getInstance().openDatabase();
         //设置确定按钮被点击后，向外界提供监听
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,6 +191,7 @@ public class TimesDialog extends Dialog {
     }
 
     private void initView() {
+        DBManager.getInstance().openDatabase();
         yes = (Button) findViewById(R.id.yes);
         no = (Button) findViewById(R.id.no);
         mLRepeatTimes = (LinearLayout) findViewById(R.id.l_alarm_repeat_times);
@@ -188,9 +216,10 @@ public class TimesDialog extends Dialog {
 
     public interface onNoOnclickListener {
         public void onNoClick();
+
     }
 
-    public String makeTextForTimesPerDay(int i, int status) {
+    public String makeTextForTimesPerDay(int i) {
         if (i % 2 == 0) {
             if ((8 + i / 2 < 24 ? 8 + i / 2 : (8 + i / 2) - 24) > 9)
                 return String.format("%d:30", (8 + i / 2 < 24 ? 8 + i / 2 : (8 + i / 2) - 24));

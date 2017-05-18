@@ -1,10 +1,10 @@
 package com.example.owenh.alarmo.util;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.example.owenh.alarmo.common.BaseApplication;
@@ -29,7 +29,6 @@ public class DBManager {
 
     public DBManager() {
         mContext = BaseApplication.getAppContext();
-        Log.d("huangshaohuacontext",""+mContext);
     }
 
     public static DBManager getInstance() {
@@ -41,22 +40,29 @@ public class DBManager {
     }
 
     public void openDatabase() {
-        Log.d("huangshaohua",""+DB_PATH + "/" + DB_NAME);
-        //Log.e(TAG, DB_PATH + "/" + DB_NAME);
-        this.database = this.openDatabase(DB_PATH + "/" + DB_NAME);
+        this.database = this.openDatabase(DB_PATH + "/databases/" + DB_NAME);
     }
 
     @Nullable
     private SQLiteDatabase openDatabase(String dbfile) {
-            if (!(new File(dbfile).exists())) {
-                MyDatabaseHelper dpHelper = new MyDatabaseHelper(BaseApplication.getAppContext()
-                ,DB_NAME,null,1);
-                dpHelper.getWritableDatabase();
-                Toast.makeText(BaseApplication.getAppContext(),"Create DataBase Successful",Toast.LENGTH_SHORT)
-                        .show();
-                Log.d("huangshaohua","4");
+        if (!(new File(dbfile).exists())) {
+            MyDatabaseHelper dpHelper = new MyDatabaseHelper(BaseApplication.getAppContext()
+                    , DB_NAME, null, 1);
+            dpHelper.getWritableDatabase();
+            Toast.makeText(BaseApplication.getAppContext(), "Create DataBase Successful", Toast.LENGTH_SHORT)
+                    .show();
+            //初始化SelectTimes数据表，工作时间全部为响铃，休息时间不响铃
+            final SQLiteDatabase db = SQLiteDatabase.openOrCreateDatabase(dbfile, null);
+            final ContentValues values = new ContentValues();
+            for (int i = 0; i < 48; i++) {
+                values.put("time", "" + makeTextForTimesPerDay(i));
+                if (i < 24) values.put("isRing", true);
+                else values.put("isRing", false);
+                db.insert("SelectTimes", null, values);
             }
-            return SQLiteDatabase.openOrCreateDatabase(dbfile, null);
+
+        }
+        return SQLiteDatabase.openOrCreateDatabase(dbfile, null);
 
     }
 
@@ -69,5 +75,20 @@ public class DBManager {
     private static final class DBManagerHolder {
         //用于单例模式
         public static final DBManager sInstance = new DBManager();
+    }
+
+    public static String makeTextForTimesPerDay(int i) {
+        if (i % 2 == 0) {
+            if ((8 + i / 2 < 24 ? 8 + i / 2 : (8 + i / 2) - 24) > 9)
+                return String.format("%d:30", (8 + i / 2 < 24 ? 8 + i / 2 : (8 + i / 2) - 24));
+            else {
+                return String.format("0%d:30", (8 + i / 2 < 24 ? 8 + i / 2 : (8 + i / 2) - 24));
+            }
+        } else {
+            if ((9 + i / 2 < 24 ? 9 + i / 2 : (9 + i / 2) - 24) > 9)
+                return String.format("%d:00", (9 + i / 2 < 24 ? 9 + i / 2 : (9 + i / 2) - 24));
+            else
+                return String.format("0%d:00", (9 + i / 2 < 24 ? 9 + i / 2 : (9 + i / 2) - 24));
+        }
     }
 }
