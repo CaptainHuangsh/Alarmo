@@ -60,17 +60,6 @@ public class AlarmMain extends AppCompatActivity implements
         }
     }
 
-    /**
-     * 跳转到另一个Activity
-     *
-     * @param cls
-     */
-    private void startActivity(Class<?> cls) {
-        Intent intent = new Intent(this, cls);
-        startActivity(intent);
-    }
-
-
     public void init() {
         mSwitch.setChecked(RingService.isRingServiceSurvive);
     }
@@ -97,16 +86,26 @@ public class AlarmMain extends AppCompatActivity implements
                 Intent serviceIntent = new Intent(AlarmMain.this, RingService.class);
                 if (isChecked == 0) {
                     startService(serviceIntent);
-                    Toast.makeText(AlarmMain.this,"打开整点报时",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AlarmMain.this, "打开整点报时", Toast.LENGTH_SHORT).show();
                     isChecked++;
                 } else {
                     stopService(serviceIntent);
-                    Toast.makeText(AlarmMain.this,"关闭整点报时",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AlarmMain.this, "关闭整点报时", Toast.LENGTH_SHORT).show();
                     isChecked = 0;
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 跳转到另一个Activity
+     *
+     * @param cls
+     */
+    private void startActivity(Class<?> cls) {
+        Intent intent = new Intent(this, cls);
+        startActivity(intent);
     }
 }

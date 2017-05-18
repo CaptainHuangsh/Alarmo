@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.adapter.ColorListAdapter;
 import com.example.owenh.alarmo.domain.AColor;
+import com.example.owenh.alarmo.util.DBManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +36,13 @@ public class TimesDialog extends Dialog {
     private Context mContext;
 
     private Button yes, no;
-    private List<AColor> colors = new ArrayList<AColor>();
     private onNoOnclickListener noOnclickListener;//取消按钮被点击了的监听器
     private onYesOnclickListener yesOnclickListener;//确定按钮被点击了的监听器
     private LinearLayout mLRepeatTimes;
     private LinearLayout mMRepeatTimes;
     private LinearLayout mRRepeatTimes;
     private RadioButton mWorkRadio, mRestRadio;
+    List<String> selectTimes = new ArrayList<>();
     private int mStatus = 0;
     private CompoundButton[] mTimesButtons = new CompoundButton[48];
 
@@ -55,11 +57,9 @@ public class TimesDialog extends Dialog {
         setContentView(R.layout.dialog_select_times);
         initView();
 
-        List<String> selectTimes = new ArrayList<>();
+
         PreferenceManager.setDefaultValues(getContext(), R.xml.pref_settings, false);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        ColorListAdapter mAdapter = new ColorListAdapter(getContext(), R.layout.items_take_color, colors);
-
 
         final SharedPreferences finalPreferences = preferences;
         /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -74,7 +74,7 @@ public class TimesDialog extends Dialog {
         mWorkRadio.isChecked();
     }
 
-    private void addTimesButton(int status) {
+    private void addTimesButton(final int status) {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         for (int i = 0; i < 24; i++) {
             if (i % 3 == 0) {
@@ -103,8 +103,11 @@ public class TimesDialog extends Dialog {
                 @Override
                 public void onClick(View view) {
                     final boolean isChecked = ((CompoundButton) view).isChecked();
-                    Toast.makeText(mContext, index + "hehehe", Toast.LENGTH_SHORT)
-                            .show();
+                    /*Toast.makeText(mContext, index + "hehehe", Toast.LENGTH_SHORT)
+                            .show();*/
+                    selectTimes.add(makeTextForTimesPerDay(index, status));
+                    //存储选中的时刻
+                    mTimesButtons[index].setTextColor(ContextCompat.getColor(mContext, R.color.colorAccent));
                 }
             });
         }
@@ -114,6 +117,7 @@ public class TimesDialog extends Dialog {
      * 初始化界面的确定和取消监听器
      */
     private void initEvent() {
+        DBManager.getInstance().openDatabase();
         //设置确定按钮被点击后，向外界提供监听
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,9 +192,16 @@ public class TimesDialog extends Dialog {
 
     public String makeTextForTimesPerDay(int i, int status) {
         if (i % 2 == 0) {
-            return String.format("%d:30", 8 + i / 2 < 24 ? 8 + i / 2 : (8 + i / 2) - 24);
+            if ((8 + i / 2 < 24 ? 8 + i / 2 : (8 + i / 2) - 24) > 9)
+                return String.format("%d:30", (8 + i / 2 < 24 ? 8 + i / 2 : (8 + i / 2) - 24));
+            else {
+                return String.format("0%d:30", (8 + i / 2 < 24 ? 8 + i / 2 : (8 + i / 2) - 24));
+            }
         } else {
-            return String.format("%d:00", 9 + i / 2 < 24 ? 9 + i / 2 : (9 + i / 2) - 24);
+            if ((9 + i / 2 < 24 ? 9 + i / 2 : (9 + i / 2) - 24) > 9)
+                return String.format("%d:00", (9 + i / 2 < 24 ? 9 + i / 2 : (9 + i / 2) - 24));
+            else
+                return String.format("0%d:00", (9 + i / 2 < 24 ? 9 + i / 2 : (9 + i / 2) - 24));
         }
     }
 }
