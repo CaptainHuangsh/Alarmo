@@ -15,6 +15,7 @@ import android.text.format.DateFormat;
 import android.util.Log;
 
 import com.example.owenh.alarmo.R;
+import com.example.owenh.alarmo.activity.WatchActivity;
 import com.example.owenh.alarmo.util.DBManager;
 import com.example.owenh.alarmo.util.RingUtil;
 import com.example.owenh.alarmo.util.VibrateUtil;
@@ -39,16 +40,20 @@ public class RingService extends Service {
             switch (msg.what) {
                 case MSG_KEY_1:
                     long sysTime = System.currentTimeMillis();
-                    if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
-//                    if (DateFormat.format("ss", sysTime).equals("00") || DateFormat.format("ss", sysTime).equals("30")) {
-                        //TODO 增加时间选择
-                        Log.d("huangshaohua","1 "+DateFormat.format("mm:ss", sysTime).toString());
-                         if (RingUtil.isRing(DateFormat.format("hh:mm", sysTime).toString())) {
-                             Log.d("huangshaohua","5 "+DateFormat.format("mm:ss", sysTime).toString());
+                    if (WatchActivity.WATCH_STATUS == 1) {
+                        //是否是在Watch界面打开的此服务
+                        if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
                             startAlarm();
+                            break;
                         }
-                        DBManager.getInstance().closeDatabase();
-                        break;
+                    } else {
+                        if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
+                            if (RingUtil.isRing(DateFormat.format("hh:mm", sysTime).toString())) {
+                                startAlarm();
+                            }
+                            DBManager.getInstance().closeDatabase();
+                            break;
+                        }
                     }
                     break;
 

@@ -87,14 +87,12 @@ public class AlarmMain extends AppCompatActivity implements
                 break;
             case R.id.on_off_service2:
                 Intent serviceIntent = new Intent(AlarmMain.this, RingService.class);
-                if (isChecked == 0) {
+                if (mSwitch.isChecked()) {
                     startService(serviceIntent);
                     Toast.makeText(AlarmMain.this, "打开整点报时", Toast.LENGTH_SHORT).show();
-                    isChecked++;
                 } else {
                     stopService(serviceIntent);
                     Toast.makeText(AlarmMain.this, "关闭整点报时", Toast.LENGTH_SHORT).show();
-                    isChecked = 0;
                 }
                 break;
             default:
