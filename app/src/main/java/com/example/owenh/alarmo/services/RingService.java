@@ -15,6 +15,8 @@ import android.text.format.DateFormat;
 import android.util.Log;
 
 import com.example.owenh.alarmo.R;
+import com.example.owenh.alarmo.util.DBManager;
+import com.example.owenh.alarmo.util.RingUtil;
 import com.example.owenh.alarmo.util.VibrateUtil;
 
 //TODO 防止后台被清理
@@ -38,8 +40,14 @@ public class RingService extends Service {
                 case MSG_KEY_1:
                     long sysTime = System.currentTimeMillis();
                     if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
+//                    if (DateFormat.format("ss", sysTime).equals("00") || DateFormat.format("ss", sysTime).equals("30")) {
                         //TODO 增加时间选择
-                        startAlarm();
+                        Log.d("huangshaohua","1 "+DateFormat.format("mm:ss", sysTime).toString());
+                         if (RingUtil.isRing(DateFormat.format("hh:mm", sysTime).toString())) {
+                             Log.d("huangshaohua","5 "+DateFormat.format("mm:ss", sysTime).toString());
+                            startAlarm();
+                        }
+                        DBManager.getInstance().closeDatabase();
                         break;
                     }
                     break;
