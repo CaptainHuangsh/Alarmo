@@ -11,10 +11,13 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.common.C;
 import com.example.owenh.alarmo.dialog.ColorDialog;
+import com.example.owenh.alarmo.dialog.TimesDialog;
+import com.example.owenh.alarmo.util.DBManager;
 
 /**
  * Created by owen on 2017/5/9.
@@ -27,16 +30,17 @@ public class SettingFragment extends PreferenceFragment implements
         Preference.OnPreferenceClickListener
         , Preference.OnPreferenceChangeListener {
 
-    private static final int UPDATE_SUM = 0;
+    private static final int UPDATE_COLOR_SUM = 0;
 
     private Preference mColor;
+    private Preference mSelectTimes;
     private String colorSum;
     SharedPreferences preferences;
 
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case UPDATE_SUM:
+                case UPDATE_COLOR_SUM:
                     mColor.setSummary(C.colorMap.get(preferences.getString("pref_text_color", "")));
                     break;
                 default:
@@ -50,7 +54,9 @@ public class SettingFragment extends PreferenceFragment implements
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.pref_settings);
         mColor = findPreference("take_color");
+        mSelectTimes = findPreference("pref_select_times");
         mColor.setOnPreferenceClickListener(this);
+        mSelectTimes.setOnPreferenceClickListener(this);
         initPref();
     }
 
@@ -78,7 +84,7 @@ public class SettingFragment extends PreferenceFragment implements
         colorSum = preferences.getString("pref_text_color", "");
         Message msg = new Message();
         msg.obj = colorSum;
-        msg.what = UPDATE_SUM;
+        msg.what = UPDATE_COLOR_SUM;
         handler.sendMessage(msg);
     }
 
@@ -88,7 +94,35 @@ public class SettingFragment extends PreferenceFragment implements
         if (mColor == preference) {
             ShowColorDialog();
         }
+        if (mSelectTimes == preference){
+            ShowTimesDialog();
+        }
         return true;
+    }
+
+    private void ShowTimesDialog() {
+        TimesDialog dialog = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            dialog = new TimesDialog(getContext());
+        } else {
+            dialog = new TimesDialog(getActivity());
+        }
+        final TimesDialog finalDialog = dialog;
+        dialog.setYesOnclickListener(new TimesDialog.onYesOnclickListener() {
+            @Override
+            public void onYesClick() {
+                finalDialog.dismiss();
+                DBManager.getInstance().closeDatabase();
+            }
+        });
+        dialog.setNoOnclickListener(new TimesDialog.onNoOnclickListener() {
+            @Override
+            public void onNoClick() {
+                finalDialog.dismiss();
+                DBManager.getInstance().closeDatabase();
+            }
+        });
+        dialog.show();
     }
 
     @Override

@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -16,15 +15,19 @@ import android.text.format.DateFormat;
 import android.util.Log;
 
 import com.example.owenh.alarmo.R;
+import com.example.owenh.alarmo.activity.WatchActivity;
+import com.example.owenh.alarmo.util.DBManager;
+import com.example.owenh.alarmo.util.RingUtil;
 import com.example.owenh.alarmo.util.VibrateUtil;
 
 //TODO 防止后台被清理
 //TODO 字体选择
 public class RingService extends Service {
+    public static boolean isRingServiceSurvive = false;
+
     private static final int TYPE_RUN = 1;
     private static final int TYPE_STOP = 0;
     private static final int MSG_KEY_1 = 1;
-    private MediaPlayer mMediaPlayer;
     SharedPreferences preferences;
     Context mContext;
     String ringUri = "";
@@ -37,10 +40,20 @@ public class RingService extends Service {
             switch (msg.what) {
                 case MSG_KEY_1:
                     long sysTime = System.currentTimeMillis();
-                    if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
-                        //TODO 增加时间选择
-                        startAlarm();
-                        break;
+                    if (WatchActivity.WATCH_STATUS == 1) {
+                        //是否是在Watch界面打开的此服务
+                        if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
+                            startAlarm();
+                            break;
+                        }
+                    } else {
+                        if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
+                            if (RingUtil.isRing(DateFormat.format("hh:mm", sysTime).toString())) {
+                                startAlarm();
+                            }
+                            DBManager.getInstance().closeDatabase();
+                            break;
+                        }
                     }
                     break;
 
@@ -56,7 +69,7 @@ public class RingService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
+        isRingServiceSurvive = true;//用于判断此服务是否存活
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
@@ -64,10 +77,11 @@ public class RingService extends Service {
     public void onCreate() {
         super.onCreate();
         preferences = getApplicationContext().getSharedPreferences("Alarmo", MODE_PRIVATE);
+        isRingServiceSurvive = true;//用于判断此服务是否存活
         ringUri = preferences.getString("ringUri", "");
         if (ringUri.equals("")) {
             SharedPreferences.Editor editor = preferences.edit();
-            ringUri = getSystemDefultRingtoneUri().toString();
+            ringUri = getSystemDefaultRingtoneUri().toString();
             editor.putString("ringUri", ringUri);
             editor.commit();
             mContext = getApplicationContext();
@@ -83,16 +97,18 @@ public class RingService extends Service {
         SharedPreferences preferences2 = PreferenceManager.getDefaultSharedPreferences(this);
         String ringStr = preferences2.getString("pref_notification", ringUri);
         isVibrate = preferences2.getBoolean("pref_vibrate", true);
-        Log.d("isVibrate",""+isVibrate);
+        Log.d("isVibrate", "" + isVibrate);
         if (!ringStr.equals(""))
             ringUri = ringStr;
         new TimeThread().start();
+        isRingServiceSurvive = true;//用于判断此服务是否存活
         return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        isRingServiceSurvive = false;//用于判断此服务是否存活
         //java强制结束线程的三种方法http://blog.csdn.net/anhuidelinger/article/details/11746365
 //        timeThread.interrupt(); 没有用这句
         mRun = TYPE_STOP;
@@ -119,7 +135,7 @@ public class RingService extends Service {
     }
 
     private void startAlarm() {
-        Ringtone rt = RingtoneManager.getRingtone(this,Uri.parse(ringUri));
+        Ringtone rt = RingtoneManager.getRingtone(this, Uri.parse(ringUri));
         /*mMediaPlayer = MediaPlayer.create(this, Uri.parse(ringUri));
         mMediaPlayer.setLooping(true);
         try {
@@ -145,7 +161,7 @@ public class RingService extends Service {
     /**
      * 获取系统当前铃声
      */
-    private Uri getSystemDefultRingtoneUri() {
+    private Uri getSystemDefaultRingtoneUri() {
         return RingtoneManager.getActualDefaultRingtoneUri(this,
                 RingtoneManager.TYPE_NOTIFICATION);
     }

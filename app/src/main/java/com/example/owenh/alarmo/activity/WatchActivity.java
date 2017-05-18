@@ -31,6 +31,8 @@ import com.example.owenh.alarmo.util.DateDayUtil;
 
 public class WatchActivity extends AutoLayoutActivity {
 
+    public static int WATCH_STATUS = 0;
+
     private TextView mVTime;
     private TextView mSec;
     private TextView mDay;
@@ -69,6 +71,7 @@ public class WatchActivity extends AutoLayoutActivity {
     }
 
     public void init() {
+        WATCH_STATUS = 1;
         PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         textColor = preferences.getString("pref_text_color","#ff00ddff");
@@ -152,6 +155,14 @@ public class WatchActivity extends AutoLayoutActivity {
     protected void onPause() {
         super.onPause();
         this.wakeLock.release();
+    }
+
+    @Override
+    protected void onDestroy() {
+        WATCH_STATUS = 0;
+        super.onDestroy();
+//        Intent intent = new Intent(this, RingService.class);
+//        stopService(intent);
     }
 
     @Override

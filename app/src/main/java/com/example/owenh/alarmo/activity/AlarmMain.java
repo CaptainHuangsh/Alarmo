@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.services.RingService;
+import com.example.owenh.alarmo.util.DBManager;
 import com.example.owenh.alarmo.util.VibrateUtil;
 
 //TODO 时间自选
@@ -35,9 +36,9 @@ public class AlarmMain extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alram_main);
         setTitle("Alarmo");
-        init();
         findView();
         setListener();
+        init();
     }
 
     //重写Activity的onCreateOptionsMenu()方法
@@ -60,19 +61,10 @@ public class AlarmMain extends AppCompatActivity implements
         }
     }
 
-    /**
-     * 跳转到另一个Activity
-     *
-     * @param cls
-     */
-    private void startActivity(Class<?> cls) {
-
-        Intent intent = new Intent(this, cls);
-        startActivity(intent);
-    }
-
-
     public void init() {
+        DBManager.getInstance().openDatabase();
+        DBManager.getInstance().closeDatabase();
+        mSwitch.setChecked(RingService.isRingServiceSurvive);
     }
 
     public void findView() {
@@ -95,18 +87,26 @@ public class AlarmMain extends AppCompatActivity implements
                 break;
             case R.id.on_off_service2:
                 Intent serviceIntent = new Intent(AlarmMain.this, RingService.class);
-                if (isChecked == 0) {
+                if (mSwitch.isChecked()) {
                     startService(serviceIntent);
-                    Toast.makeText(AlarmMain.this,"打开整点报时",Toast.LENGTH_SHORT).show();
-                    isChecked++;
+                    Toast.makeText(AlarmMain.this, "打开整点报时", Toast.LENGTH_SHORT).show();
                 } else {
                     stopService(serviceIntent);
-                    Toast.makeText(AlarmMain.this,"关闭整点报时",Toast.LENGTH_SHORT).show();
-                    isChecked = 0;
+                    Toast.makeText(AlarmMain.this, "关闭整点报时", Toast.LENGTH_SHORT).show();
                 }
                 break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 跳转到另一个Activity
+     *
+     * @param cls
+     */
+    private void startActivity(Class<?> cls) {
+        Intent intent = new Intent(this, cls);
+        startActivity(intent);
     }
 }
