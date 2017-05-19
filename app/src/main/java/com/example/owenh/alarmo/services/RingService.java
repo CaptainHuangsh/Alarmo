@@ -52,7 +52,8 @@ public class RingService extends Service {
                         }
                     } else {
                         if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
-                            if (RingUtil.isRing(DateFormat.format("hh:mm", sysTime).toString())) {
+                            if (RingUtil.isRing(DateFormat.format("HH:mm", sysTime).toString())) {
+                                //大写HH 24小时制
                                 startAlarm();
                             }
                             DBManager.getInstance().closeDatabase();
