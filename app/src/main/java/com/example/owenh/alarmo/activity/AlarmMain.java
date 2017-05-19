@@ -75,6 +75,7 @@ public class AlarmMain extends AppCompatActivity implements
     public void setListener() {
         mSwitch.setOnClickListener(this);
         mToWatch.setOnClickListener(this);
+
     }
 
     //stopService 不能停止服务原因 Service里面新建了线程，而没有在Service的onDestroy()里面结束这个线程你只需要在onDestroy里面加上结束这个线程的语句就行了

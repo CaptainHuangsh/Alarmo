@@ -3,10 +3,10 @@
     package="com.example.owenh.alarmo">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <!--屏幕保持唤醒 不锁屏-->
+    <!-- 屏幕保持唤醒 不锁屏 -->
     <uses-permission android:name="android.permission.VIBRATE" />
-    <!--震动-->
 
+    <!-- 震动 -->
     <application
         android:name=".common.BaseApplication"
         android:allowBackup="true"
@@ -31,12 +31,14 @@
         <activity
             android:name=".activity.WatchActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".activity.SettingActivity"/>
+        <activity android:name=".activity.SettingActivity" />
 
         <service
             android:name=".services.RingService"
             android:enabled="true"
             android:exported="true" />
+
+        <activity android:name=".activity.MainActivity"></activity>
     </application>
 
 </manifest>

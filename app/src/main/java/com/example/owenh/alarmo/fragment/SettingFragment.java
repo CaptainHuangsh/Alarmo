@@ -20,12 +20,9 @@ import com.example.owenh.alarmo.dialog.TimesDialog;
 import com.example.owenh.alarmo.util.DBManager;
 
 /**
- * Created by owen on 2017/5/9.
+ * Created by owen on 2017/5/9
  */
 
-
-//TODO 再preference的summary中显示当前pref中存储的值
-// TODO 美化界面，完成设置和时间选择就推一个版本到应用宝
 public class SettingFragment extends PreferenceFragment implements
         Preference.OnPreferenceClickListener
         , Preference.OnPreferenceChangeListener {
@@ -34,6 +31,7 @@ public class SettingFragment extends PreferenceFragment implements
 
     private Preference mColor;
     private Preference mSelectTimes;
+//    private Preference mOneMinAdvance;
     private String colorSum;
     SharedPreferences preferences;
 
@@ -55,6 +53,7 @@ public class SettingFragment extends PreferenceFragment implements
         addPreferencesFromResource(R.xml.pref_settings);
         mColor = findPreference("take_color");
         mSelectTimes = findPreference("pref_select_times");
+//        mOneMinAdvance = findPreference("pref_advance_one");
         mColor.setOnPreferenceClickListener(this);
         mSelectTimes.setOnPreferenceClickListener(this);
         initPref();
@@ -94,7 +93,7 @@ public class SettingFragment extends PreferenceFragment implements
         if (mColor == preference) {
             ShowColorDialog();
         }
-        if (mSelectTimes == preference){
+        if (mSelectTimes == preference) {
             ShowTimesDialog();
         }
         return true;

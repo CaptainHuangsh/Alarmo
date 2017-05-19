@@ -25,6 +25,7 @@ import com.example.owenh.alarmo.util.VibrateUtil;
 public class RingService extends Service {
     public static boolean isRingServiceSurvive = false;
 
+    private static boolean isOneMinAdvance = false;
     private static final int TYPE_RUN = 1;
     private static final int TYPE_STOP = 0;
     private static final int MSG_KEY_1 = 1;
@@ -40,6 +41,9 @@ public class RingService extends Service {
             switch (msg.what) {
                 case MSG_KEY_1:
                     long sysTime = System.currentTimeMillis();
+                    if (isOneMinAdvance) {
+                        sysTime += 1000*60;//提前一分
+                    }
                     if (WatchActivity.WATCH_STATUS == 1) {
                         //是否是在Watch界面打开的此服务
                         if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
@@ -48,13 +52,42 @@ public class RingService extends Service {
                         }
                     } else {
                         if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
-                            if (RingUtil.isRing(DateFormat.format("hh:mm", sysTime).toString())) {
+                            if (RingUtil.isRing(DateFormat.format("HH:mm", sysTime).toString())) {
+                                //大写HH 24小时制
                                 startAlarm();
                             }
                             DBManager.getInstance().closeDatabase();
                             break;
                         }
                     }
+                    /*String time00Str = "";
+                    String time30Str = "";
+                    if (isOneMinAdvance) {
+                        //提前一分
+                        time00Str = "59:00";
+                        time30Str = "29:00";
+                    } else {
+                        time00Str = "00:00";
+                        time30Str = "30:00";
+                    }
+                    if (WatchActivity.WATCH_STATUS == 1) {
+                        //是否是在Watch界面打开的此服务
+                        if (DateFormat.format("mm:ss", sysTime).equals(time00Str) || DateFormat.format("mm:ss", sysTime).equals(time30Str)) {
+                            startAlarm();
+                            break;
+                        }
+                    } else {
+                        if (DateFormat.format("mm:ss", sysTime).equals(time00Str) || DateFormat.format("mm:ss", sysTime).equals(time30Str)) {
+                            if (isOneMinAdvance) {
+                                sysTime += 1000;
+                            }
+                            if (RingUtil.isRing(DateFormat.format("hh:mm", sysTime).toString())) {
+                                startAlarm();
+                            }
+                            DBManager.getInstance().closeDatabase();
+                            break;
+                        }
+                    }*/
                     break;
 
                 default:
@@ -76,6 +109,7 @@ public class RingService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+//        Log.d("huangshaohua long time",""+System.currentTimeMillis());
         preferences = getApplicationContext().getSharedPreferences("Alarmo", MODE_PRIVATE);
         isRingServiceSurvive = true;//用于判断此服务是否存活
         ringUri = preferences.getString("ringUri", "");
@@ -88,7 +122,6 @@ public class RingService extends Service {
         }
 //        preferences = getApplicationContext().getSharedPreferences("Alarmo", MODE_PRIVATE);
         ringUri = preferences.getString("ringUri", "");
-        Log.d("huangshaohuaRingService", "onCreate");
     }
 
     @Override
@@ -98,6 +131,8 @@ public class RingService extends Service {
         String ringStr = preferences2.getString("pref_notification", ringUri);
         isVibrate = preferences2.getBoolean("pref_vibrate", true);
         Log.d("isVibrate", "" + isVibrate);
+        isOneMinAdvance = preferences2.getBoolean("pref_advance_one", false);//提前一分钟响铃是否打开
+        Log.d("huangshaohua", "" + isOneMinAdvance);
         if (!ringStr.equals(""))
             ringUri = ringStr;
         new TimeThread().start();
@@ -112,7 +147,6 @@ public class RingService extends Service {
         //java强制结束线程的三种方法http://blog.csdn.net/anhuidelinger/article/details/11746365
 //        timeThread.interrupt(); 没有用这句
         mRun = TYPE_STOP;
-        Log.i("huangshaohuaRingService", "onDestroy");
     }
 
     /**
@@ -136,17 +170,6 @@ public class RingService extends Service {
 
     private void startAlarm() {
         Ringtone rt = RingtoneManager.getRingtone(this, Uri.parse(ringUri));
-        /*mMediaPlayer = MediaPlayer.create(this, Uri.parse(ringUri));
-        mMediaPlayer.setLooping(true);
-        try {
-            mMediaPlayer.prepare();
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        mMediaPlayer.setLooping(false);
-        mMediaPlayer.start();*/
         rt.play();
         if (isVibrate)
             VibrateUtil.vibrate(getApplicationContext(), 300);
