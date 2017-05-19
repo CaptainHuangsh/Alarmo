@@ -43,6 +43,8 @@ public class WatchActivity extends AutoLayoutActivity {
     //将字体文件保存在assets/fonts/目录下，创建Typeface对象
     Typeface typeFace;
     String textColor;
+    boolean is24Hours;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,18 +76,19 @@ public class WatchActivity extends AutoLayoutActivity {
         WATCH_STATUS = 1;
         PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        textColor = preferences.getString("pref_text_color","#ff00ddff");
+        textColor = preferences.getString("pref_text_color", "#ff00ddff");
         typeFace = Typeface.createFromAsset(getAssets(), "fonts/digifaw.ttf");
+        is24Hours = preferences.getBoolean("hours_12_24", true);
         //字体
         mVTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                if (DoubleClick.check()) {
-                    if (mDay.getVisibility() == View.GONE) {
-                        mDay.setVisibility(View.VISIBLE);
-                    } else {
-                        mDay.setVisibility(View.GONE);
-                    }
+                if (mDay.getVisibility() == View.GONE) {
+                    mDay.setVisibility(View.VISIBLE);
+                } else {
+                    mDay.setVisibility(View.GONE);
+                }
 //                }
             }
         });
@@ -126,12 +129,16 @@ public class WatchActivity extends AutoLayoutActivity {
             switch (msg.what) {
                 case MSG_KEY_1:
                     long sysTime = System.currentTimeMillis();
-                    CharSequence sysTimeStr = DateFormat.format("hh:mm", sysTime);
-//                    CharSequence sysTimeStr = DateFormat.format("HH:mm", sysTime);
-                    //12小时制
-                    CharSequence sysTimeStrsec = DateFormat.format("ss", sysTime);
+                    CharSequence sysTimeStr;
+                    if (is24Hours) {
+                        sysTimeStr = DateFormat.format("HH:mm", sysTime);
+                    } else {
+                        sysTimeStr = DateFormat.format("hh:mm", sysTime);
+                        //12小时制
+                    }
+                    CharSequence sysTimeStrSec = DateFormat.format("ss", sysTime);
                     mVTime.setText(sysTimeStr + "");
-                    mSec.setText(" " + sysTimeStrsec);
+                    mSec.setText(" " + sysTimeStrSec);
                     mDay.setText(mDateDay.StringData() + "");
                     mVTime.setTypeface(typeFace);
                     mSec.setTypeface(typeFace);
@@ -170,7 +177,7 @@ public class WatchActivity extends AutoLayoutActivity {
     @Override
     public void onBackPressed() {
         if (!DoubleClick.check()) {
-            Toast.makeText(this,"再按一次退出",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
         } else {
             finish();
         }

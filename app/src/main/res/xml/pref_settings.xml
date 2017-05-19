@@ -24,5 +24,9 @@
         android:key="pref_advance_one"
         android:defaultValue="false"
         android:title="@string/pref_advance_one"/>
+    <CheckBoxPreference
+        android:key="hours_12_24"
+        android:defaultValue="true"
+        android:title="使用24小时制"/>
 
 </PreferenceScreen>
