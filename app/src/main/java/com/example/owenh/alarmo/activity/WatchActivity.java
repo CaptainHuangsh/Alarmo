@@ -126,8 +126,8 @@ public class WatchActivity extends AutoLayoutActivity {
             switch (msg.what) {
                 case MSG_KEY_1:
                     long sysTime = System.currentTimeMillis();
-                    CharSequence sysTimeStr = DateFormat.format("HH:mm", sysTime);
-//                    CharSequence sysTimeStr = DateFormat.format("hh:mm", sysTime);
+                    CharSequence sysTimeStr = DateFormat.format("hh:mm", sysTime);
+//                    CharSequence sysTimeStr = DateFormat.format("HH:mm", sysTime);
                     //12小时制
                     CharSequence sysTimeStrsec = DateFormat.format("ss", sysTime);
                     mVTime.setText(sysTimeStr + "");
