@@ -61,7 +61,7 @@ public class WatchActivity extends AutoLayoutActivity {
                 .SCREEN_ORIENTATION_SENSOR_LANDSCAPE);
         //强制横屏
         setContentView(R.layout.activity_watch);
-        findview();
+        findView();
         init();
         new WatchActivity.TimeThread().start();
         //使屏幕常亮 在低版本中并不起作用（4.4）
@@ -97,7 +97,7 @@ public class WatchActivity extends AutoLayoutActivity {
     }
 
 
-    public void findview() {
+    public void findView() {
         mVTime = (TextView) findViewById(R.id.alarm_vtime);
         mSec = (TextView) findViewById(R.id.alarm_vsec);
         mDay = (TextView) findViewById(R.id.alarm_day);
@@ -170,8 +170,6 @@ public class WatchActivity extends AutoLayoutActivity {
     protected void onDestroy() {
         WATCH_STATUS = 0;
         super.onDestroy();
-//        Intent intent = new Intent(this, RingService.class);
-//        stopService(intent);
     }
 
     @Override
