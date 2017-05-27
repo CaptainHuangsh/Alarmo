@@ -22,14 +22,12 @@ import com.example.owenh.alarmo.services.RingService;
 import com.example.owenh.alarmo.util.DBManager;
 import com.example.owenh.alarmo.util.VibrateUtil;
 
-//TODO 时间自选
-
 public class AlarmMain extends AppCompatActivity implements
         Button.OnClickListener {
 
+    SharedPreferences preferences;
     private ImageButton mToWatch;
     private Switch mSwitch;
-    private int isChecked = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +62,15 @@ public class AlarmMain extends AppCompatActivity implements
     public void init() {
         DBManager.getInstance().openDatabase();
         DBManager.getInstance().closeDatabase();
+        preferences = getApplicationContext().getSharedPreferences("Alarmo", MODE_PRIVATE);
+        String ringUri = preferences.getString("ringUri", "");
+        if (ringUri.equals("")||ringUri==null){
+            //首次打开应用，将铃声设置未系统默认铃声
+            ringUri = getSystemDefaultRingtoneUri().toString();
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("ringUri",ringUri);
+            editor.apply();
+        }
         mSwitch.setChecked(RingService.isRingServiceSurvive);
     }
 
@@ -99,6 +106,14 @@ public class AlarmMain extends AppCompatActivity implements
             default:
                 break;
         }
+    }
+
+    /**
+     * 获取系统当前铃声，用于初始化Alarmo铃声
+     */
+    private Uri getSystemDefaultRingtoneUri() {
+        return RingtoneManager.getActualDefaultRingtoneUri(this,
+                RingtoneManager.TYPE_NOTIFICATION);
     }
 
     /**
