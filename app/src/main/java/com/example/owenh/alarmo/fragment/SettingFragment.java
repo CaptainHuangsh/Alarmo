@@ -1,6 +1,5 @@
 package com.example.owenh.alarmo.fragment;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,6 +19,7 @@ import com.example.owenh.alarmo.common.C;
 import com.example.owenh.alarmo.dialog.ColorDialog;
 import com.example.owenh.alarmo.dialog.TimesDialog;
 import com.example.owenh.alarmo.util.DBManager;
+import com.example.owenh.alarmo.util.SPUtils;
 
 /**
  * Created by owen on 2017/5/9
@@ -34,15 +34,13 @@ public class SettingFragment extends PreferenceFragment implements
     private Preference mColor;
     private Preference mSelectTimes;
     private Preference mAddIcon;
-    //    private Preference mOneMinAdvance;
     private String colorSum;
-    SharedPreferences preferences;
 
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case UPDATE_COLOR_SUM:
-                    mColor.setSummary(C.colorMap.get(preferences.getString("pref_text_color", "")));
+                    mColor.setSummary(C.colorMap.get((String) SPUtils.getInstance().get(getActivity(), "pref_text_color", "")));
                     break;
                 default:
                     break;
@@ -82,10 +80,7 @@ public class SettingFragment extends PreferenceFragment implements
     }
 
     private void initPref() {
-        PreferenceManager.setDefaultValues(getActivity(), R.xml.pref_settings, false);
-        preferences = PreferenceManager
-                .getDefaultSharedPreferences(getActivity());
-        colorSum = preferences.getString("pref_text_color", "");
+        colorSum = (String) SPUtils.getInstance().get(getActivity(), "pref_text_color", "");
         Message msg = new Message();
         msg.obj = colorSum;
         msg.what = UPDATE_COLOR_SUM;
@@ -103,7 +98,6 @@ public class SettingFragment extends PreferenceFragment implements
         }
         if (mAddIcon == preference) {
             addIcon();
-//            addShortcut(getActivity());
         }
         return true;
     }
@@ -168,7 +162,6 @@ public class SettingFragment extends PreferenceFragment implements
 
     /**
      * 添加当前应用的桌面快捷方式
-     *
      */
     public void addIcon() {
         // 安装的Intent

@@ -59,10 +59,10 @@ public class TimesDialog extends Dialog {
         initView();
 
 
-        PreferenceManager.setDefaultValues(getContext(), R.xml.pref_settings, false);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+//        PreferenceManager.setDefaultValues(getContext(), R.xml.pref_settings, false);
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-        final SharedPreferences finalPreferences = preferences;
+//        final SharedPreferences finalPreferences = preferences;
         /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

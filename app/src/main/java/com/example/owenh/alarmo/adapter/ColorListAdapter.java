@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.provider.domain.AColor;
+import com.example.owenh.alarmo.util.SPUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +29,6 @@ public class ColorListAdapter extends ArrayAdapter<AColor> {
 
     private int resourceId;
     HashMap<String, Boolean> states = new HashMap<String, Boolean>();
-    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
     public ColorListAdapter(Context context, int resourceId, List<AColor> colors) {
         super(context, resourceId, colors);
@@ -51,13 +51,12 @@ public class ColorListAdapter extends ArrayAdapter<AColor> {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();//重新获取viewHolder
         }
-        final RadioButton radio=(RadioButton) view.findViewById(R.id.color_radio);
-        final SharedPreferences finalPreferences = preferences;
+        final RadioButton radio = (RadioButton) view.findViewById(R.id.color_radio);
         viewHolder.rb_state = radio;
         viewHolder.rb_state.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finalPreferences.edit().putString("pref_text_color", getItem(position).getColorValue()).apply();
+                SPUtils.getInstance().put(getContext(), "pref_text_color", getItem(position).getColorValue());
                 // 重置，确保最多只有一项被选中
                 for (String key : states.keySet()) {
                     states.put(key, false);
@@ -69,7 +68,7 @@ public class ColorListAdapter extends ArrayAdapter<AColor> {
 
         boolean res = false;
         if (states.get(String.valueOf(position)) == null
-                || states.get(String.valueOf(position)) == false) {
+                || !states.get(String.valueOf(position))) {
             res = false;
             states.put(String.valueOf(position), false);
         } else
@@ -77,6 +76,7 @@ public class ColorListAdapter extends ArrayAdapter<AColor> {
 
         viewHolder.rb_state.setChecked(res);
 
+        assert color != null;
         viewHolder.colorImg.setBackgroundColor(Color.parseColor(color.getColorValue()));
         viewHolder.colorText.setText(color.getColorString());
         return view;

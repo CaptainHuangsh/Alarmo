@@ -25,6 +25,11 @@
     <string name="notification_service">提示服务</string>
     <string name="pref_select_times">报时时段</string>
     <string name="pref_advance_one">提前一分钟提醒</string>
+    <string name="pref_add_shortcut">添加全屏时钟快捷方式</string>
+    <string name="pref_24hours">使用24小时制</string>
+    <string name="pref_select_colors_summary">选择要显示的颜色</string>
+    <string name="pref_select_colors_tittle">颜色选择</string>
+    <string name="options">设置</string>
     <string-array name="list_color">
         <item>Red</item>
         <item>Blue</item>

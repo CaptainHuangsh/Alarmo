@@ -5,9 +5,7 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,12 +18,12 @@ import android.widget.Toast;
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.services.RingService;
 import com.example.owenh.alarmo.util.DBManager;
-import com.example.owenh.alarmo.util.VibrateUtil;
+import com.example.owenh.alarmo.util.SPUtils;
+import com.example.owenh.alarmo.util.T;
 
 public class AlarmMain extends AppCompatActivity implements
         Button.OnClickListener {
 
-    SharedPreferences preferences;
     private ImageButton mToWatch;
     private Switch mSwitch;
 
@@ -62,14 +60,11 @@ public class AlarmMain extends AppCompatActivity implements
     public void init() {
         DBManager.getInstance().openDatabase();
         DBManager.getInstance().closeDatabase();
-        preferences = getApplicationContext().getSharedPreferences("Alarmo", MODE_PRIVATE);
-        String ringUri = preferences.getString("ringUri", "");
+        String ringUri = (String) SPUtils.getInstance().get(AlarmMain.this, "ringUri", "");
         if (ringUri.equals("") || ringUri == null) {
             //首次打开应用，将铃声设置未系统默认铃声
             ringUri = getSystemDefaultRingtoneUri().toString();
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("ringUri", ringUri);
-            editor.apply();
+            SPUtils.getInstance().put(this, "ringUri", ringUri);
         }
         mSwitch.setChecked(RingService.isRingServiceSurvive);
 
@@ -98,10 +93,10 @@ public class AlarmMain extends AppCompatActivity implements
                 Intent serviceIntent = new Intent(AlarmMain.this, RingService.class);
                 if (mSwitch.isChecked()) {
                     startService(serviceIntent);
-                    Toast.makeText(AlarmMain.this, "打开整点报时", Toast.LENGTH_SHORT).show();
+                    T.showShort(this, "打开整点报时");
                 } else {
                     stopService(serviceIntent);
-                    Toast.makeText(AlarmMain.this, "关闭整点报时", Toast.LENGTH_SHORT).show();
+                    T.showShort(this, "关闭整点报时");
                 }
                 break;
             default:
