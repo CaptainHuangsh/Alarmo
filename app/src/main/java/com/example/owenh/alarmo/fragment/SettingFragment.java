@@ -165,6 +165,11 @@ public class SettingFragment extends PreferenceFragment implements
         dialog.show();
     }
 
+
+    /**
+     * 添加当前应用的桌面快捷方式
+     *
+     */
     public void addIcon() {
         // 安装的Intent
         Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
@@ -182,35 +187,6 @@ public class SettingFragment extends PreferenceFragment implements
         shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
         // 发送广播
         getActivity().sendBroadcast(shortcut);
-    }
-
-    /**
-     * 添加当前应用的桌面快捷方式
-     *
-     * @param context
-     */
-    public static void addShortcut(Context context) {
-        Intent addShortcutIntent = new Intent("android.intent.action.ADD_SHORTCUT");
-        // 不允许重复创建
-        addShortcutIntent.putExtra("duplicate", false);// 经测试不是根据快捷方式的名字判断重复的
-        // 应该是根据快链的Intent来判断是否重复的,即Intent.EXTRA_SHORTCUT_INTENT字段的value
-        // 但是名称不同时，虽然有的手机系统会显示Toast提示重复，仍然会建立快链
-        // 屏幕上没有空间时会提示
-        // 注意：重复创建的行为MIUI和三星手机上不太一样，小米上似乎不能重复创建快捷方式
-        // 名字
-        addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, "全屏时钟");
-        // 图标
-        addShortcutIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
-                Intent.ShortcutIconResource.fromContext(context,
-                        R.drawable.alarm_clock));
-        // 设置关联程序
-        Intent sIntent = new Intent(Intent.ACTION_MAIN);
-        sIntent.addCategory(Intent.CATEGORY_LAUNCHER);// 加入action,和category之后，程序卸载的时候才会主动将该快捷方式也卸载
-        sIntent.setClass(context, WatchActivity.class);//点击后进入的Activity
-        addShortcutIntent
-                .putExtra(Intent.EXTRA_SHORTCUT_INTENT, sIntent);
-        // 发送广播
-        context.sendBroadcast(addShortcutIntent);
     }
 
 }
