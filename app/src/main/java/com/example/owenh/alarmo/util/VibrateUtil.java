@@ -18,13 +18,13 @@ public class VibrateUtil {
      * boolean isRepeat ： 是否反复震动，如果是true，反复震动，如果是false，只震动一次
      */
 
-    public static void vibrate(final Context context, long milliseconds) {
+    public void vibrate(final Context context, long milliseconds) {
         Vibrator vib = (Vibrator) context.getSystemService(
                 Service.VIBRATOR_SERVICE);
         vib.vibrate(milliseconds);
     }
 
-    public static void vibrate(final Context context, long[] pattern,
+    public void vibrate(final Context context, long[] pattern,
                                boolean isRepeat) {
         Vibrator vib = (Vibrator) context.getSystemService(
                 Service.VIBRATOR_SERVICE);

@@ -52,7 +52,7 @@ public class RingService extends Service {
                         }
                     } else {
                         if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
-                            if (AlarmoUtil.isRing(DateFormat.format("HH:mm", sysTime).toString())) {
+                            if (AlarmoUtil.getInstance().isRing(DateFormat.format("HH:mm", sysTime).toString())) {
                                 //大写HH 24小时制
                                 startAlarm();
                             }
@@ -172,7 +172,7 @@ public class RingService extends Service {
         Ringtone rt = RingtoneManager.getRingtone(this, Uri.parse(ringUri));
         rt.play();
         if (isVibrate)
-            VibrateUtil.vibrate(getApplicationContext(), 300);
+            AlarmoUtil.getInstance().vibrate(getApplicationContext(), 300);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
