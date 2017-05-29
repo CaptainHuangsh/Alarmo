@@ -21,6 +21,7 @@ import com.example.owenh.alarmo.common.DoubleClick;
 import com.example.owenh.alarmo.services.RingService;
 import com.example.owenh.alarmo.util.DateDayUtil;
 import com.example.owenh.alarmo.util.SPUtils;
+import com.example.owenh.alarmo.util.T;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 /**
@@ -171,7 +172,7 @@ public class WatchActivity extends AutoLayoutActivity {
     @Override
     public void onBackPressed() {
         if (!DoubleClick.check()) {
-            Toast.makeText(this, "再按一次退出", Toast.LENGTH_SHORT).show();
+            T.showShort(this, "再按一次退出");
         } else {
             finish();
         }
