@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.common.DoubleClick;
 import com.example.owenh.alarmo.services.RingService;
+import com.example.owenh.alarmo.util.SPUtils;
 import com.zhy.autolayout.AutoLayoutActivity;
 
 import com.example.owenh.alarmo.util.DateDayUtil;
@@ -74,11 +75,13 @@ public class WatchActivity extends AutoLayoutActivity {
 
     public void init() {
         WATCH_STATUS = 1;
-        PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        textColor = preferences.getString("pref_text_color", "#ff00ddff");
+//        PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+//        textColor = preferences.getString("pref_text_color", "#ff00ddff");
+        textColor = (String) SPUtils.getInstance().get(this, "pref_text_color", "#ff00ddff");
         typeFace = Typeface.createFromAsset(getAssets(), "fonts/digifaw.ttf");
-        is24Hours = preferences.getBoolean("hours_12_24", true);
+//        is24Hours = preferences.getBoolean("hours_12_24", true);
+        is24Hours = (Boolean) SPUtils.getInstance().get(this, "hours_12_24", true);
         //字体
         mVTime.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -42,12 +42,12 @@ public class ColorDialog extends Dialog {
         initColor();
         initView();
         initEvent();
-        PreferenceManager.setDefaultValues(getContext(), R.xml.pref_settings, false);
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+//        PreferenceManager.setDefaultValues(getContext(), R.xml.pref_settings, false);
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         ColorListAdapter mAdapter = new ColorListAdapter(getContext(), R.layout.items_take_color, colors);
         listView = (ListView) findViewById(R.id.main_color_list);
         listView.setAdapter(mAdapter);
-        final SharedPreferences finalPreferences = preferences;
+//        final SharedPreferences finalPreferences = preferences;
         /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
