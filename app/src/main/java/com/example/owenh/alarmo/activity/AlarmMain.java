@@ -64,14 +64,15 @@ public class AlarmMain extends AppCompatActivity implements
         DBManager.getInstance().closeDatabase();
         preferences = getApplicationContext().getSharedPreferences("Alarmo", MODE_PRIVATE);
         String ringUri = preferences.getString("ringUri", "");
-        if (ringUri.equals("")||ringUri==null){
+        if (ringUri.equals("") || ringUri == null) {
             //首次打开应用，将铃声设置未系统默认铃声
             ringUri = getSystemDefaultRingtoneUri().toString();
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putString("ringUri",ringUri);
+            editor.putString("ringUri", ringUri);
             editor.apply();
         }
         mSwitch.setChecked(RingService.isRingServiceSurvive);
+
     }
 
     public void findView() {

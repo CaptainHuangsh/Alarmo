@@ -16,11 +16,9 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import com.example.owenh.alarmo.R;
-import com.example.owenh.alarmo.adapter.ColorListAdapter;
-import com.example.owenh.alarmo.domain.AColor;
+import com.example.owenh.alarmo.provider.domain.AColor;
 import com.example.owenh.alarmo.util.DBManager;
 
 import java.util.ArrayList;

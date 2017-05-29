@@ -1,5 +1,7 @@
 package com.example.owenh.alarmo.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,9 +13,9 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.owenh.alarmo.R;
+import com.example.owenh.alarmo.activity.WatchActivity;
 import com.example.owenh.alarmo.common.C;
 import com.example.owenh.alarmo.dialog.ColorDialog;
 import com.example.owenh.alarmo.dialog.TimesDialog;
@@ -31,7 +33,8 @@ public class SettingFragment extends PreferenceFragment implements
 
     private Preference mColor;
     private Preference mSelectTimes;
-//    private Preference mOneMinAdvance;
+    private Preference mAddIcon;
+    //    private Preference mOneMinAdvance;
     private String colorSum;
     SharedPreferences preferences;
 
@@ -53,9 +56,11 @@ public class SettingFragment extends PreferenceFragment implements
         addPreferencesFromResource(R.xml.pref_settings);
         mColor = findPreference("take_color");
         mSelectTimes = findPreference("pref_select_times");
+        mAddIcon = findPreference("add_icon");
 //        mOneMinAdvance = findPreference("pref_advance_one");
         mColor.setOnPreferenceClickListener(this);
         mSelectTimes.setOnPreferenceClickListener(this);
+        mAddIcon.setOnPreferenceClickListener(this);
         initPref();
     }
 
@@ -95,6 +100,10 @@ public class SettingFragment extends PreferenceFragment implements
         }
         if (mSelectTimes == preference) {
             ShowTimesDialog();
+        }
+        if (mAddIcon == preference) {
+            addIcon();
+//            addShortcut(getActivity());
         }
         return true;
     }
@@ -155,4 +164,35 @@ public class SettingFragment extends PreferenceFragment implements
         });
         dialog.show();
     }
+
+
+    /**
+     * 添加当前应用的桌面快捷方式
+     *
+     */
+    public void addIcon() {
+        // 安装的Intent
+        Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+        // 快捷名称
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, "Alarmo时钟");
+        // 快捷图标是允许重复
+        shortcut.putExtra("duplicate", false);
+        Intent shortcutIntent = new Intent(Intent.ACTION_MAIN);
+//        shortcutIntent.putExtra("tName", "aaa");
+        shortcutIntent.setClass(getActivity(), WatchActivity.class);
+        shortcutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+        // 快捷图标
+        Intent.ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(getActivity(), R.drawable.alarm_clock);
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
+        // 发送广播
+        getActivity().sendBroadcast(shortcut);
+        // 经测试不是根据快捷方式的名字判断重复的
+        // 应该是根据快链的Intent来判断是否重复的,即Intent.EXTRA_SHORTCUT_INTENT字段的value
+        // 但是名称不同时，虽然有的手机系统会显示Toast提示重复，仍然会建立快链
+        // 屏幕上没有空间时会提示
+        // 注意：重复创建的行为MIUI和三星手机上不太一样，小米上似乎不能重复创建快捷方式
+        // 名字
+    }
+
 }
