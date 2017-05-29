@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-    <PreferenceCategory android:title="设置" />
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="@string/options" />
     <!--http://blog.csdn.net/zwq1457/article/details/8489997-->
     <RingtonePreference
         android:key="pref_notification"
@@ -14,8 +13,8 @@
     <Preference
         android:defaultValue="#0000FF"
         android:key="take_color"
-        android:summary="选择要显示的颜色"
-        android:title="颜色选择" />
+        android:summary="@string/pref_select_colors_summary"
+        android:title="@string/pref_select_colors_tittle" />
     <Preference
         android:key="pref_select_times"
         android:summary=""
@@ -27,9 +26,9 @@
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="hours_12_24"
-        android:title="使用24小时制" />
+        android:title="@string/pref_24hours" />
     <Preference
         android:key="add_icon"
-        android:title="添加全屏时钟快捷方式" />
+        android:title="@string/pref_add_shortcut" />
 
 </PreferenceScreen>

@@ -69,7 +69,7 @@ public class ColorListAdapter extends ArrayAdapter<AColor> {
 
         boolean res = false;
         if (states.get(String.valueOf(position)) == null
-                || states.get(String.valueOf(position)) == false) {
+                || !states.get(String.valueOf(position))) {
             res = false;
             states.put(String.valueOf(position), false);
         } else
@@ -77,6 +77,7 @@ public class ColorListAdapter extends ArrayAdapter<AColor> {
 
         viewHolder.rb_state.setChecked(res);
 
+        assert color != null;
         viewHolder.colorImg.setBackgroundColor(Color.parseColor(color.getColorValue()));
         viewHolder.colorText.setText(color.getColorString());
         return view;

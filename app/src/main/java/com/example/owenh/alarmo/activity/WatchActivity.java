@@ -98,8 +98,8 @@ public class WatchActivity extends AutoLayoutActivity {
 
 
     public void findView() {
-        mVTime = (TextView) findViewById(R.id.alarm_vtime);
-        mSec = (TextView) findViewById(R.id.alarm_vsec);
+        mVTime = (TextView) findViewById(R.id.alarm_text_time);
+        mSec = (TextView) findViewById(R.id.alarm_text_second);
         mDay = (TextView) findViewById(R.id.alarm_day);
     }
 
