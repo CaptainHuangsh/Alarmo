@@ -16,8 +16,8 @@ import android.util.Log;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.activity.WatchActivity;
+import com.example.owenh.alarmo.util.AlarmoUtil;
 import com.example.owenh.alarmo.util.DBManager;
-import com.example.owenh.alarmo.util.RingUtil;
 import com.example.owenh.alarmo.util.VibrateUtil;
 
 //TODO 防止后台被清理
@@ -52,7 +52,7 @@ public class RingService extends Service {
                         }
                     } else {
                         if (DateFormat.format("mm:ss", sysTime).equals("00:00") || DateFormat.format("mm:ss", sysTime).equals("30:00")) {
-                            if (RingUtil.isRing(DateFormat.format("HH:mm", sysTime).toString())) {
+                            if (AlarmoUtil.getInstance().isRing(DateFormat.format("HH:mm", sysTime).toString())) {
                                 //大写HH 24小时制
                                 startAlarm();
                             }
@@ -81,7 +81,7 @@ public class RingService extends Service {
                             if (isOneMinAdvance) {
                                 sysTime += 1000;
                             }
-                            if (RingUtil.isRing(DateFormat.format("hh:mm", sysTime).toString())) {
+                            if (AlarmoUtil.isRing(DateFormat.format("hh:mm", sysTime).toString())) {
                                 startAlarm();
                             }
                             DBManager.getInstance().closeDatabase();
@@ -172,7 +172,7 @@ public class RingService extends Service {
         Ringtone rt = RingtoneManager.getRingtone(this, Uri.parse(ringUri));
         rt.play();
         if (isVibrate)
-            VibrateUtil.vibrate(getApplicationContext(), 300);
+            AlarmoUtil.getInstance().vibrate(getApplicationContext(), 300);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

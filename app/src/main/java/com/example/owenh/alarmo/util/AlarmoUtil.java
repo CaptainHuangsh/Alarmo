@@ -2,14 +2,37 @@ package com.example.owenh.alarmo.util;
 
 import android.app.Service;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Vibrator;
 
 /**
- * Created by owen on 2017/5/4.
- * 手机震动类
+ * Created by owenh on 2016/8/5.
  */
 
-public class VibrateUtil {
+public class AlarmoUtil {
+
+    public static AlarmoUtil getInstance() {
+        return AlarmoHolder.sInstance;
+    }
+
+    public static final class AlarmoHolder {
+        public static final AlarmoUtil sInstance = new AlarmoUtil();
+    }
+
+    public boolean isRing(String time) {
+        //判断是否需要响铃
+        DBManager.getInstance().openDatabase();
+        final SQLiteDatabase db = DBManager.getInstance().getDatabase();
+        Cursor cursor = db.rawQuery("select isRing from SelectTimes where time = ?", new String[]{
+                time
+        });
+        int b = 0;
+        if (cursor.moveToFirst()) {
+            b = cursor.getInt(cursor.getColumnIndex("isRing"));
+        }
+        return b > 0;
+    }
 
     /**
      * final Activity activity  ：调用该方法的Activity实例
@@ -25,10 +48,9 @@ public class VibrateUtil {
     }
 
     public void vibrate(final Context context, long[] pattern,
-                               boolean isRepeat) {
+                        boolean isRepeat) {
         Vibrator vib = (Vibrator) context.getSystemService(
                 Service.VIBRATOR_SERVICE);
         vib.vibrate(pattern, isRepeat ? 1 : -1);
     }
-
 }
