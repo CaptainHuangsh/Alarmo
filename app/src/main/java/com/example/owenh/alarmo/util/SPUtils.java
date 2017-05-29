@@ -16,7 +16,7 @@ public class SPUtils {
     /**
      * 保存在手机里面的文件名
      */
-    public static final String FILE_NAME = "Alarmo";
+    public static final String FILE_NAME = "com.example.owenh.alarmo_preferences";
 
     public static SPUtils getInstance() {
         return SPHolder.sInstance;
@@ -137,7 +137,6 @@ public class SPUtils {
 
     /**
      * 创建一个解决SharedPreferencesCompat.apply方法的一个兼容类
-     *
      */
     private static class SharedPreferencesCompat {
         private static final Method sApplyMethod = findApplyMethod();
