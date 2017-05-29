@@ -7,14 +7,12 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.adapter.ColorListAdapter;
-import com.example.owenh.alarmo.domain.AColor;
+import com.example.owenh.alarmo.provider.domain.AColor;
 
 import java.util.ArrayList;
 import java.util.List;

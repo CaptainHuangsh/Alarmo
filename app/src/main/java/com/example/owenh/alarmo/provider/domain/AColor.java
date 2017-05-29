@@ -1,4 +1,4 @@
-package com.example.owenh.alarmo.domain;
+package com.example.owenh.alarmo.provider.domain;
 
 /**
  * Created by owen on 2017/5/10.

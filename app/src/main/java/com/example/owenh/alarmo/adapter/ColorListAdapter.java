@@ -15,7 +15,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.example.owenh.alarmo.R;
-import com.example.owenh.alarmo.domain.AColor;
+import com.example.owenh.alarmo.provider.domain.AColor;
 
 import java.util.HashMap;
 import java.util.List;

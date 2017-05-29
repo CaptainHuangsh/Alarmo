@@ -18,15 +18,18 @@
         android:title="颜色选择" />
     <Preference
         android:key="pref_select_times"
-        android:title="@string/pref_select_times"
-        android:summary=""/>
+        android:summary=""
+        android:title="@string/pref_select_times" />
     <CheckBoxPreference
-        android:key="pref_advance_one"
         android:defaultValue="false"
-        android:title="@string/pref_advance_one"/>
+        android:key="pref_advance_one"
+        android:title="@string/pref_advance_one" />
     <CheckBoxPreference
-        android:key="hours_12_24"
         android:defaultValue="true"
-        android:title="使用24小时制"/>
+        android:key="hours_12_24"
+        android:title="使用24小时制" />
+    <Preference
+        android:key="add_icon"
+        android:title="添加全屏时钟快捷方式" />
 
 </PreferenceScreen>
