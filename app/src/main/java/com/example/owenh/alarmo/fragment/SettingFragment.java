@@ -34,9 +34,7 @@ public class SettingFragment extends PreferenceFragment implements
     private Preference mColor;
     private Preference mSelectTimes;
     private Preference mAddIcon;
-    //    private Preference mOneMinAdvance;
     private String colorSum;
-    SharedPreferences preferences;
 
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -82,10 +80,6 @@ public class SettingFragment extends PreferenceFragment implements
     }
 
     private void initPref() {
-        /*PreferenceManager.setDefaultValues(getActivity(), R.xml.pref_settings, false);
-        preferences = PreferenceManager
-                .getDefaultSharedPreferences(getActivity());
-        colorSum = preferences.getString("pref_text_color", "");*/
         colorSum = (String) SPUtils.getInstance().get(getActivity(), "pref_text_color", "");
         Message msg = new Message();
         msg.obj = colorSum;
@@ -104,7 +98,6 @@ public class SettingFragment extends PreferenceFragment implements
         }
         if (mAddIcon == preference) {
             addIcon();
-//            addShortcut(getActivity());
         }
         return true;
     }

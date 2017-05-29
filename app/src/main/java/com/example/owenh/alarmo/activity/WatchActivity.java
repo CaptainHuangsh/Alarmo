@@ -2,7 +2,6 @@ package com.example.owenh.alarmo.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
-import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.view.Window;
@@ -21,10 +19,9 @@ import android.widget.Toast;
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.common.DoubleClick;
 import com.example.owenh.alarmo.services.RingService;
+import com.example.owenh.alarmo.util.DateDayUtil;
 import com.example.owenh.alarmo.util.SPUtils;
 import com.zhy.autolayout.AutoLayoutActivity;
-
-import com.example.owenh.alarmo.util.DateDayUtil;
 
 /**
  * Created by owenh on 2016/8/5.
@@ -75,12 +72,8 @@ public class WatchActivity extends AutoLayoutActivity {
 
     public void init() {
         WATCH_STATUS = 1;
-//        PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-//        textColor = preferences.getString("pref_text_color", "#ff00ddff");
         textColor = (String) SPUtils.getInstance().get(this, "pref_text_color", "#ff00ddff");
         typeFace = Typeface.createFromAsset(getAssets(), "fonts/digifaw.ttf");
-//        is24Hours = preferences.getBoolean("hours_12_24", true);
         is24Hours = (Boolean) SPUtils.getInstance().get(this, "hours_12_24", true);
         //字体
         mVTime.setOnClickListener(new View.OnClickListener() {
