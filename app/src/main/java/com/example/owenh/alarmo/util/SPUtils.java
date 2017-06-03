@@ -16,14 +16,14 @@ public class SPUtils {
     /**
      * 保存在手机里面的文件名
      */
-    public static final String FILE_NAME = "com.example.owenh.alarmo_preferences";
+    private static final String FILE_NAME = "com.example.owenh.alarmo_preferences";
 
     public static SPUtils getInstance() {
         return SPHolder.sInstance;
     }
 
-    public static final class SPHolder {
-        public static final SPUtils sInstance = new SPUtils();
+    private static final class SPHolder {
+        static final SPUtils sInstance = new SPUtils();
     }
 
     /**

@@ -1,13 +1,11 @@
 package com.example.owenh.alarmo.fragment;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,13 +32,12 @@ public class SettingFragment extends PreferenceFragment implements
     private Preference mColor;
     private Preference mSelectTimes;
     private Preference mAddIcon;
-    private String colorSum;
 
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case UPDATE_COLOR_SUM:
-                    mColor.setSummary(C.colorMap.get((String) SPUtils.getInstance().get(getActivity(), "pref_text_color", "")));
+                    mColor.setSummary(C.colorMap.get(SPUtils.getInstance().get(getActivity(), "pref_text_color", "")));
                     break;
                 default:
                     break;
@@ -80,7 +77,7 @@ public class SettingFragment extends PreferenceFragment implements
     }
 
     private void initPref() {
-        colorSum = (String) SPUtils.getInstance().get(getActivity(), "pref_text_color", "");
+        String colorSum = (String) SPUtils.getInstance().get(getActivity(), "pref_text_color", "");
         Message msg = new Message();
         msg.obj = colorSum;
         msg.what = UPDATE_COLOR_SUM;
@@ -103,7 +100,7 @@ public class SettingFragment extends PreferenceFragment implements
     }
 
     private void ShowTimesDialog() {
-        TimesDialog dialog = null;
+        TimesDialog dialog;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             dialog = new TimesDialog(getContext());
         } else {
@@ -135,7 +132,7 @@ public class SettingFragment extends PreferenceFragment implements
 
     public void ShowColorDialog() {
 
-        ColorDialog dialog = null;
+        ColorDialog dialog;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             dialog = new ColorDialog(getContext());
         } else {

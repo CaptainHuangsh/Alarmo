@@ -14,7 +14,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "time text," +
             "isRing int)";
 
-    public MyDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    MyDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 

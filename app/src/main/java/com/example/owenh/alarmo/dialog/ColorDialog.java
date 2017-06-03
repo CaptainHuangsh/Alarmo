@@ -2,9 +2,7 @@ package com.example.owenh.alarmo.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
@@ -24,9 +22,9 @@ import java.util.List;
 public class ColorDialog extends Dialog {
 
     private Context mContext;
-    public ListView listView;
+    private ListView listView;
     private Button yes, no;
-    private List<AColor> colors = new ArrayList<AColor>();
+    private List<AColor> colors = new ArrayList<>();
     private onNoOnclickListener noOnclickListener;//取消按钮被点击了的监听器
     private onYesOnclickListener yesOnclickListener;//确定按钮被点击了的监听器
 
@@ -130,10 +128,10 @@ public class ColorDialog extends Dialog {
 
 
     public interface onYesOnclickListener {
-        public void onYesClick();
+        void onYesClick();
     }
 
     public interface onNoOnclickListener {
-        public void onNoClick();
+        void onNoClick();
     }
 }

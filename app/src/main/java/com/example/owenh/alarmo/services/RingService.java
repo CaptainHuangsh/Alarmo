@@ -18,7 +18,6 @@ import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.activity.WatchActivity;
 import com.example.owenh.alarmo.util.AlarmoUtil;
 import com.example.owenh.alarmo.util.DBManager;
-import com.example.owenh.alarmo.util.VibrateUtil;
 
 //TODO 防止后台被清理
 //TODO 字体选择
