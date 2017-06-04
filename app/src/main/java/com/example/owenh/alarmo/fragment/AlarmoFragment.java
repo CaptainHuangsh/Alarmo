@@ -1,10 +1,12 @@
 package com.example.owenh.alarmo.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,7 @@ public class AlarmoFragment extends Fragment implements View.OnClickListener {
     private View view;
     private ImageButton mToWatch;
     private Switch mSwitch;
+    private Context mContext;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,23 +50,23 @@ public class AlarmoFragment extends Fragment implements View.OnClickListener {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
-        setListener();
         init();
+        setListener();
     }
 
     private void findViews(View v) {
         mToWatch = (ImageButton) v.findViewById(R.id.to_watch);
         mSwitch = (Switch) v.findViewById(R.id.on_off_service2);
-
     }
 
     public void setListener() {
         mSwitch.setOnClickListener(this);
         mToWatch.setOnClickListener(this);
-
     }
 
     public void init() {
+        Log.d("huangshaohua init : ","AlarmoFragment");
+        mContext = getActivity();
         mSwitch.setChecked(RingService.isRingServiceSurvive);
     }
 
@@ -71,17 +74,17 @@ public class AlarmoFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.to_watch:
-                Intent intent = new Intent(getActivity(), WatchActivity.class);
+                Intent intent = new Intent(mContext, WatchActivity.class);
                 startActivity(intent);
                 break;
             case R.id.on_off_service2:
-                Intent serviceIntent = new Intent(getActivity(), RingService.class);
+                Intent serviceIntent = new Intent(mContext, RingService.class);
                 if (mSwitch.isChecked()) {
-                    getActivity().startService(serviceIntent);
-                    T.showShort(getActivity(), "打开整点报时");
+                    mContext.startService(serviceIntent);
+                    T.showShort(mContext, "打开整点报时");
                 } else {
-                    getActivity().stopService(serviceIntent);
-                    T.showShort(getActivity(), "关闭整点报时");
+                    mContext.stopService(serviceIntent);
+                    T.showShort(mContext, "关闭整点报时");
                 }
                 break;
             default:
