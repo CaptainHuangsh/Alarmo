@@ -1,9 +1,7 @@
 package com.example.owenh.alarmo.adapter;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -28,7 +26,7 @@ import java.util.List;
 public class ColorListAdapter extends ArrayAdapter<AColor> {
 
     private int resourceId;
-    HashMap<String, Boolean> states = new HashMap<String, Boolean>();
+    private HashMap<String, Boolean> states = new HashMap<>();
 
     public ColorListAdapter(Context context, int resourceId, List<AColor> colors) {
         super(context, resourceId, colors);
@@ -66,7 +64,7 @@ public class ColorListAdapter extends ArrayAdapter<AColor> {
             }
         });
 
-        boolean res = false;
+        boolean res;
         if (states.get(String.valueOf(position)) == null
                 || !states.get(String.valueOf(position))) {
             res = false;
@@ -82,7 +80,7 @@ public class ColorListAdapter extends ArrayAdapter<AColor> {
         return view;
     }
 
-    class ViewHolder {
+    private class ViewHolder {
         ImageView colorImg;
         TextView colorText;
         RadioButton rb_state;

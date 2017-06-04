@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.common.DoubleClick;
@@ -35,7 +34,6 @@ public class WatchActivity extends AutoLayoutActivity {
     private TextView mVTime;
     private TextView mSec;
     private TextView mDay;
-    DateDayUtil mDateDay = new DateDayUtil();
     private static final int MSG_KEY_1 = 1;
     PowerManager powerManager = null;
     PowerManager.WakeLock wakeLock = null;
@@ -103,7 +101,7 @@ public class WatchActivity extends AutoLayoutActivity {
     /**
      * 建立一个线程，每秒钟刷新一次
      */
-    public class TimeThread extends Thread {
+    private class TimeThread extends Thread {
         @Override
         public void run() {
             do {
@@ -136,7 +134,7 @@ public class WatchActivity extends AutoLayoutActivity {
                     CharSequence sysTimeStrSec = DateFormat.format("ss", sysTime);
                     mVTime.setText(sysTimeStr + "");
                     mSec.setText(" " + sysTimeStrSec);
-                    mDay.setText(mDateDay.StringData() + "");
+                    mDay.setText(DateDayUtil.StringData() + "");
                     mVTime.setTypeface(typeFace);
                     mSec.setTypeface(typeFace);
                     mDay.setTypeface(typeFace);
@@ -152,6 +150,12 @@ public class WatchActivity extends AutoLayoutActivity {
     };
 
     @Override
+    protected void onStart() {
+        WATCH_STATUS = 1;
+        super.onStart();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         this.wakeLock.acquire();
@@ -161,6 +165,12 @@ public class WatchActivity extends AutoLayoutActivity {
     protected void onPause() {
         super.onPause();
         this.wakeLock.release();
+    }
+
+    @Override
+    protected void onStop() {
+        WATCH_STATUS = 0;
+        super.onStop();
     }
 
     @Override

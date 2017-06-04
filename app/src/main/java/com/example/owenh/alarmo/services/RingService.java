@@ -12,13 +12,11 @@ import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.format.DateFormat;
-import android.util.Log;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.activity.WatchActivity;
 import com.example.owenh.alarmo.util.AlarmoUtil;
 import com.example.owenh.alarmo.util.DBManager;
-import com.example.owenh.alarmo.util.VibrateUtil;
 
 //TODO 防止后台被清理
 //TODO 字体选择
@@ -42,7 +40,7 @@ public class RingService extends Service {
                 case MSG_KEY_1:
                     long sysTime = System.currentTimeMillis();
                     if (isOneMinAdvance) {
-                        sysTime += 1000*60;//提前一分
+                        sysTime += 1000 * 60;//提前一分
                     }
                     if (WatchActivity.WATCH_STATUS == 1) {
                         //是否是在Watch界面打开的此服务
@@ -60,34 +58,7 @@ public class RingService extends Service {
                             break;
                         }
                     }
-                    /*String time00Str = "";
-                    String time30Str = "";
-                    if (isOneMinAdvance) {
-                        //提前一分
-                        time00Str = "59:00";
-                        time30Str = "29:00";
-                    } else {
-                        time00Str = "00:00";
-                        time30Str = "30:00";
-                    }
-                    if (WatchActivity.WATCH_STATUS == 1) {
-                        //是否是在Watch界面打开的此服务
-                        if (DateFormat.format("mm:ss", sysTime).equals(time00Str) || DateFormat.format("mm:ss", sysTime).equals(time30Str)) {
-                            startAlarm();
-                            break;
-                        }
-                    } else {
-                        if (DateFormat.format("mm:ss", sysTime).equals(time00Str) || DateFormat.format("mm:ss", sysTime).equals(time30Str)) {
-                            if (isOneMinAdvance) {
-                                sysTime += 1000;
-                            }
-                            if (AlarmoUtil.isRing(DateFormat.format("hh:mm", sysTime).toString())) {
-                                startAlarm();
-                            }
-                            DBManager.getInstance().closeDatabase();
-                            break;
-                        }
-                    }*/
+
                     break;
 
                 default:
@@ -109,7 +80,6 @@ public class RingService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-//        Log.d("huangshaohua long time",""+System.currentTimeMillis());
         preferences = getApplicationContext().getSharedPreferences("Alarmo", MODE_PRIVATE);
         isRingServiceSurvive = true;//用于判断此服务是否存活
         ringUri = preferences.getString("ringUri", "");
@@ -117,27 +87,25 @@ public class RingService extends Service {
             SharedPreferences.Editor editor = preferences.edit();
             ringUri = getSystemDefaultRingtoneUri().toString();
             editor.putString("ringUri", ringUri);
-            editor.commit();
+            editor.apply();
             mContext = getApplicationContext();
         }
-//        preferences = getApplicationContext().getSharedPreferences("Alarmo", MODE_PRIVATE);
         ringUri = preferences.getString("ringUri", "");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mRun = TYPE_RUN;//重启服务时为打开状态
         PreferenceManager.setDefaultValues(this, R.xml.pref_settings, false);
         SharedPreferences preferences2 = PreferenceManager.getDefaultSharedPreferences(this);
         String ringStr = preferences2.getString("pref_notification", ringUri);
         isVibrate = preferences2.getBoolean("pref_vibrate", true);
-        Log.d("isVibrate", "" + isVibrate);
         isOneMinAdvance = preferences2.getBoolean("pref_advance_one", false);//提前一分钟响铃是否打开
-        Log.d("huangshaohua", "" + isOneMinAdvance);
         if (!ringStr.equals(""))
             ringUri = ringStr;
         new TimeThread().start();
         isRingServiceSurvive = true;//用于判断此服务是否存活
-        return super.onStartCommand(intent, flags, startId);
+        return Service.START_NOT_STICKY;
     }
 
     @Override
@@ -152,7 +120,7 @@ public class RingService extends Service {
     /**
      * 建立一个线程，每秒钟刷新一次
      */
-    public class TimeThread extends Thread {
+    private class TimeThread extends Thread {
         @Override
         public void run() {
             do {

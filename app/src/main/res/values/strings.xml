@@ -4,6 +4,7 @@
     <string name="to_other">Other</string>
     <string name="go_ring">Ring</string>
     <string name="select_Ring">SelRing</string>
+    <string name="action_settings">设置</string>
     <string-array name="list_entries_value">
         <item>shandong</item>
         <item>fujian</item>

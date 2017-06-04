@@ -1,8 +1,6 @@
 package com.example.owenh.alarmo.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.preference.Preference;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 

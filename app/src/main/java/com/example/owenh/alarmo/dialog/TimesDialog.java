@@ -3,11 +3,9 @@ package com.example.owenh.alarmo.dialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -18,11 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 
 import com.example.owenh.alarmo.R;
-import com.example.owenh.alarmo.provider.domain.AColor;
 import com.example.owenh.alarmo.util.DBManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by owen on 2017/5/10.
@@ -43,7 +37,6 @@ public class TimesDialog extends Dialog {
     private LinearLayout mMRepeatTimes;
     private LinearLayout mRRepeatTimes;
     private RadioButton mWorkRadio, mRestRadio;
-    List<String> selectTimes = new ArrayList<>();
     private int mStatus = 0;
     private CompoundButton[] mTimesButtons = new CompoundButton[48];
 
@@ -209,15 +202,15 @@ public class TimesDialog extends Dialog {
 
 
     public interface onYesOnclickListener {
-        public void onYesClick();
+        void onYesClick();
     }
 
     public interface onNoOnclickListener {
-        public void onNoClick();
+        void onNoClick();
 
     }
 
-    public String makeTextForTimesPerDay(int i) {
+    private String makeTextForTimesPerDay(int i) {
         if (i % 2 == 0) {
             if ((8 + i / 2 < 24 ? 8 + i / 2 : (8 + i / 2) - 24) > 9)
                 return String.format("%d:30", (8 + i / 2 < 24 ? 8 + i / 2 : (8 + i / 2) - 24));

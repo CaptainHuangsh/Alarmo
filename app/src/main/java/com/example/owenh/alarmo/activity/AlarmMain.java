@@ -1,6 +1,7 @@
 package com.example.owenh.alarmo.activity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,31 +9,24 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.Switch;
 
 import com.example.owenh.alarmo.R;
-import com.example.owenh.alarmo.services.RingService;
+import com.example.owenh.alarmo.fragment.AlarmoFragment;
 import com.example.owenh.alarmo.util.DBManager;
 import com.example.owenh.alarmo.util.SPUtils;
-import com.example.owenh.alarmo.util.T;
 
-public class AlarmMain extends AppCompatActivity implements
-        Button.OnClickListener {
-
-    private ImageButton mToWatch;
-    private Switch mSwitch;
+public class AlarmMain extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alram_main);
         setTitle("Alarmo");
-        findView();
-        setListener();
         init();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(android.R.id.content, new AlarmoFragment())
+                    .commit();
+        }
     }
 
     //重写Activity的onCreateOptionsMenu()方法
@@ -56,51 +50,20 @@ public class AlarmMain extends AppCompatActivity implements
     }
 
     public void init() {
+        setRequestedOrientation(ActivityInfo
+                .SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+        //强制竖屏
         DBManager.getInstance().openDatabase();
-        DBManager.getInstance().closeDatabase();
+        DBManager.getInstance().closeDatabase();//如果不存在数据库则新建数据库
         String ringUri = (String) SPUtils.getInstance().get(AlarmMain.this, "ringUri", "");
         if (ringUri.equals("") || ringUri == null) {
             //首次打开应用，将铃声设置未系统默认铃声
             ringUri = getSystemDefaultRingtoneUri().toString();
             SPUtils.getInstance().put(this, "ringUri", ringUri);
         }
-        mSwitch.setChecked(RingService.isRingServiceSurvive);
 
     }
 
-    public void findView() {
-        mToWatch = (ImageButton) findViewById(R.id.to_watch);
-        mSwitch = (Switch) findViewById(R.id.on_off_service2);
-    }
-
-    public void setListener() {
-        mSwitch.setOnClickListener(this);
-        mToWatch.setOnClickListener(this);
-
-    }
-
-    //stopService 不能停止服务原因 Service里面新建了线程，而没有在Service的onDestroy()里面结束这个线程你只需要在onDestroy里面加上结束这个线程的语句就行了
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.to_watch:
-                Intent intent = new Intent(AlarmMain.this, WatchActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.on_off_service2:
-                Intent serviceIntent = new Intent(AlarmMain.this, RingService.class);
-                if (mSwitch.isChecked()) {
-                    startService(serviceIntent);
-                    T.showShort(this, "打开整点报时");
-                } else {
-                    stopService(serviceIntent);
-                    T.showShort(this, "关闭整点报时");
-                }
-                break;
-            default:
-                break;
-        }
-    }
 
     /**
      * 获取系统当前铃声，用于初始化Alarmo铃声

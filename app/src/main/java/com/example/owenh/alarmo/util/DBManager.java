@@ -16,18 +16,14 @@ import java.io.File;
  */
 
 public class DBManager {
-    public final String DB_NAME = "alarmo_setting.db";
-    public final String PACKAGE_NAME = "com.example.owenh.alarmo";
-    public final String DB_PATH = "/data" + Environment.getDataDirectory().getAbsolutePath() + "/" +
+    private final String DB_NAME = "alarmo_setting.db";
+    private final String PACKAGE_NAME = "com.example.owenh.alarmo";
+    private final String DB_PATH = "/data" + Environment.getDataDirectory().getAbsolutePath() + "/" +
             PACKAGE_NAME;  //在手机里存放数据库的位置(/data/data/com.example.owenh.alarmo/alarmo_setting.db);
-    private final String CREATE_DB = "create table SelectTimes(" +
-            "id integer primary key autoincrement," +
-            "time text," +
-            "isRing boolean)";
     private SQLiteDatabase database;
     private Context mContext;
 
-    public DBManager() {
+    private DBManager() {
         mContext = BaseApplication.getAppContext();
     }
 
@@ -77,7 +73,7 @@ public class DBManager {
         public static final DBManager sInstance = new DBManager();
     }
 
-    public static String makeTextForTimesPerDay(int i) {
+    private static String makeTextForTimesPerDay(int i) {
         if (i % 2 == 0) {
             if ((8 + i / 2 < 24 ? 8 + i / 2 : (8 + i / 2) - 24) > 9)
                 return String.format("%d:30", (8 + i / 2 < 24 ? 8 + i / 2 : (8 + i / 2) - 24));

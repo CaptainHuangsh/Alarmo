@@ -14,7 +14,7 @@ public class T {
         throw new UnsupportedOperationException("cannot be instantiated");
     }
 
-    public static boolean isShow = true;
+    private static boolean isShow = true;
 
     /**
      * 短时间显示Toast
