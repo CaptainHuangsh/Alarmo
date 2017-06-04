@@ -150,6 +150,12 @@ public class WatchActivity extends AutoLayoutActivity {
     };
 
     @Override
+    protected void onStart() {
+        WATCH_STATUS = 1;
+        super.onStart();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         this.wakeLock.acquire();
@@ -159,6 +165,12 @@ public class WatchActivity extends AutoLayoutActivity {
     protected void onPause() {
         super.onPause();
         this.wakeLock.release();
+    }
+
+    @Override
+    protected void onStop() {
+        WATCH_STATUS = 0;
+        super.onStop();
     }
 
     @Override
