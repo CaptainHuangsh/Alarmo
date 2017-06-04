@@ -1,6 +1,7 @@
 package com.example.owenh.alarmo.activity;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -56,6 +57,9 @@ public class AlarmMain extends AppCompatActivity implements
     }
 
     public void init() {
+        setRequestedOrientation(ActivityInfo
+                .SCREEN_ORIENTATION_SENSOR_PORTRAIT);
+        //强制竖屏
         DBManager.getInstance().openDatabase();
         DBManager.getInstance().closeDatabase();
         String ringUri = (String) SPUtils.getInstance().get(AlarmMain.this, "ringUri", "");
