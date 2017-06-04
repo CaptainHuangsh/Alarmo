@@ -2,11 +2,9 @@ package com.example.owenh.alarmo.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +12,8 @@ import android.widget.ImageButton;
 import android.widget.Switch;
 
 import com.example.owenh.alarmo.R;
-import com.example.owenh.alarmo.activity.AlarmMain;
 import com.example.owenh.alarmo.activity.WatchActivity;
 import com.example.owenh.alarmo.services.RingService;
-import com.example.owenh.alarmo.util.DBManager;
-import com.example.owenh.alarmo.util.SPUtils;
 import com.example.owenh.alarmo.util.T;
 
 /**
@@ -65,7 +60,6 @@ public class AlarmoFragment extends Fragment implements View.OnClickListener {
     }
 
     public void init() {
-        Log.d("huangshaohua init : ","AlarmoFragment");
         mContext = getActivity();
         mSwitch.setChecked(RingService.isRingServiceSurvive);
     }
