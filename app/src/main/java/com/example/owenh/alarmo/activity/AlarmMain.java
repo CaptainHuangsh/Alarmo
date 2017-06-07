@@ -20,7 +20,7 @@ public class AlarmMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("Alarmo");
+        setTitle(getResources().getString(R.string.app_name));
         init();
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
