@@ -43,7 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="36dp"
-            android:theme="@style/MySwitch"/>
+            android:theme="@style/MySwitch"
+            app:switchMinWidth="50dp" />
     </LinearLayout>
 
 
