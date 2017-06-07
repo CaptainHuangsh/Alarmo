@@ -56,7 +56,7 @@ public class AlarmMain extends AppCompatActivity {
         DBManager.getInstance().openDatabase();
         DBManager.getInstance().closeDatabase();//如果不存在数据库则新建数据库
         String ringUri = (String) SPUtils.getInstance().get(AlarmMain.this, "ringUri", "");
-        if (ringUri.equals("") || ringUri == null) {
+        if ("".equals(ringUri)) {
             //首次打开应用，将铃声设置未系统默认铃声
             ringUri = getSystemDefaultRingtoneUri().toString();
             SPUtils.getInstance().put(this, "ringUri", ringUri);

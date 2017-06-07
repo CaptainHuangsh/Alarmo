@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
@@ -24,19 +23,6 @@
             android:src="@drawable/alarm_clock"
             android:text="@string/to_watch" />
 
-        <ToggleButton
-            android:id="@+id/on_off_service"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-
-        <!--<Switch
-            android:id="@+id/on_off_service2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="36dp"
-            app:theme="@style/SCBSwitch"
-            tools:ignore="MissingPrefix" />-->
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/on_off_service2"
             android:layout_width="wrap_content"
