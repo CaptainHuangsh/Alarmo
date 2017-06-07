@@ -6,9 +6,13 @@
         <item name="colorPrimary">#3c3f41</item>
         <item name="colorPrimaryDark">#3c3f41</item>
         <item name="colorAccent">#106c99</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:windowBackground">@color/windowsbackground</item>
+        <item name="android:navigationBarColor">@color/colorPrimaryDark</item>
         <item name="colorControlNormal">@color/gray</item>
         <item name="colorControlHighlight">@color/gray</item>
         <item name="colorControlActivated">#106c99</item>
+
     </style>
 
     <style name="AppTheme2">
