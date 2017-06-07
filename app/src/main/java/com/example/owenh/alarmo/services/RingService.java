@@ -18,7 +18,6 @@ import com.example.owenh.alarmo.activity.WatchActivity;
 import com.example.owenh.alarmo.util.AlarmoUtil;
 import com.example.owenh.alarmo.util.DBManager;
 
-//TODO 防止后台被清理
 //TODO 字体选择
 public class RingService extends Service {
     public static boolean isRingServiceSurvive = false;

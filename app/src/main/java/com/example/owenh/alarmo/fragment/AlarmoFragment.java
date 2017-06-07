@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,7 @@ public class AlarmoFragment extends Fragment implements View.OnClickListener {
 
     private View view;
     private ImageButton mToWatch;
-    private Switch mSwitch;
+    private SwitchCompat mSwitch;
     private Context mContext;
 
     @Override
@@ -51,7 +52,7 @@ public class AlarmoFragment extends Fragment implements View.OnClickListener {
 
     private void findViews(View v) {
         mToWatch = (ImageButton) v.findViewById(R.id.to_watch);
-        mSwitch = (Switch) v.findViewById(R.id.on_off_service2);
+        mSwitch = (SwitchCompat) v.findViewById(R.id.on_off_service2);
     }
 
     public void setListener() {
