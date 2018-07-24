@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Switch;
 
 import com.example.owenh.alarmo.R;
 import com.example.owenh.alarmo.activity.WatchActivity;
@@ -45,12 +44,12 @@ public class AlarmoFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        findViews(view);
+        initView(view);
         init();
         setListener();
     }
 
-    private void findViews(View v) {
+    private void initView(View v) {
         mToWatch = (ImageButton) v.findViewById(R.id.to_watch);
         mSwitch = (SwitchCompat) v.findViewById(R.id.on_off_service2);
     }
