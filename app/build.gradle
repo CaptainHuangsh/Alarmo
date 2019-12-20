@@ -2,15 +2,15 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        config {
+        /*config {
             keyAlias 'Alarmo'
             keyPassword 'captainhuang1234'
             storeFile file('E:/Android/release/Alarmo.jks')
             storePassword 'captainhuang1234'
-        }
+        }*/
     }
-    compileSdkVersion 25
-    buildToolsVersion '27.0.3'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "com.example.owenh.alarmo"
         minSdkVersion 15
@@ -20,13 +20,13 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
-        }
-        release1 {
-        }
+//        release {
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.config
+//        }
+//        release1 {
+//        }
     }
 }
 

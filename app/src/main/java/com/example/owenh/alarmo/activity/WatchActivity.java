@@ -6,13 +6,12 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.os.PowerManager;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 import com.example.owenh.alarmo.R;
@@ -34,9 +33,9 @@ public class WatchActivity extends AutoLayoutActivity {
     private TextView mVTime;
     private TextView mSec;
     private TextView mDay;
-    private static final int MSG_KEY_1 = 1;
-    PowerManager powerManager = null;
+    PowerManager mPowerManager = null;
     PowerManager.WakeLock wakeLock = null;
+    private TextClock textClock;
     //将字体文件保存在assets/fonts/目录下，创建Typeface对象
     Typeface typeFace;
     String textColor;
@@ -60,11 +59,17 @@ public class WatchActivity extends AutoLayoutActivity {
         setContentView(R.layout.activity_watch);
         findView();
         init();
-        new WatchActivity.TimeThread().start();
+//        new WatchActivity.TimeThread().start();
+        mDay.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                refreshTime();
+            }
+        }, 1000);
         //使屏幕常亮 在低版本中并不起作用（4.4）
-        this.powerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
-        this.wakeLock = this.powerManager.newWakeLock(PowerManager
-                .FULL_WAKE_LOCK, "My Lock");
+        this.mPowerManager = (PowerManager) this.getSystemService(Context.POWER_SERVICE);
+        this.wakeLock = this.mPowerManager.newWakeLock(PowerManager
+                .FULL_WAKE_LOCK, "Alarmo:My Lock");
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);//另一种屏幕常亮的方法
         //仍未解决4.4api19版本的屏幕不能常亮的问题
     }
@@ -98,57 +103,6 @@ public class WatchActivity extends AutoLayoutActivity {
         mDay = (TextView) findViewById(R.id.alarm_day);
     }
 
-    /**
-     * 建立一个线程，每秒钟刷新一次
-     */
-    private class TimeThread extends Thread {
-        @Override
-        public void run() {
-            do {
-                try {
-                    Thread.sleep(1000);
-                    Message msg = new Message();
-                    msg.what = MSG_KEY_1;
-                    mHandler.sendMessage(msg);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            } while (true);
-        }
-    }
-
-    private Handler mHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case MSG_KEY_1:
-                    long sysTime = System.currentTimeMillis();
-                    CharSequence sysTimeStr;
-                    if (is24Hours) {
-                        sysTimeStr = DateFormat.format("HH:mm", sysTime);
-                    } else {
-                        sysTimeStr = DateFormat.format("hh:mm", sysTime);
-                        //12小时制
-                    }
-                    CharSequence sysTimeStrSec = DateFormat.format("ss", sysTime);
-                    mVTime.setText(sysTimeStr + "");
-                    mSec.setText(" " + sysTimeStrSec);
-                    mDay.setText(DateDayUtil.StringData() + "");
-                    mVTime.setTypeface(typeFace);
-                    mSec.setTypeface(typeFace);
-                    mDay.setTypeface(typeFace);
-                    mVTime.setTextColor(Color.parseColor(textColor));
-                    mSec.setTextColor(Color.parseColor(textColor));
-                    mDay.setTextColor(Color.parseColor(textColor));
-                    break;
-
-                default:
-                    break;
-            }
-        }
-    };
-
     @Override
     protected void onStart() {
         WATCH_STATUS = 1;
@@ -158,7 +112,7 @@ public class WatchActivity extends AutoLayoutActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        this.wakeLock.acquire();
+        this.wakeLock.acquire(10 * 60 * 1000L /*10 minutes*/);
     }
 
     @Override
@@ -186,5 +140,26 @@ public class WatchActivity extends AutoLayoutActivity {
         } else {
             finish();
         }
+    }
+
+    private void refreshTime() {
+        long sysTime = System.currentTimeMillis();
+        CharSequence sysTimeStr;
+        if (is24Hours) {
+            sysTimeStr = DateFormat.format("HH:mm", sysTime);
+        } else {
+            sysTimeStr = DateFormat.format("hh:mm", sysTime);
+            //12小时制
+        }
+        CharSequence sysTimeStrSec = DateFormat.format("ss", sysTime);
+        mVTime.setText(sysTimeStr);
+        mSec.setText(sysTimeStrSec);
+        mDay.setText(DateDayUtil.StringData());
+        mVTime.setTypeface(typeFace);
+        mSec.setTypeface(typeFace);
+        mDay.setTypeface(typeFace);
+        mVTime.setTextColor(Color.parseColor(textColor));
+        mSec.setTextColor(Color.parseColor(textColor));
+        mDay.setTextColor(Color.parseColor(textColor));
     }
 }
